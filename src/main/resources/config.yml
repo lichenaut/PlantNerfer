@@ -1,0 +1,81 @@
+#Turn PlantNerfer off.
+disable-plugin: false
+
+
+##############
+#Biome Groups#
+##############
+
+biome-groups:
+  TestGroup:
+    - "minecraft:plains"
+    - "minecraft:savanna"
+  second-group:
+    - "minecraft:forest"
+
+
+#############
+#Nerf Plants#
+#############
+
+#Note: different plants have different numbers of growth stages, which means the same percentage rate can affect some plants more than others.
+
+oak-sapling:
+dark-oak-sapling:
+spruce-sapling:
+birch-sapling:
+jungle-sapling:
+acacia-sapling:
+bamboo-sapling:
+melon-seeds:
+pumpkin-seeds:
+wheat-seeds:
+beetroot-seeds:
+cocoa-beans:
+sweet-berries:
+sugar-cane:
+kelp:
+seagrass:
+vine:
+twisting-vines:
+weeping-vines:
+lily-pad:
+moss-carpet:
+moss-block:
+sweet-berry-bush:
+melon:
+pumpkin:
+carrot:
+potato:
+beetroot:
+wheat:
+bamboo:
+cactus:
+cocoa:
+brown-mushroom:
+red-mushroom:
+nether-wart:
+crimson-fungus:
+warped-fungus:
+chorus-plant:
+
+
+###############
+#Miscellaneous#
+###############
+
+#If empty, PlantNerfer will affect all worlds.
+restrict-plugin-to-worlds:
+  - "world"
+  - "world_nether"
+  - "world_the_end"
+
+#Toggle whether everyone can click a plant and see its bone meal success rate.
+  #Individual permission: plantnerfer.bonemealrate
+global-bone-meal-rate-reporting: false
+  #Permission to disable individual bone meal rate reporting when the global setting is true: plantnerfer.bonemealrate.disabled
+
+#Toggle whether everyone can use buckets to transport source blocks.
+  #Individual permission: plantnerfer.bucket
+global-water-bucket-has-source-block: true
+  #Permission to disable individual water bucket source block usage when the global setting is true: plantnerfer.bucket.disabled
