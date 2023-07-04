@@ -17,14 +17,17 @@ public class PNPlant {
     private final int darkGrowthRate;
     private final int darkDeathRate;
     private final int boneMealRate;
+    private final int darkBoneMealRate;
     private final int minLight;
     private final int maxLight;
+    private final boolean ignoreLightWhenNight;
+    private final boolean needsSky;
     private final int minY;
     private final int maxY;
     private final HashSet<String> restrictToWorlds;
     private final TreeMap<Biome, PNPlantBiomeStats> biomeStats;
 
-    public PNPlant(PlantNerfer plugin, Material material, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int minLight, int maxLight, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
+    public PNPlant(PlantNerfer plugin, Material material, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
         this.plugin = plugin;
         this.material = material;
         this.growthRate = growthRate;
@@ -32,8 +35,11 @@ public class PNPlant {
         this.darkGrowthRate = darkGrowthRate;
         this.darkDeathRate = darkDeathRate;
         this.boneMealRate = boneMealRate;
+        this.darkBoneMealRate = darkBoneMealRate;
         this.minLight = minLight;
         this.maxLight = maxLight;
+        this.ignoreLightWhenNight = ignoreLightWhenNight;
+        this.needsSky = needsSky;
         this.minY = minY;
         this.maxY = maxY;
         this.restrictToWorlds = restrictToWorlds;
@@ -61,6 +67,10 @@ public class PNPlant {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getBoneMealRate();
         return boneMealRate;
     }
+    public int getDarkBoneMealRate(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getDarkBoneMealRate();
+        return darkBoneMealRate;
+    }
     public int getMinLight(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getMinLight();
         return minLight;
@@ -68,6 +78,14 @@ public class PNPlant {
     public int getMaxLight(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getMaxLight();
         return maxLight;
+    }
+    public boolean getIgnoreLightWhenNight(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getIgnoreLightWhenNight();
+        return ignoreLightWhenNight;
+    }
+    public boolean getNeedsSky(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getNeedsSky();
+        return needsSky;
     }
     public int getMinY(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getMinY();

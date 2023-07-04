@@ -18,8 +18,9 @@ biome-groups:
 #Nerf Plants#
 #############
 
-#Note: different plants have different numbers of growth stages, which means the same percentage rate can affect some plants more than others.
-#Note 2: 'dark' light levels are between and including 0 and 7.
+#Note: 'dark' light levels are between and including 0 and 7.
+#Note 2: different plants have different numbers of growth stages, which means the same growth rate can affect some plants more than others.
+#Note 3: for a successful bone meal fertilization, the plant must go through both bone meal rate AND growth rate checks.
 
 #Example:
 #oak-sapling:
@@ -30,6 +31,8 @@ biome-groups:
 #  bone-meal-success-rate: 25
 #  min-light: 9
 #  max-light: 15
+#  place-and-bone-meal-ignores-min-light-at-night: true
+#  needs-sky: false
 #  min-y: 0
 #  max-y: 200
 #  restrict-to-worlds:
@@ -42,6 +45,7 @@ biome-groups:
 #      restrict-to-worlds:
 #        - "world"
 #      max-y: 255
+#      needs-sky: false
 #    TestGroup:
 #      restrict-to-worlds:
 #        - "world_nether"
@@ -104,8 +108,3 @@ restrict-plugin-to-worlds:
   #Individual permission: plantnerfer.bonemealrate
 global-bone-meal-rate-reporting: false
   #Permission to disable individual bone meal rate reporting when the global setting is true: plantnerfer.bonemealrate.disabled
-
-#Toggle whether everyone can use buckets to transport source blocks.
-  #Individual permission: plantnerfer.bucket
-global-water-bucket-has-source-block: true
-  #Permission to disable individual water bucket source block usage when the global setting is true: plantnerfer.bucket.disabled

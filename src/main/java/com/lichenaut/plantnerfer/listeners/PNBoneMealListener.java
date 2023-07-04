@@ -8,15 +8,14 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockFertilizeEvent;
 
+public class PNBoneMealListener extends PNListenerUtil implements Listener {
 
-public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
-
-    public PNBlockPlaceListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
+    public PNBoneMealListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
 
     @EventHandler
-    public void onPlantPlace(BlockPlaceEvent e) {
+    public void onBoneMealUse(BlockFertilizeEvent e) {
         Block block = e.getBlock();
         if (loader.getPbRef().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
@@ -29,9 +28,9 @@ public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
 
         if (notIgnoreLightWhenNight(block, plant) || block.getRelative(0, 1, 0).getLightLevel() > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
-        int y = block.getY();
-        if (y < plant.getMinY(biome) || y > plant.getMaxY(biome)) {e.setCancelled(true);return;}
+        int lightLevel = block.getRelative(0, 1,0 ).getLightLevel();
 
-        if (!plant.isValidWorldAndBiome(biome, worldName)) e.setCancelled(true);
+        if (lightLevel < 8) {if (!chance(plant.getDarkBoneMealRate(biome))) e.setCancelled(true);
+        } else if (!chance(plant.getBoneMealRate(biome))) e.setCancelled(true);
     }
 }
