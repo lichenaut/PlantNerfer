@@ -7,11 +7,11 @@ disable-plugin: false
 ##############
 
 biome-groups:
-  TestGroup:
-    - "minecraft:plains"
-    - "minecraft:savanna"
-  second-group:
-    - "minecraft:forest"
+#  TestGroup:
+#    - "PLAINS"
+#    - "SAVANNA"
+#  second-group:
+#    - "FOREST"
 
 
 #############
@@ -19,6 +19,33 @@ biome-groups:
 #############
 
 #Note: different plants have different numbers of growth stages, which means the same percentage rate can affect some plants more than others.
+#Note 2: 'dark' light levels are between and including 0 and 7.
+
+#Example:
+#oak-sapling:
+#  growth-rate: 50
+#  death-rate: 10
+#  growth-rate-dark: 40
+#  death-rate-dark: 20
+#  bone-meal-success-rate: 25
+#  min-light: 9
+#  max-light: 15
+#  min-y: 0
+#  max-y: 200
+#  restrict-to-worlds:
+#    - "world"
+#    - "world_nether"
+#  biome-groups:
+#    second-group:
+#      growth-rate: 100
+#      bone-meal-success-rate: 100
+#      restrict-to-worlds:
+#        - "world"
+#      max-y: 255
+#    TestGroup:
+#      restrict-to-worlds:
+#        - "world_nether"
+
 
 oak-sapling:
 dark-oak-sapling:
@@ -31,6 +58,8 @@ melon-seeds:
 pumpkin-seeds:
 wheat-seeds:
 beetroot-seeds:
+torchflower-seeds:
+pitcher-pod:
 cocoa-beans:
 sweet-berries:
 sugar-cane:
@@ -65,12 +94,13 @@ chorus-plant:
 ###############
 
 #If empty, PlantNerfer will affect all worlds.
+  #To disable the plugin completely, scroll to the top of this file and set disable-plugin to true.
 restrict-plugin-to-worlds:
-  - "world"
-  - "world_nether"
-  - "world_the_end"
+#  - "world"
+#  - "world_nether"
+#  - "world_the_end"
 
-#Toggle whether everyone can click a plant and see its bone meal success rate.
+#Toggle whether everyone can right-click a plant and see its bone meal success rate.
   #Individual permission: plantnerfer.bonemealrate
 global-bone-meal-rate-reporting: false
   #Permission to disable individual bone meal rate reporting when the global setting is true: plantnerfer.bonemealrate.disabled

@@ -19,9 +19,8 @@ public final class PlantNerfer extends JavaPlugin {
     private final PlantNerfer plugin = this;
     private final Logger log = getLogger();
     private final Configuration config = getConfig();
-    private int version;
-    private TreeMap<String, HashSet<Biome>> biomeGroups;
-    private HashMap<Material, PNPlant> plants = new HashMap<>();
+    private final TreeMap<String, HashSet<Biome>> biomeGroups = new TreeMap<>();//preserve order in anything biome group-related so that results are consistent
+    private final HashMap<Material, PNPlant> plants = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -36,23 +35,24 @@ public final class PlantNerfer extends JavaPlugin {
             //new PNUpdateChecker(this, plugin).getVersion(version -> {if (!this.getDescription().getVersion().equals(version)) {getLog().info("Update available.");}});
 
             String sVersion = Bukkit.getServer().getBukkitVersion();
-            version = Integer.parseInt(sVersion.split("-")[0].split(Pattern.quote("."))[1]);
+            int version = Integer.parseInt(sVersion.split("-")[0].split(Pattern.quote("."))[1]);
 
             if (version >= 13) {
-                for (String group : config.getConfigurationSection("biome-groups").getKeys(false)) {//for each biome group, add a HashSet of biome strings to biomeGroups
-                    HashSet<Biome> biomes = new HashSet<>();
-                    for (String biome : config.getConfigurationSection("biome-groups").getConfigurationSection(group).getKeys(false)) biomes.add(Biome.valueOf(biome));
-                    biomeGroups.put(group, biomes);
+                if (config.getConfigurationSection("biome-groups") != null) {
+                    for (String group : config.getConfigurationSection("biome-groups").getKeys(false)) {//for each biome group, add a HashSet of biome strings to biomeGroups
+                        HashSet<Biome> biomes = new HashSet<>();
+                        for (String biome : config.getConfigurationSection("biome-groups").getConfigurationSection(group).getKeys(false)) biomes.add(Biome.valueOf(biome));
+                        biomeGroups.put(group, biomes);
+                    }
                 }
 
-                new PNPlantLoader(plugin).loadPlants();
+                new PNPlantLoader(plugin).loadPlants(version);
             } else log.severe("Unsupported version detected: " + sVersion + "! Disabling plugin.");
         }
     }
 
-    public Logger getLog() {return log;}
     public Configuration getPluginConfig() {return config;}
-    public int getVersion() {return version;}
     public TreeMap<String, HashSet<Biome>> getBiomeGroups() {return biomeGroups;}
     public void addPlant(PNPlant plant) {plants.put(plant.getMaterial(), plant);}
+    public PNPlant getPlant(Material material) {return plants.get(material);}
 }

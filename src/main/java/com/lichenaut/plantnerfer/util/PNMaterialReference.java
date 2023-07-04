@@ -3,10 +3,13 @@ package com.lichenaut.plantnerfer.util;
 import org.bukkit.Material;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class PNMaterialReference {
 
     HashMap<String, Material> matMap = new HashMap<>();
+
+    HashSet<Material> plantBlocks = new HashSet<>();
 
     public void buildMatMap13() {
         matMap.put("oak-sapling", Material.OAK_SAPLING);
@@ -61,5 +64,66 @@ public class PNMaterialReference {
         matMap.put("moss-block", Material.getMaterial("MOSS_BLOCK"));
     }
 
+    public void buildMatMap20() {
+        buildMatMap17();
+        matMap.put("torchflower-seeds", Material.getMaterial("TORCHFLOWER_SEEDS"));
+        matMap.put("pitcher-pod", Material.getMaterial("PITCHER_POD"));
+    }
+
+    public void buildPlantBlocks13() {
+        plantBlocks.add(Material.OAK_SAPLING);
+        plantBlocks.add(Material.DARK_OAK_SAPLING);
+        plantBlocks.add(Material.SPRUCE_SAPLING);
+        plantBlocks.add(Material.BIRCH_SAPLING);
+        plantBlocks.add(Material.JUNGLE_SAPLING);
+        plantBlocks.add(Material.ACACIA_SAPLING);
+        plantBlocks.add(Material.MELON_STEM);
+        plantBlocks.add(Material.PUMPKIN_STEM);
+        plantBlocks.add(Material.SUGAR_CANE);
+        plantBlocks.add(Material.KELP);
+        plantBlocks.add(Material.SEAGRASS);
+        plantBlocks.add(Material.VINE);
+        plantBlocks.add(Material.LILY_PAD);
+        plantBlocks.add(Material.CARROT);
+        plantBlocks.add(Material.POTATO);
+        plantBlocks.add(Material.BEETROOT);
+        plantBlocks.add(Material.WHEAT);
+        plantBlocks.add(Material.CACTUS);
+        plantBlocks.add(Material.COCOA);
+        plantBlocks.add(Material.BROWN_MUSHROOM);
+        plantBlocks.add(Material.RED_MUSHROOM);
+        plantBlocks.add(Material.NETHER_WART);
+        plantBlocks.add(Material.CHORUS_PLANT);
+    }
+
+    public void buildPlantBlocks14() {
+        buildPlantBlocks13();
+        plantBlocks.add(Material.getMaterial("BAMBOO"));
+        plantBlocks.add(Material.getMaterial("BAMBOO_SAPLING"));
+        plantBlocks.add(Material.getMaterial("SWEET_BERRY_BUSH"));
+    }
+
+    public void buildPlantBlocks16() {
+        buildPlantBlocks14();
+        plantBlocks.add(Material.getMaterial("TWISTING_VINES"));
+        plantBlocks.add(Material.getMaterial("WEEPING_VINES"));
+        plantBlocks.add(Material.getMaterial("CRIMSON_FUNGUS"));
+        plantBlocks.add(Material.getMaterial("WARPED_FUNGUS"));
+    }
+
+    public void buildPlantBlocks17() {
+        buildPlantBlocks16();
+        plantBlocks.add(Material.getMaterial("MOSS_CARPET"));
+        plantBlocks.add(Material.getMaterial("MOSS_BLOCK"));
+    }
+
+    public void buildPlantBlocks20() {
+        buildPlantBlocks17();
+        plantBlocks.add(Material.getMaterial("TORCHFLOWER_CROP"));
+        plantBlocks.add(Material.getMaterial("PITCHER_CROP"));
+    }
+
     public Material getMaterial(String name) {return matMap.get(name);}
+
+    public boolean isNotPlantBlock(Material mat) {return !plantBlocks.contains(mat);}
 }

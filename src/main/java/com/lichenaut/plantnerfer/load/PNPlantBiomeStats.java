@@ -1,10 +1,8 @@
 package com.lichenaut.plantnerfer.load;
 
-import org.bukkit.block.Biome;
-
 import java.util.HashSet;
 
-public class PNPlantBiomeGroupStats {
+public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
 
     private final int growthRate;
     private final int deathRate;
@@ -16,9 +14,8 @@ public class PNPlantBiomeGroupStats {
     private final int minY;
     private final int maxY;
     private final HashSet<String> worlds;
-    private final HashSet<Biome> biomes;
 
-    public PNPlantBiomeGroupStats(int growthRate, int darkGrowthRate, int deathRate, int darkDeathRate, int boneMealRate, int minLight, int maxLight, int minY, int maxY, HashSet<String> restrictToWorlds, HashSet<Biome> biomes) {
+    public PNPlantBiomeStats(int growthRate, int darkGrowthRate, int deathRate, int darkDeathRate, int boneMealRate, int minLight, int maxLight, int minY, int maxY, HashSet<String> restrictToWorlds) {
         this.growthRate = growthRate;
         this.deathRate = deathRate;
         this.darkGrowthRate = darkGrowthRate;
@@ -29,7 +26,6 @@ public class PNPlantBiomeGroupStats {
         this.minY = minY;
         this.maxY = maxY;
         this.worlds = restrictToWorlds;
-        this.biomes = biomes;
     }
 
     public int getGrowthRate() {return growthRate;}
@@ -42,5 +38,4 @@ public class PNPlantBiomeGroupStats {
     public int getMinY() {return minY;}
     public int getMaxY() {return maxY;}
     public HashSet<String> getWorlds() {return worlds;}
-    public HashSet<Biome> getBiomes() {return biomes;}
 }

@@ -1,6 +1,9 @@
 package com.lichenaut.plantnerfer.load;
 
 import com.lichenaut.plantnerfer.PlantNerfer;
+import com.lichenaut.plantnerfer.listeners.PNBlockGrowListener;
+import com.lichenaut.plantnerfer.listeners.PNBlockPlaceListener;
+import com.lichenaut.plantnerfer.listeners.PNInteractListener;
 import com.lichenaut.plantnerfer.util.PNMaterialReference;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
@@ -14,6 +17,7 @@ public class PNPlantLoader {
 
     private final PlantNerfer plugin;
     private final PNMaterialReference matRef = new PNMaterialReference();
+    private final PNMaterialReference pbRef = new PNMaterialReference();
 
     public PNPlantLoader(PlantNerfer plugin) {this.plugin = plugin;}
 
@@ -28,11 +32,11 @@ public class PNPlantLoader {
         int minY = 0;
         int maxY = 255;
         HashSet<String> restrictToWorlds = new HashSet<>();
-        TreeMap<Biome, PNPlantBiomeGroupStats> biomeStats = new TreeMap<>();
+        TreeMap<Biome, PNPlantBiomeStats> biomeStats = new TreeMap<>();
 
         ConfigurationSection plantSection = plugin.getPluginConfig().getConfigurationSection(plantName);
         if (plantSection != null) {
-            for (String key : plantSection.getKeys(false)) {
+            for (String key : plantSection.getKeys(false)) {//set biome-less data
                 if (key.equals("growth-rate")) {
                     growthRate = plantSection.getInt(key);
                 } else if (key.equals("growth-rate-dark")) {
@@ -54,79 +58,96 @@ public class PNPlantLoader {
                 } else if (key.equals("restrict-to-worlds")) {
                     restrictToWorlds = new HashSet<>(plantSection.getStringList(key));
                 } else if (key.equals("biome-groups")) {
-                    for (String group : plantSection.getConfigurationSection(key).getKeys(false)) {
-                        if (!plugin.getBiomeGroups().containsKey(group)) {plugin.getLogger().warning("Biome group '" + group + "' does not exist!");return;}
+                    if (plantSection.getConfigurationSection(key) != null) {
+                        for (String group : plantSection.getConfigurationSection(key).getKeys(false)) {//for each biome group, create an object for each biome in this group
+                            if (!plugin.getBiomeGroups().containsKey(group)) {plugin.getLogger().warning("Biome group '" + group + "' does not exist!");return;}
 
-                        int growthRateGroup = 100;
-                        int growthRateDarkGroup = 100;
-                        int deathRateGroup = 0;
-                        int deathRateDarkGroup = 0;
-                        int boneMealSuccessRateGroup = 100;
-                        int minLightGroup = 0;
-                        int maxLightGroup = 15;
-                        int minYGroup = 0;
-                        int maxYGroup = 255;
-                        HashSet<String> restrictToWorldsGroup = new HashSet<>();
-                        HashSet<Biome> biomes = plugin.getBiomeGroups().get(group);
+                            int growthRateGroup = 100;
+                            int growthRateDarkGroup = 100;
+                            int deathRateGroup = 0;
+                            int deathRateDarkGroup = 0;
+                            int boneMealSuccessRateGroup = 100;
+                            int minLightGroup = 0;
+                            int maxLightGroup = 15;
+                            int minYGroup = 0;
+                            int maxYGroup = 255;
+                            HashSet<String> restrictToWorldsGroup = new HashSet<>();
 
-                        ConfigurationSection groupSection = plantSection.getConfigurationSection(key).getConfigurationSection(group);
-                        for (String groupKey : groupSection.getKeys(false)) {
-                            if (groupKey.equals("growth-rate")) {
-                                growthRateGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("growth-rate-dark")) {
-                                growthRateDarkGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("death-rate")) {
-                                deathRateGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("death-rate-dark")) {
-                                deathRateDarkGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("bone-meal-success-rate")) {
-                                boneMealSuccessRateGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("min-light")) {
-                                minLightGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("max-light")) {
-                                maxLightGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("min-y")) {
-                                minYGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("max-y")) {
-                                maxYGroup = groupSection.getInt(groupKey);
-                            } else if (groupKey.equals("restrict-to-worlds")) {
-                                restrictToWorldsGroup = new HashSet<>(groupSection.getStringList(groupKey));
+                            ConfigurationSection groupSection = plantSection.getConfigurationSection(key).getConfigurationSection(group);
+                            if (groupSection != null) {
+                                for (String groupKey : groupSection.getKeys(false)) {//change biome group data away from defaults to config info
+                                    if (groupKey.equals("growth-rate")) {
+                                        growthRateGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("growth-rate-dark")) {
+                                        growthRateDarkGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("death-rate")) {
+                                        deathRateGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("death-rate-dark")) {
+                                        deathRateDarkGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("bone-meal-success-rate")) {
+                                        boneMealSuccessRateGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("min-light")) {
+                                        minLightGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("max-light")) {
+                                        maxLightGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("min-y")) {
+                                        minYGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("max-y")) {
+                                        maxYGroup = groupSection.getInt(groupKey);
+                                    } else if (groupKey.equals("restrict-to-worlds")) {
+                                        restrictToWorldsGroup = new HashSet<>(groupSection.getStringList(groupKey));
+                                    }
+                                }
                             }
+
+                            for (Biome biome : plugin.getBiomeGroups().get(group)) biomeStats.put(biome, new PNPlantBiomeStats(growthRateGroup, growthRateDarkGroup, deathRateGroup, deathRateDarkGroup, boneMealSuccessRateGroup, minLightGroup, maxLightGroup, minYGroup, maxYGroup, restrictToWorldsGroup));//add biome-plant data to biomeStats
                         }
-                        biomeStats.put(Biome.valueOf(group), new PNPlantBiomeGroupStats(growthRateGroup, growthRateDarkGroup, deathRateGroup, deathRateDarkGroup, boneMealSuccessRateGroup, minLightGroup, maxLightGroup, minYGroup, maxYGroup, restrictToWorldsGroup, biomes));
                     }
                 }
             }
         }
-        plugin.addPlant(new PNPlant(matRef.getMaterial(plantName), growthRate, growthRateDark, deathRate, deathRateDark, boneMealSuccessRate, minLight, maxLight, minY, maxY, restrictToWorlds, biomeStats));
+
+        plugin.addPlant(new PNPlant(plugin, matRef.getMaterial(plantName), growthRate, growthRateDark, deathRate, deathRateDark, boneMealSuccessRate, minLight, maxLight, minY, maxY, restrictToWorlds, biomeStats));
     }
 
-    public void loadPlants() {
-        int version = plugin.getVersion();
+    public void loadPlants(int version) {
         HashSet<String> matRefs = new HashSet<>();//does not add lower version material references if one has already been added
+        HashSet<String> pbRefs = new HashSet<>();//does not add lower version plant block references if one has already been added
+
+        PluginManager pMan = Bukkit.getPluginManager();
+        pMan.registerEvents(new PNBlockGrowListener(plugin, this), plugin);
+        pMan.registerEvents(new PNBlockPlaceListener(plugin, this), plugin);
+        pMan.registerEvents(new PNInteractListener(plugin, this), plugin);
+
         for (int i = version; i > 0; i--) {
             if (i == 20) {
+                if (matRefs.add("refs")) matRef.buildMatMap20();
+                if (pbRefs.add("pbRefs")) pbRef.buildPlantBlocks20();
             /*} else if (i == 19) {
             } else if (i == 18) {*/
             } else if (i == 17) {
-                if (matRefs.add("ref")) matRef.buildMatMap17();
+                if (matRefs.add("refs")) matRef.buildMatMap17();
+                if (pbRefs.add("pbRefs")) pbRef.buildPlantBlocks17();
                 loadPlant("moss-carpet");
                 loadPlant("moss-block");
             } else if (i == 16) {
-                if (matRefs.add("ref")) matRef.buildMatMap16();
+                if (matRefs.add("refs")) matRef.buildMatMap16();
+                if (pbRefs.add("pbRefs")) pbRef.buildPlantBlocks16();
                 loadPlant("twisting-vines");
                 loadPlant("weeping-vines");
                 loadPlant("crimson-fungus");
                 loadPlant("warped-fungus");
             //} else if (i == 15) {
             } else if (i == 14) {
-                if (matRefs.add("ref")) matRef.buildMatMap14();
+                if (matRefs.add("refs")) matRef.buildMatMap14();
+                if (pbRefs.add("pbRefs")) pbRef.buildPlantBlocks14();
                 loadPlant("bamboo");
                 loadPlant("bamboo-sapling");
                 loadPlant("sweet-berries");
                 loadPlant("sweet-berry-bush");
             } else if (i == 13) {
-                if (matRefs.add("ref")) matRef.buildMatMap13();
+                if (matRefs.add("refs")) matRef.buildMatMap13();
+                if (pbRefs.add("pbRefs")) pbRef.buildPlantBlocks13();
                 loadPlant("oak-sapling");
                 loadPlant("dark-oak-sapling");
                 loadPlant("spruce-sapling");
@@ -159,4 +180,6 @@ public class PNPlantLoader {
             }
         }
     }
+
+    public PNMaterialReference getPbRef() {return pbRef;}
 }
