@@ -2,6 +2,8 @@ package com.lichenaut.plantnerfer;
 
 import com.lichenaut.plantnerfer.load.PNPlant;
 import com.lichenaut.plantnerfer.load.PNPlantLoader;
+import com.lichenaut.plantnerfer.util.PNUpdateChecker;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -27,12 +29,12 @@ public final class PlantNerfer extends JavaPlugin {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
-        //int pluginId = ?????;
-        //Metrics metrics = new Metrics(plugin, pluginId);
+        int pluginId = 18989;
+        Metrics metrics = new Metrics(plugin, pluginId);
 
         if (config.getBoolean("disable-plugin")) log.info("Plugin disabled in config.yml.");
         else {
-            //new PNUpdateChecker(this, plugin).getVersion(version -> {if (!this.getDescription().getVersion().equals(version)) {getLog().info("Update available.");}});
+            new PNUpdateChecker(this, plugin).getVersion(version -> {if (!this.getDescription().getVersion().equals(version)) {getLog().info("Update available.");}});
 
             String sVersion = Bukkit.getServer().getBukkitVersion();
             int version = Integer.parseInt(sVersion.split("-")[0].split(Pattern.quote("."))[1]);
@@ -51,6 +53,7 @@ public final class PlantNerfer extends JavaPlugin {
         }
     }
 
+    public Logger getLog() {return log;}
     public Configuration getPluginConfig() {return config;}
     public TreeMap<String, HashSet<Biome>> getBiomeGroups() {return biomeGroups;}
     public void addPlant(PNPlant plant) {plants.put(plant.getMaterial(), plant);}
