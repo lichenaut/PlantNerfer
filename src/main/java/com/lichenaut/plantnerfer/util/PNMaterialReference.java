@@ -3,13 +3,10 @@ package com.lichenaut.plantnerfer.util;
 import org.bukkit.Material;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class PNMaterialReference {
 
     HashMap<String, Material> matMap = new HashMap<>();
-
-    HashSet<Material> plantBlocks = new HashSet<>();
 
     public void buildMatMap13() {
         matMap.put("oak-sapling", Material.OAK_SAPLING);
@@ -31,6 +28,7 @@ public class PNMaterialReference {
         matMap.put("tall-grass", Material.TALL_GRASS);
         matMap.put("grass-block", Material.GRASS_BLOCK);
         matMap.put("fern", Material.FERN);
+        matMap.put("large-fern", Material.LARGE_FERN);
         matMap.put("vine", Material.VINE);
         matMap.put("lily-pad", Material.LILY_PAD);
         matMap.put("melon", Material.MELON);
@@ -87,7 +85,6 @@ public class PNMaterialReference {
         matMap.put("big-dripleaf", Material.getMaterial("BIG_DRIPLEAF"));
         matMap.put("small-dripleaf", Material.getMaterial("SMALL_DRIPLEAF"));
         matMap.put("rooted-dirt", Material.getMaterial("ROOTED_DIRT"));
-
         buildMatMap16();
     }
 
@@ -102,13 +99,12 @@ public class PNMaterialReference {
         matMap.put("pink-petals", Material.getMaterial("PINK_PETALS"));
         matMap.put("torchflower-seeds", Material.getMaterial("TORCHFLOWER_SEEDS"));
         matMap.put("pitcher-pod", Material.getMaterial("PITCHER_POD"));
-        plantBlocks.add(Material.getMaterial("TORCHFLOWER_CROP"));
-        plantBlocks.add(Material.getMaterial("PITCHER_CROP"));
+        matMap.put("torchflower-crop", Material.getMaterial("TORCHFLOWER_CROP"));
+        matMap.put("pitcher-crop", Material.getMaterial("PITCHER_CROP"));
         buildMatMap19();
     }
 
     public HashMap<String, Material> getMatMap() {return matMap;}
     public Material getMaterial(String name) {return matMap.get(name);}
-
     public boolean isNotPlantBlock(Material material) {return !matMap.containsValue(material);}
 }
