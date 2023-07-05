@@ -9,7 +9,7 @@ PlantNerfer allows for very configurable plant behavior, versions 1.13+.
 
 #### Biome Group Section
 
->biome-groups: <br>
+>biome-group-list: <br>
 &nbsp;&nbsp;TestGroup: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;- "PLAINS" <br>
 &nbsp;&nbsp;&nbsp;&nbsp;- "SAVANNA" <br>
@@ -21,6 +21,7 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 #### Plant Section
 
 >oak-sapling: <br>
+&nbsp;&nbsp;can-place: true <br>
 &nbsp;&nbsp;growth-rate: 25 <br>
 &nbsp;&nbsp;death-rate: 10 <br>
 &nbsp;&nbsp;growth-rate-dark: 15 <br>
@@ -46,10 +47,17 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max-y: 255 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;needs-sky: false <br>
 &nbsp;&nbsp;&nbsp;&nbsp;TestGroup: <br>
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can-place: false <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restrict-to-worlds: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- "world_nether" <br>
 
-Oak saplings have poor growth rates normally, but in the biome group "second-group" they have a growth rate of 100. In the biome group "TestGroup", they can only be placed in The Nether. Not that a plains or savannah biome would be in The Nether, though!
+Oak saplings have poor growth rates normally, but in the biome group "second-group" they have a growth rate of 100. In the biome group "TestGroup", they can't be placed, ruling out its biomes.
+
+### Can Place
+
+> can-place: true/false
+
+Can the plant be placed (in this biome group)?
 
 ### Growth Rate
 
@@ -141,11 +149,12 @@ Note: 'dark' light levels are between and including 0 and 7.
 
 Note 2: different plants have different numbers of growth stages, which means the same growth rate can affect some plants more than others.
 
-Note 3: for a successful bone meal fertilization growth, the plant must go through both bone meal rate AND growth rate checks.
+Note 3: for a successful bone meal fertilization growth, the plant must go through bone meal rate, growth rate, and vanilla bone meal chance checks.
 
 Note 4: These are the defaults, for any values not defined by the user:
 
->growth-rate: 100 <br>
+>can-place: true <br>
+growth-rate: 100 <br>
 growth-rate-dark: 100 <br>
 death-rate: 0 <br>
 death-rate-dark: 0 <br>

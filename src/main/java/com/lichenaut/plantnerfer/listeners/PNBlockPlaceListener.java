@@ -25,6 +25,7 @@ public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
         if (plant == null) {return;}
 
         Biome biome = block.getBiome();
+        if (!plant.getCanPlace(biome)) {e.setCancelled(true);return;}
         if (plant.getNeedsSky(biome) && block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {e.setCancelled(true);return;}
 
         if (notIgnoreLightWhenNight(block, plant) || block.getRelative(0, 1, 0).getLightLevel() > plant.getMaxLight(biome)) {e.setCancelled(true);return;}

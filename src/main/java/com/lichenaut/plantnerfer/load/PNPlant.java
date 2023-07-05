@@ -12,6 +12,7 @@ public class PNPlant {
 
     private final PlantNerfer plugin;
     private final Material material;
+    private final boolean canPlace;
     private final int growthRate;
     private final int deathRate;
     private final int darkGrowthRate;
@@ -27,9 +28,10 @@ public class PNPlant {
     private final HashSet<String> restrictToWorlds;
     private final TreeMap<Biome, PNPlantBiomeStats> biomeStats;
 
-    public PNPlant(PlantNerfer plugin, Material material, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
+    public PNPlant(PlantNerfer plugin, Material material, boolean canPlace, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
         this.plugin = plugin;
         this.material = material;
+        this.canPlace = canPlace;
         this.growthRate = growthRate;
         this.deathRate = deathRate;
         this.darkGrowthRate = darkGrowthRate;
@@ -47,6 +49,10 @@ public class PNPlant {
     }
 
     public Material getMaterial() {return material;}
+    public boolean getCanPlace(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getCanPlace();
+        return canPlace;
+    }
     public int getGrowthRate(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getGrowthRate();
         return growthRate;

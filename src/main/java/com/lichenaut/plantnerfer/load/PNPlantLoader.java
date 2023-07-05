@@ -23,6 +23,7 @@ public class PNPlantLoader {
     public PNPlantLoader(PlantNerfer plugin) {this.plugin = plugin;}
 
     private void loadPlant(String plantName) {
+        boolean canPlace = true;
         int growthRate = 100;
         int growthRateDark = 100;
         int deathRate = 0;
@@ -41,7 +42,9 @@ public class PNPlantLoader {
         ConfigurationSection plantSection = plugin.getPluginConfig().getConfigurationSection(plantName);
         if (plantSection != null) {
             for (String key : plantSection.getKeys(false)) {//set biome-less data
-                if (key.equals("growth-rate")) {
+                if (key.equals("can-place")) {
+                    canPlace = plantSection.getBoolean(key);
+                } else if (key.equals("growth-rate")) {
                     growthRate = plantSection.getInt(key);
                 } else if (key.equals("growth-rate-dark")) {
                     growthRateDark = plantSection.getInt(key);
@@ -72,6 +75,7 @@ public class PNPlantLoader {
                         for (String group : plantSection.getConfigurationSection(key).getKeys(false)) {//for each biome group, create an object for each biome in this group
                             if (!plugin.getBiomeGroups().containsKey(group)) {plugin.getLogger().warning("Biome group '" + group + "' does not exist!");return;}
 
+                            boolean canPlaceGroup = true;
                             int growthRateGroup = 100;
                             int growthRateDarkGroup = 100;
                             int deathRateGroup = 0;
@@ -89,7 +93,9 @@ public class PNPlantLoader {
                             ConfigurationSection groupSection = plantSection.getConfigurationSection(key).getConfigurationSection(group);
                             if (groupSection != null) {
                                 for (String groupKey : groupSection.getKeys(false)) {//change biome group data away from defaults to config info
-                                    if (groupKey.equals("growth-rate")) {
+                                    if (groupKey.equals("can-place")) {
+                                        canPlaceGroup = groupSection.getBoolean(groupKey);
+                                    } else if (groupKey.equals("growth-rate")) {
                                         growthRateGroup = groupSection.getInt(groupKey);
                                     } else if (groupKey.equals("growth-rate-dark")) {
                                         growthRateDarkGroup = groupSection.getInt(groupKey);
@@ -119,14 +125,14 @@ public class PNPlantLoader {
                                 }
                             }
 
-                            for (Biome biome : plugin.getBiomeGroups().get(group)) biomeStats.put(biome, new PNPlantBiomeStats(growthRateGroup, growthRateDarkGroup, deathRateGroup, deathRateDarkGroup, boneMealSuccessRateGroup, boneMealSuccessRateDarkGroup, minLightGroup, maxLightGroup, ignoreLightWhenNightGroup, needsSkyGroup, minYGroup, maxYGroup, restrictToWorldsGroup));//add biome-plant data to biomeStats
+                            for (Biome biome : plugin.getBiomeGroups().get(group)) biomeStats.put(biome, new PNPlantBiomeStats(canPlaceGroup, growthRateGroup, growthRateDarkGroup, deathRateGroup, deathRateDarkGroup, boneMealSuccessRateGroup, boneMealSuccessRateDarkGroup, minLightGroup, maxLightGroup, ignoreLightWhenNightGroup, needsSkyGroup, minYGroup, maxYGroup, restrictToWorldsGroup));//add biome-plant data to biomeStats
                         }
                     }
                 }
             }
         }
 
-        plugin.addPlant(new PNPlant(plugin, matRef.getMaterial(plantName), growthRate, growthRateDark, deathRate, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, minLight, maxLight, ignoreLightWhenNight, needsSky, minY, maxY, restrictToWorlds, biomeStats));
+        plugin.addPlant(new PNPlant(plugin, matRef.getMaterial(plantName), canPlace, growthRate, growthRateDark, deathRate, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, minLight, maxLight, ignoreLightWhenNight, needsSky, minY, maxY, restrictToWorlds, biomeStats));
     }
 
     public void loadPlants(int version) {

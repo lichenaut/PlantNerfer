@@ -38,10 +38,10 @@ public final class PlantNerfer extends JavaPlugin {
             int version = Integer.parseInt(sVersion.split("-")[0].split(Pattern.quote("."))[1]);
 
             if (version >= 13) {
-                if (config.getConfigurationSection("biome-groups") != null) {
-                    for (String group : config.getConfigurationSection("biome-groups").getKeys(false)) {//for each biome group, add a HashSet of biome strings to biomeGroups
+                if (config.getConfigurationSection("biome-group-list") != null) {
+                    for (String group : config.getConfigurationSection("biome-group-list").getKeys(false)) {//for each biome group, add a HashSet of biome strings to biomeGroups
                         HashSet<Biome> biomes = new HashSet<>();
-                        if (config.getConfigurationSection("biome-groups").getConfigurationSection(group) != null) for (String biome : config.getConfigurationSection("biome-groups").getConfigurationSection(group).getKeys(false)) biomes.add(Biome.valueOf(biome));
+                        for (String biome : config.getConfigurationSection("biome-group-list").getStringList(group)) biomes.add(Biome.valueOf(biome));
                         biomeGroups.put(group, biomes);
                     }
                 }

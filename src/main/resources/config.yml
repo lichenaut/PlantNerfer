@@ -6,7 +6,7 @@ disable-plugin: false
 #Biome Groups#
 ##############
 
-biome-groups:
+biome-group-list:
 #  TestGroup:
 #    - "PLAINS"
 #    - "SAVANNA"
@@ -20,10 +20,12 @@ biome-groups:
 
 #Note: 'dark' light levels are between and including 0 and 7.
 #Note 2: different plants have different numbers of growth stages, which means the same growth rate can affect some plants more than others.
-#Note 3: for a successful bone meal fertilization growth, the plant must go through both bone meal rate AND growth rate checks.
+#Note 3: for a successful bone meal fertilization growth, the plant must go through bone meal rate, growth rate, and vanilla bone meal chance checks.
+#Nore 4: to see the default values, visit the documentation page: https://github.com/lichenaut/PlantNerfer
 
 #Example:
 #oak-sapling:
+#  can-place: true
 #  growth-rate: 25
 #  death-rate: 10
 #  growth-rate-dark: 15
@@ -49,6 +51,7 @@ biome-groups:
 #      max-y: 255
 #      needs-sky: false
 #    TestGroup:
+#      can-place: false
 #      restrict-to-worlds:
 #        - "world_nether"
 

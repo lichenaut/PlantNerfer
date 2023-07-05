@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
 
+    private final boolean canPlace;
     private final int growthRate;
     private final int deathRate;
     private final int darkGrowthRate;
@@ -18,7 +19,8 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
     private final int maxY;
     private final HashSet<String> worlds;
 
-    public PNPlantBiomeStats(int growthRate, int darkGrowthRate, int deathRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int minY, int maxY, HashSet<String> restrictToWorlds) {
+    public PNPlantBiomeStats(boolean canPlace, int growthRate, int darkGrowthRate, int deathRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int minY, int maxY, HashSet<String> restrictToWorlds) {
+        this.canPlace = canPlace;
         this.growthRate = growthRate;
         this.deathRate = deathRate;
         this.darkGrowthRate = darkGrowthRate;
@@ -34,6 +36,7 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
         this.worlds = restrictToWorlds;
     }
 
+    public boolean getCanPlace() {return canPlace;}
     public int getGrowthRate() {return growthRate;}
     public int getDeathRate() {return deathRate;}
     public int getDarkGrowthRate() {return darkGrowthRate;}
