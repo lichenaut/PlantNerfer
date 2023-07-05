@@ -20,15 +20,16 @@ biome-groups:
 
 #Note: 'dark' light levels are between and including 0 and 7.
 #Note 2: different plants have different numbers of growth stages, which means the same growth rate can affect some plants more than others.
-#Note 3: for a successful bone meal fertilization, the plant must go through both bone meal rate AND growth rate checks.
+#Note 3: for a successful bone meal fertilization growth, the plant must go through both bone meal rate AND growth rate checks.
 
 #Example:
 #oak-sapling:
-#  growth-rate: 50
+#  growth-rate: 25
 #  death-rate: 10
-#  growth-rate-dark: 40
+#  growth-rate-dark: 15
 #  death-rate-dark: 20
 #  bone-meal-success-rate: 25
+#  bone-meal-success-rate-dark: 10
 #  min-light: 9
 #  max-light: 15
 #  place-and-bone-meal-ignores-min-light-at-night: true
@@ -42,6 +43,7 @@ biome-groups:
 #    second-group:
 #      growth-rate: 100
 #      bone-meal-success-rate: 100
+#      bone-meal-success-rate-dark: 100
 #      restrict-to-worlds:
 #        - "world"
 #      max-y: 255

@@ -133,7 +133,7 @@ public class PNPlantLoader {
         HashSet<String> matRefs = new HashSet<>();//does not add lower version material references if one has already been added
         HashSet<String> pbRefs = new HashSet<>();//does not add lower version plant block references if one has already been added
 
-        PluginManager pMan = Bukkit.getPluginManager();
+        PluginManager pMan = Bukkit.getPluginManager();//didn't include BlockPhysicsEvent for when crops get destroyed at low light levels (the vanilla mechanic) because it's a scary event to work with! it would not be worth the performance hit.
         pMan.registerEvents(new PNBlockGrowListener(plugin, this), plugin);
         pMan.registerEvents(new PNBlockPlaceListener(plugin, this), plugin);
         pMan.registerEvents(new PNBoneMealListener(plugin, this), plugin);
