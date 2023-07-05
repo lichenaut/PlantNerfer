@@ -29,7 +29,7 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
         this.darkBoneMealRate = darkBoneMealRate;
         this.minLight = minLight;
         this.maxLight = maxLight;
-        this.ignoreLightWhenNight = false;
+        this.ignoreLightWhenNight = ignoreLightWhenNight;
         this.needsSky = needsSky;
         this.minY = minY;
         this.maxY = maxY;

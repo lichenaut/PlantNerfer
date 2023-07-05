@@ -168,3 +168,5 @@ min-y: 0 <br>
 max-y: 255 <br>
 restrict-to-worlds: (empty, so any) <br>
 biome-groups: (empty) <br>
+
+Biome group settings will inherit default values from the plant settings, unless they are defined in the biome group settings.
