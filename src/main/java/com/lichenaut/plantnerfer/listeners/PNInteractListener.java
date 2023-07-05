@@ -4,6 +4,7 @@ import com.lichenaut.plantnerfer.PlantNerfer;
 import com.lichenaut.plantnerfer.load.PNPlant;
 import com.lichenaut.plantnerfer.load.PNPlantLoader;
 import com.lichenaut.plantnerfer.util.PNListenerUtil;
+import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 public class PNInteractListener extends PNListenerUtil implements Listener {
 
@@ -19,9 +21,9 @@ public class PNInteractListener extends PNListenerUtil implements Listener {
 
     @EventHandler
     public void onPlantInteract(PlayerInteractEvent e) {
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getHand().equals(EquipmentSlot.OFF_HAND)) {return;}
+        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getHand().equals(EquipmentSlot.OFF_HAND) || e.getPlayer().getInventory().getItemInMainHand().isSimilar(new ItemStack(Material.BONE_MEAL)) || e.getPlayer().getInventory().getItemInOffHand().isSimilar(new ItemStack(Material.BONE_MEAL))) {return;}
         Block block = e.getClickedBlock();
-        if (block == null || loader.getPbRef().isNotPlantBlock(block.getType())) {return;}
+        if (block == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
         if (invalidWorld(worldName)) {return;}
         PNPlant plant = plugin.getPlant(block.getType());
