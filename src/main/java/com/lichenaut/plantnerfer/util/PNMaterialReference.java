@@ -31,8 +31,8 @@ public class PNMaterialReference {
         matMap.put("large-fern", Material.LARGE_FERN);
         matMap.put("vine", Material.VINE);
         matMap.put("lily-pad", Material.LILY_PAD);
-        matMap.put("melon", Material.MELON);
-        matMap.put("pumpkin", Material.PUMPKIN);
+        matMap.put("melon-stem", Material.MELON_STEM);
+        matMap.put("pumpkin-stem", Material.PUMPKIN_STEM);
         matMap.put("carrot", Material.CARROT);
         matMap.put("potato", Material.POTATO);
         matMap.put("beetroot", Material.BEETROOT);
