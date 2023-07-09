@@ -101,6 +101,11 @@ public class PNPlant {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getMaxY();
         return maxY;
     }
+    public String getBiomes() {//for verbose denial
+        StringBuilder biomes = new StringBuilder();
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) biomes.append(entry.getKey().toString()).append(", ");
+        return biomes.substring(0, biomes.length() - 2) + ".";
+    }
     public boolean isValidWorldAndBiome(Biome b, String worldName) {//does it have any biome groups that have both this biome and this world?
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) {
             if (entry.getKey().equals(b)) {

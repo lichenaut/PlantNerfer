@@ -4,6 +4,7 @@ import com.lichenaut.plantnerfer.PlantNerfer;
 import com.lichenaut.plantnerfer.load.PNPlant;
 import com.lichenaut.plantnerfer.load.PNPlantLoader;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class PNListenerUtil {
         protected final PNPlantLoader loader;
 
         public PNListenerUtil(PlantNerfer plugin, PNPlantLoader loader) {this.plugin = plugin;this.loader = loader;}
+
+        public void verboseDenial(String s, Player p) {if ((!plugin.getConfig().getBoolean("verbose-denial") && p.hasPermission("plantnerfer.verbose")) || (plugin.getConfig().getBoolean("verbose-denial") && !p.hasPermission("plantnerfer.verbose.disabled"))) {p.sendMessage(s);}}
 
         public boolean invalidWorld(String worldName) {
                 List<String> worlds = plugin.getConfig().getStringList("restrict-plugin-to-worlds");
