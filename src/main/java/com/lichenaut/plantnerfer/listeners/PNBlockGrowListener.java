@@ -54,6 +54,8 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         if (plant == null) {return;}
 
         Biome biome = block.getBiome();
+        if (plant.getNeedsSky(biome) && block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {e.setCancelled(true);return;}
+
         int lightLevel = block.getRelative(0, 1,0 ).getLightLevel();
         if (notIgnoreLightWhenNight(block, plant) || lightLevel > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
@@ -79,6 +81,8 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         if (plant == null) {return;}
 
         Biome biome = block.getBiome();
+        if (plant.getNeedsSky(biome) && block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {e.setCancelled(true);return;}
+
         int lightLevel = block.getRelative(0, 1,0 ).getLightLevel();
         if (notIgnoreLightWhenNight(block, plant) || lightLevel > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
@@ -93,5 +97,4 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         if (lightLevel < 8) {if (!chance(plant.getDarkGrowthRate(biome))) e.setCancelled(true);
         } else if (!chance(plant.getGrowthRate(biome))) e.setCancelled(true);
     }
-
 }
