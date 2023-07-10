@@ -15,15 +15,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
+
 public class PNInteractListener extends PNListenerUtil implements Listener {
 
     public PNInteractListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
 
     @EventHandler
     public void onPlantInteract(PlayerInteractEvent e) {
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getHand().equals(EquipmentSlot.OFF_HAND) || e.getPlayer().getInventory().getItemInMainHand().isSimilar(new ItemStack(Material.BONE_MEAL)) || e.getPlayer().getInventory().getItemInOffHand().isSimilar(new ItemStack(Material.BONE_MEAL))) {return;}
+        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || Objects.equals(e.getHand(), EquipmentSlot.OFF_HAND) || e.getPlayer().getInventory().getItemInMainHand().isSimilar(new ItemStack(Material.BONE_MEAL)) || e.getPlayer().getInventory().getItemInOffHand().isSimilar(new ItemStack(Material.BONE_MEAL))) {return;}
         Block block = e.getClickedBlock();
-        if (block == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
+        if (block == null || plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
         if (invalidWorld(worldName)) {return;}
         PNPlant plant = plugin.getPlant(block.getType());

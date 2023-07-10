@@ -32,6 +32,8 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 &nbsp;&nbsp;max-light: 15 <br>
 &nbsp;&nbsp;place-and-bone-meal-ignores-min-light-at-night: true <br>
 &nbsp;&nbsp;needs-sky: false <br>
+&nbsp;&nbsp;no-sky-growth-rate: 10 <br>
+&nbsp;&nbsp;no-sky-death-rate: 25 <br>
 &nbsp;&nbsp;min-y: 0 <br>
 &nbsp;&nbsp;max-y: 200 <br>
 &nbsp;&nbsp;restrict-to-worlds: <br>
@@ -46,12 +48,14 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- "world" <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max-y: 255 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;needs-sky: false <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no-sky-growth-rate: 100 <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no-sky-death-rate: 0 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;TestGroup: <br>
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can-place: false <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can-place: false <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restrict-to-worlds: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- "world_nether" <br>
 
-Oak saplings have poor growth rates normally, but in the biome group "second-group" they have a growth rate of 100. In the biome group "TestGroup", they can't be placed, ruling out its biomes.
+Oak saplings have poor rates normally, but in the biome group "second-group" they have an overall growth rate of 100. In the biome group "TestGroup", they can't be placed, ruling out its biomes.
 
 ### Can Place
 
@@ -119,6 +123,18 @@ If true, the plant can be placed and bone meal-ed at any light level at night.
 
 If true, the plant can only be placed, grown, and bone meal-ed if there are no blocks above it.
 
+### No Sky Growth Rate
+
+> no-sky-growth-rate: #
+
+Similar to growth-rate, but applies to plants with no sky above them. Does not replace growth-rate, instead adds another chance for the plant to not grow.
+
+### No Sky Death Rate
+
+> no-sky-death-rate: #
+
+Similar to death-rate, but applies to plants with no sky above them. Does not replace death-rate, instead adds another chance for the plant to die.
+
 ### Minimum Y
 
 > min-y: #
@@ -164,9 +180,13 @@ min-light: 0 <br>
 max-light: 15 <br>
 place-and-bone-meal-ignores-min-light-at-night: true <br>
 needs-sky: false <br>
+no-sky-growth-rate: 100 <br>
+no-sky-death-rate: 0 <br>
 min-y: 0 <br>
 max-y: 255 <br>
 restrict-to-worlds: (empty, so any) <br>
 biome-groups: (empty) <br>
+
+Plants with completely empty config information will use vanilla mechanics.
 
 Biome group settings will inherit default values from the plant settings, unless they are defined in the biome group settings.

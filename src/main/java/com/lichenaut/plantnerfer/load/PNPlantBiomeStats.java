@@ -15,11 +15,13 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
     private final int maxLight;
     private final boolean ignoreLightWhenNight;
     private final boolean needsSky;
+    private final int noSkyGrowthRate;
+    private final int noSkyDeathRate;
     private final int minY;
     private final int maxY;
     private final HashSet<String> worlds;
 
-    public PNPlantBiomeStats(boolean canPlace, int growthRate, int darkGrowthRate, int deathRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int minY, int maxY, HashSet<String> restrictToWorlds) {
+    public PNPlantBiomeStats(boolean canPlace, int growthRate, int darkGrowthRate, int deathRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY, HashSet<String> restrictToWorlds) {
         this.canPlace = canPlace;
         this.growthRate = growthRate;
         this.deathRate = deathRate;
@@ -31,6 +33,8 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
         this.maxLight = maxLight;
         this.ignoreLightWhenNight = ignoreLightWhenNight;
         this.needsSky = needsSky;
+        this.noSkyGrowthRate = noSkyGrowthRate;
+        this.noSkyDeathRate = noSkyDeathRate;
         this.minY = minY;
         this.maxY = maxY;
         this.worlds = restrictToWorlds;
@@ -47,6 +51,8 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
     public int getMaxLight() {return maxLight;}
     public boolean getIgnoreLightWhenNight() {return ignoreLightWhenNight;}
     public boolean getNeedsSky() {return needsSky;}
+    public int getNoSkyGrowthRate() {return noSkyGrowthRate;}
+    public int getNoSkyDeathRate() {return noSkyDeathRate;}
     public int getMinY() {return minY;}
     public int getMaxY() {return maxY;}
     public HashSet<String> getWorlds() {return worlds;}

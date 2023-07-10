@@ -36,6 +36,8 @@ biome-group-list:
 #  max-light: 15
 #  place-and-bone-meal-ignores-min-light-at-night: true
 #  needs-sky: false
+#  no-sky-growth-rate: 10
+#  no-sky-death-rate: 25
 #  min-y: 0
 #  max-y: 200
 #  restrict-to-worlds:
@@ -50,6 +52,8 @@ biome-group-list:
 #        - "world"
 #      max-y: 255
 #      needs-sky: false
+#      no-sky-growth-rate: 100
+#      no-sky-death-rate: 0
 #    TestGroup:
 #      can-place: false
 #      restrict-to-worlds:
@@ -134,7 +138,7 @@ restrict-plugin-to-worlds:
 #  - "world_nether"
 #  - "world_the_end"
 
-#In ticks (20 ticks per second), time a dehydrated farmland with a crop on it will take to turn into dirt.
+#In ticks (20 ticks per second), time a dehydrated farmland with a crop on it will take to turn into dirt. Affects all plants that can be placed on farmland.
   #-1 to disable, only available on versions 1.14+.
 ticks-dehydrated-crop-dirt: -1
 

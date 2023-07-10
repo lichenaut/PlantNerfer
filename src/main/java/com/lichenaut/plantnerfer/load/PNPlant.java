@@ -23,12 +23,14 @@ public class PNPlant {
     private final int maxLight;
     private final boolean ignoreLightWhenNight;
     private final boolean needsSky;
+    private final int noSkyGrowthRate;
+    private final int noSkyDeathRate;
     private final int minY;
     private final int maxY;
     private final HashSet<String> restrictToWorlds;
     private final TreeMap<Biome, PNPlantBiomeStats> biomeStats;
 
-    public PNPlant(PlantNerfer plugin, Material material, boolean canPlace, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
+    public PNPlant(PlantNerfer plugin, Material material, boolean canPlace, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
         this.plugin = plugin;
         this.material = material;
         this.canPlace = canPlace;
@@ -42,6 +44,8 @@ public class PNPlant {
         this.maxLight = maxLight;
         this.ignoreLightWhenNight = ignoreLightWhenNight;
         this.needsSky = needsSky;
+        this.noSkyGrowthRate = noSkyGrowthRate;
+        this.noSkyDeathRate = noSkyDeathRate;
         this.minY = minY;
         this.maxY = maxY;
         this.restrictToWorlds = restrictToWorlds;
@@ -92,6 +96,14 @@ public class PNPlant {
     public boolean getNeedsSky(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getNeedsSky();
         return needsSky;
+    }
+    public int getNoSkyGrowthRate(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getNoSkyGrowthRate();
+        return noSkyGrowthRate;
+    }
+    public int getNoSkyDeathRate(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getNoSkyDeathRate();
+        return noSkyDeathRate;
     }
     public int getMinY(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getMinY();

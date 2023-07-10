@@ -20,7 +20,7 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
     @EventHandler
     public void onPlantGrowth(BlockGrowEvent e) {
         Block block = e.getBlock();
-        if (loader.getReference().isNotPlantBlock(block.getType())) {return;}
+        if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
         if (invalidWorld(worldName)) {return;}
         PNPlant plant = plugin.getPlant(block.getType());
@@ -32,6 +32,11 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         int lightLevel = block.getRelative(0, 1,0 ).getLightLevel();
         if (notIgnoreLightWhenNight(block, plant) || lightLevel > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
+        if (block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
+            if (chance(plant.getNoSkyDeathRate(biome))) {block.setType(Material.AIR);return;}
+            if (!chance(plant.getNoSkyGrowthRate(biome))) e.setCancelled(true);return;
+        }
+
         if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {block.setType(Material.AIR);return;}
         } else if (chance(plant.getDeathRate(biome))) {block.setType(Material.AIR);return;}
 
@@ -42,7 +47,7 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
     @EventHandler
     public void onPlantStructureGrowth(StructureGrowEvent e) {
         Block block = e.getLocation().getBlock();
-        if (loader.getReference().isNotPlantBlock(block.getType())) {return;}
+        if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
         if (invalidWorld(worldName)) {return;}
         PNPlant plant = plugin.getPlant(block.getType());
@@ -52,8 +57,13 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         int lightLevel = block.getRelative(0, 1,0 ).getLightLevel();
         if (notIgnoreLightWhenNight(block, plant) || lightLevel > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
-        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {block.setType(Material.AIR);return;}
-        } else if (chance(plant.getDeathRate(biome))) {block.setType(Material.AIR);return;}
+        if (block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
+            if (chance(plant.getNoSkyDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+            if (!chance(plant.getNoSkyGrowthRate(biome))) e.setCancelled(true);return;
+        }
+
+        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
 
         if (lightLevel < 8) {if (!chance(plant.getDarkGrowthRate(biome))) e.setCancelled(true);
         } else if (!chance(plant.getGrowthRate(biome))) e.setCancelled(true);
@@ -62,7 +72,7 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
     @EventHandler
     public void onPlantSpread(BlockSpreadEvent e) {
         Block block = e.getBlock();
-        if (loader.getReference().isNotPlantBlock(block.getType())) {return;}
+        if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
         if (invalidWorld(worldName)) {return;}
         PNPlant plant = plugin.getPlant(block.getType());
@@ -72,8 +82,13 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         int lightLevel = block.getRelative(0, 1,0 ).getLightLevel();
         if (notIgnoreLightWhenNight(block, plant) || lightLevel > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
-        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {block.setType(Material.AIR);return;}
-        } else if (chance(plant.getDeathRate(biome))) {block.setType(Material.AIR);return;}
+        if (block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
+            if (chance(plant.getNoSkyDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+            if (!chance(plant.getNoSkyGrowthRate(biome))) e.setCancelled(true);return;
+        }
+
+        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
 
         if (lightLevel < 8) {if (!chance(plant.getDarkGrowthRate(biome))) e.setCancelled(true);
         } else if (!chance(plant.getGrowthRate(biome))) e.setCancelled(true);

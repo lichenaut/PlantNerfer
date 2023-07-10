@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -41,9 +42,9 @@ public final class PlantNerfer extends JavaPlugin {
 
             if (version >= 13) {
                 if (config.getConfigurationSection("biome-group-list") != null) {
-                    for (String group : config.getConfigurationSection("biome-group-list").getKeys(false)) {//for each biome group, add a HashSet of biome strings to biomeGroups
+                    for (String group : Objects.requireNonNull(config.getConfigurationSection("biome-group-list")).getKeys(false)) {//for each biome group, add a HashSet of biome strings to biomeGroups
                         HashSet<Biome> biomes = new HashSet<>();
-                        for (String biome : config.getConfigurationSection("biome-group-list").getStringList(group)) biomes.add(Biome.valueOf(biome));
+                        for (String biome : Objects.requireNonNull(config.getConfigurationSection("biome-group-list")).getStringList(group)) biomes.add(Biome.valueOf(biome));
                         biomeGroups.put(group, biomes);
                     }
                 }
