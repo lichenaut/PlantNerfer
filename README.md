@@ -127,13 +127,13 @@ If true, the plant can only be placed, grown, and bone meal-ed if there are no b
 
 > no-sky-growth-rate: #
 
-Similar to growth-rate, but applies to plants with no sky above them. Does not replace growth-rate, instead adds another chance for the plant to not grow.
+Similar to growth-rate, but applies to plants with no sky above them. Does not replace any other growth rate, instead adds another chance for the plant to not grow.
 
 ### No Sky Death Rate
 
 > no-sky-death-rate: #
 
-Similar to death-rate, but applies to plants with no sky above them. Does not replace death-rate, instead adds another chance for the plant to die.
+Similar to death-rate, but applies to plants with no sky above them. Does not replace any other death rate, instead adds another chance for the plant to die.
 
 ### Minimum Y
 
