@@ -3,10 +3,13 @@ package com.lichenaut.plantnerfer.util;
 import org.bukkit.Material;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class PNMaterialReference {
 
     HashMap<String, Material> matMap = new HashMap<>();
+    HashSet<Material> farmlandSet = new HashSet<>();
+    HashMap<Material, Material> cropMap = new HashMap<>();
 
     public void buildMatMap13() {
         matMap.put("oak-sapling", Material.OAK_SAPLING);
@@ -35,7 +38,7 @@ public class PNMaterialReference {
         matMap.put("pumpkin-stem", Material.PUMPKIN_STEM);
         matMap.put("carrot", Material.CARROT);
         matMap.put("potato", Material.POTATO);
-        matMap.put("beetroot", Material.BEETROOT);
+        matMap.put("beetroots", Material.BEETROOTS);
         matMap.put("wheat", Material.WHEAT);
         matMap.put("cactus", Material.CACTUS);
         matMap.put("cocoa", Material.COCOA);
@@ -104,7 +107,43 @@ public class PNMaterialReference {
         buildMatMap19();
     }
 
+    public void buildFarmlandCropSet13() {
+        farmlandSet.add(Material.MELON_STEM);
+        farmlandSet.add(Material.ATTACHED_MELON_STEM);
+        farmlandSet.add(Material.PUMPKIN_STEM);
+        farmlandSet.add(Material.ATTACHED_PUMPKIN_STEM);
+        farmlandSet.add(Material.CARROT);
+        farmlandSet.add(Material.POTATO);
+        farmlandSet.add(Material.BEETROOTS);
+        farmlandSet.add(Material.WHEAT);
+    }
+
+    public void buildFarmlandCropSet20() {
+        farmlandSet.add(Material.getMaterial("TORCHFLOWER_CROP"));
+        farmlandSet.add(Material.getMaterial("PITCHER_CROP"));
+        buildFarmlandCropSet13();
+    }
+
+    public void buildCropDropMap13() {
+        cropMap.put(Material.MELON_STEM, Material.MELON_SEEDS);
+        cropMap.put(Material.ATTACHED_MELON_STEM, Material.MELON_SEEDS);
+        cropMap.put(Material.PUMPKIN_STEM, Material.PUMPKIN_SEEDS);
+        cropMap.put(Material.ATTACHED_PUMPKIN_STEM, Material.PUMPKIN_SEEDS);
+        cropMap.put(Material.CARROT, Material.CARROT);
+        cropMap.put(Material.POTATO, Material.POTATO);
+        cropMap.put(Material.BEETROOTS, Material.BEETROOT_SEEDS);
+        cropMap.put(Material.WHEAT, Material.WHEAT_SEEDS);
+    }
+
+    public void buildCropDropMap20() {
+        cropMap.put(Material.getMaterial("TORCHFLOWER_CROP"), Material.getMaterial("TORCHFLOWER_SEEDS"));
+        cropMap.put(Material.getMaterial("PITCHER_CROP"), Material.getMaterial("PITCHER_POD"));
+        buildCropDropMap13();
+    }
+
     public HashMap<String, Material> getMatMap() {return matMap;}
+    public HashSet<Material> getFarmlandSet() {return farmlandSet;}
+    public HashMap<Material, Material> getCropMap() {return cropMap;}
     public Material getMaterial(String name) {return matMap.get(name);}
     public boolean isNotPlantBlock(Material material) {return !matMap.containsValue(material);}
 }

@@ -87,7 +87,7 @@ melon-stem:
 pumpkin-stem:
 carrot:
 potato:
-beetroot:
+beetroots:
 wheat:
 cactus:
 cocoa:
@@ -133,6 +133,10 @@ restrict-plugin-to-worlds:
 #  - "world"
 #  - "world_nether"
 #  - "world_the_end"
+
+#In ticks (20 ticks per second), time a dehydrated farmland with a crop on it will take to turn into dirt.
+  #-1 to disable, only available on versions 1.14+.
+ticks-dehydrated-crop-dirt: -1
 
 #Toggle whether everyone can right-click a plant and see its bone meal success rate.
   #Individual permission: plantnerfer.bonemealrate

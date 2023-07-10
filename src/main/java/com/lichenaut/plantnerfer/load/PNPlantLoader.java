@@ -1,10 +1,7 @@
 package com.lichenaut.plantnerfer.load;
 
 import com.lichenaut.plantnerfer.PlantNerfer;
-import com.lichenaut.plantnerfer.listeners.PNBlockGrowListener;
-import com.lichenaut.plantnerfer.listeners.PNBlockPlaceListener;
-import com.lichenaut.plantnerfer.listeners.PNBoneMealListener;
-import com.lichenaut.plantnerfer.listeners.PNInteractListener;
+import com.lichenaut.plantnerfer.listeners.*;
 import com.lichenaut.plantnerfer.util.PNMaterialReference;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
@@ -12,12 +9,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class PNPlantLoader {
 
     private final PlantNerfer plugin;
-    private final PNMaterialReference matRef = new PNMaterialReference();
+    private final PNMaterialReference matRef = new PNMaterialReference();//general reference
+    private final PNMaterialReference farmlandRef = new PNMaterialReference();//farmland crop reference
+    private final PNMaterialReference cropRef = new PNMaterialReference();//items that can be planted on farmland (dropped when farmland turns to dirt)
 
     public PNPlantLoader(PlantNerfer plugin) {this.plugin = plugin;}
 
@@ -59,7 +59,7 @@ public class PNPlantLoader {
                 }
 
                 if (plantSection.getConfigurationSection("biome-groups") != null) {
-                    for (String group : plantSection.getConfigurationSection("biome-groups").getKeys(false)) {//for each biome group, create an object for each biome in this group
+                    for (String group : Objects.requireNonNull(plantSection.getConfigurationSection("biome-groups")).getKeys(false)) {//for each biome group, create an object for each biome in this group
                         if (!plugin.getBiomeGroups().containsKey(group)) {plugin.getLogger().warning("Biome group '" + group + "' does not exist!");return;}
 
                         boolean canPlaceGroup = canPlace;//get biome group defaults from general plant settings
@@ -77,7 +77,7 @@ public class PNPlantLoader {
                         int maxYGroup = maxY;
                         HashSet<String> restrictToWorldsGroup = restrictToWorlds;
 
-                        ConfigurationSection groupSection = plantSection.getConfigurationSection("biome-groups").getConfigurationSection(group);
+                        ConfigurationSection groupSection = Objects.requireNonNull(plantSection.getConfigurationSection("biome-groups")).getConfigurationSection(group);
                         if (groupSection != null) {
                             for (String groupKey : groupSection.getKeys(false)) {//change biome group data away from defaults to config info
                                 switch (groupKey) {
@@ -114,18 +114,28 @@ public class PNPlantLoader {
         pMan.registerEvents(new PNBlockPlaceListener(plugin, this), plugin);
         pMan.registerEvents(new PNBoneMealListener(plugin, this), plugin);
         pMan.registerEvents(new PNInteractListener(plugin, this), plugin);
+        if (plugin.getConfig().getInt("ticks-dehydrated-crop-dirt") >= 0) pMan.registerEvents(new PNFarmlandListener(plugin, this), plugin);
 
-        if (version == 20) {matRef.buildMatMap20();
+        if (version == 20) {
+            matRef.buildMatMap20();
+            farmlandRef.buildFarmlandCropSet20();
+            cropRef.buildCropDropMap20();
         } else if (version == 19) {matRef.buildMatMap19();
             //} else if (i == 18) {
         } else if (version == 17) {matRef.buildMatMap17();
         } else if (version == 16) {matRef.buildMatMap16();
             //} else if (i == 15) {
         } else if (version == 14) {matRef.buildMatMap14();
-        } else if (version == 13) matRef.buildMatMap13();
+        } else if (version == 13) {
+            matRef.buildMatMap13();
+            farmlandRef.buildFarmlandCropSet13();
+            cropRef.buildCropDropMap13();
+        }
 
         for (String key : matRef.getMatMap().keySet()) loadPlant(key);
     }
 
     public PNMaterialReference getReference() {return matRef;}
+    public PNMaterialReference getFarmlandReference() {return farmlandRef;}
+    public PNMaterialReference getCropReference() {return cropRef;}
 }
