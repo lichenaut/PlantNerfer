@@ -61,7 +61,7 @@ Oak saplings have poor rates normally, but in the biome group "second-group" the
 
 > can-place: true/false
 
-Can the plant be placed (in this biome group)?
+Can the plant be placed?
 
 ### Growth Rate
 
