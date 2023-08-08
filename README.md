@@ -16,7 +16,7 @@ PlantNerfer allows for very configurable plant behavior, versions 1.13+.
 &nbsp;&nbsp;second-group: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;- "FOREST" <br>
 
-Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contains the biomes "PLAINS" and "SAVANNA", and "second-group" contains the biome "FOREST".
+Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contains the biomes "PLAINS" and "SAVANNA", and "second-group" contains the biome "FOREST". ![Click here for the list of biomes.](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html)
 
 #### Plant Section
 
