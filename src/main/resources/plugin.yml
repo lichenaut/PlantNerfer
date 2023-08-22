@@ -1,4 +1,4 @@
 name: PlantNerfer
 version: '${project.version}'
 main: com.lichenaut.plantnerfer.PlantNerfer
-api-version: 1.13
+api-version: '1.14'
