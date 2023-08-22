@@ -3,6 +3,7 @@ package com.lichenaut.plantnerfer.load;
 import com.lichenaut.plantnerfer.PlantNerfer;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class PNPlant {
     private final int maxLight;
     private final boolean ignoreLightWhenNight;
     private final boolean needsSky;
+    private final boolean transparentBlocksCountAsSky;
     private final int noSkyGrowthRate;
     private final int noSkyDeathRate;
     private final int minY;
@@ -30,7 +32,7 @@ public class PNPlant {
     private final HashSet<String> restrictToWorlds;
     private final TreeMap<Biome, PNPlantBiomeStats> biomeStats;
 
-    public PNPlant(PlantNerfer plugin, Material material, boolean canPlace, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
+    public PNPlant(PlantNerfer plugin, Material material, boolean canPlace, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, boolean transparentBlocksCountAsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
         this.plugin = plugin;
         this.material = material;
         this.canPlace = canPlace;
@@ -44,6 +46,7 @@ public class PNPlant {
         this.maxLight = maxLight;
         this.ignoreLightWhenNight = ignoreLightWhenNight;
         this.needsSky = needsSky;
+        this.transparentBlocksCountAsSky = transparentBlocksCountAsSky;
         this.noSkyGrowthRate = noSkyGrowthRate;
         this.noSkyDeathRate = noSkyDeathRate;
         this.minY = minY;
@@ -93,9 +96,21 @@ public class PNPlant {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getIgnoreLightWhenNight();
         return ignoreLightWhenNight;
     }
-    public boolean getNeedsSky(Biome b) {
-        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getNeedsSky();
-        return needsSky;
+    public boolean getNeedsSky(Biome biome, Block block) {
+        if (!getTransparentBlocksCountAsSky(biome)) {
+            for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(biome)) return entry.getValue().getNeedsSky();
+            return needsSky;
+        } else {
+            while (block.getY() < block.getWorld().getMaxHeight()) {// Checking for non-transparent blocks above, then combining this return value to whether or not the block's height is the highest in its X and Z in other parts of the code can be optimized
+                // Once this finds a non-transparent block, figuring out the latter shouldn't need to happen. Perhaps combine into a single method?
+                if (!block.getType().isOccluding()) block = block.getRelative(0, 1, 0);else return true;
+            }
+            return false;
+        }
+    }
+    public boolean getTransparentBlocksCountAsSky(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getTransparentBlocksCountAsSky();
+        return transparentBlocksCountAsSky;
     }
     public int getNoSkyGrowthRate(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getNoSkyGrowthRate();

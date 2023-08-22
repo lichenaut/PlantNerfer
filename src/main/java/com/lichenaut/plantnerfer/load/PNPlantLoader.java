@@ -33,6 +33,7 @@ public class PNPlantLoader {
         int maxLight = 15;
         boolean ignoreLightWhenNight = true;
         boolean needsSky = false;
+        boolean transparentBlocksCountAsSky = true;
         int noSkyGrowthRate = 100;
         int noSkyDeathRate = 0;
         int minY = 0;
@@ -55,6 +56,7 @@ public class PNPlantLoader {
                 case "max-light": maxLight = plantSection.getInt(key);break;
                 case "place-and-bone-meal-ignores-min-light-at-night": ignoreLightWhenNight = plantSection.getBoolean(key);break;
                 case "needs-sky": needsSky = plantSection.getBoolean(key);break;
+                case "transparent-blocks-count-as-sky": transparentBlocksCountAsSky = plantSection.getBoolean(key);break;
                 case "no-sky-growth-rate": noSkyGrowthRate = plantSection.getInt(key);break;
                 case "no-sky-death-rate": noSkyDeathRate = plantSection.getInt(key);break;
                 case "min-y": minY = plantSection.getInt(key);break;
@@ -77,6 +79,7 @@ public class PNPlantLoader {
                     int maxLightGroup = maxLight;
                     boolean ignoreLightWhenNightGroup = ignoreLightWhenNight;
                     boolean needsSkyGroup = needsSky;
+                    boolean transparentBlocksCountAsSkyGroup = transparentBlocksCountAsSky;
                     int noSkyGrowthRateGroup = 100;
                     int noSkyDeathRateGroup = 0;
                     int minYGroup = minY;
@@ -98,6 +101,7 @@ public class PNPlantLoader {
                                 case "max-light": maxLightGroup = groupSection.getInt(groupKey);break;
                                 case "place-and-bone-meal-ignores-min-light-at-night": ignoreLightWhenNightGroup = groupSection.getBoolean(groupKey);break;
                                 case "needs-sky": needsSkyGroup = groupSection.getBoolean(groupKey);break;
+                                case "transparent-blocks-count-as-sky": transparentBlocksCountAsSkyGroup = groupSection.getBoolean(groupKey);break;
                                 case "no-sky-growth-rate": noSkyGrowthRateGroup = groupSection.getInt(groupKey);break;
                                 case "no-sky-death-rate": noSkyDeathRateGroup = groupSection.getInt(groupKey);break;
                                 case "min-y": minYGroup = groupSection.getInt(groupKey);break;
@@ -107,15 +111,15 @@ public class PNPlantLoader {
                         }
                     }
 
-                    for (Biome biome : plugin.getBiomeGroups().get(group)) biomeStats.put(biome, new PNPlantBiomeStats(canPlaceGroup, growthRateGroup, growthRateDarkGroup, deathRateGroup, deathRateDarkGroup, boneMealSuccessRateGroup, boneMealSuccessRateDarkGroup, minLightGroup, maxLightGroup, ignoreLightWhenNightGroup, needsSkyGroup, noSkyGrowthRateGroup, noSkyDeathRateGroup, minYGroup, maxYGroup, restrictToWorldsGroup));//add biome-plant data to biomeStats
+                    for (Biome biome : plugin.getBiomeGroups().get(group)) biomeStats.put(biome, new PNPlantBiomeStats(canPlaceGroup, growthRateGroup, growthRateDarkGroup, deathRateGroup, deathRateDarkGroup, boneMealSuccessRateGroup, boneMealSuccessRateDarkGroup, minLightGroup, maxLightGroup, ignoreLightWhenNightGroup, needsSkyGroup, transparentBlocksCountAsSkyGroup, noSkyGrowthRateGroup, noSkyDeathRateGroup, minYGroup, maxYGroup, restrictToWorldsGroup));//add biome-plant data to biomeStats
                 }
             }
         }
 
-        plugin.addPlant(new PNPlant(plugin, matRef.getMaterial(plantName), canPlace, growthRate, growthRateDark, deathRate, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, minLight, maxLight, ignoreLightWhenNight, needsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, restrictToWorlds, biomeStats));
+        plugin.addPlant(new PNPlant(plugin, matRef.getMaterial(plantName), canPlace, growthRate, growthRateDark, deathRate, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, minLight, maxLight, ignoreLightWhenNight, needsSky, transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, restrictToWorlds, biomeStats));
     }
 
-    public void loadPlants(int version) {
+    public void loadPlants(int version) {// Code for version 1.13 is an artifact, that version is not supported.
         PluginManager pMan = Bukkit.getPluginManager();//didn't include BlockPhysicsEvent for when crops get destroyed at low light levels (the vanilla mechanic) because it's a scary event to work with! it would not be worth the performance hit.
         pMan.registerEvents(new PNBlockGrowListener(plugin, this), plugin);
         pMan.registerEvents(new PNBlockPlaceListener(plugin, this), plugin);
@@ -128,10 +132,8 @@ public class PNPlantLoader {
             farmlandRef.buildFarmlandCropSet20();
             cropRef.buildCropDropMap20();
         } else if (version == 19) {matRef.buildMatMap19();
-            //} else if (i == 18) {
         } else if (version == 17) {matRef.buildMatMap17();
         } else if (version == 16) {matRef.buildMatMap16();
-            //} else if (i == 15) {
         } else if (version == 14) {matRef.buildMatMap14();
         } else if (version == 13) {
             matRef.buildMatMap13();

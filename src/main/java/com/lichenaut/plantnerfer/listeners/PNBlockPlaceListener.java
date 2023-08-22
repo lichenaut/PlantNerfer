@@ -33,7 +33,7 @@ public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
             return;
         }
 
-        if (plant.getNeedsSky(biome) && block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
+        if (plant.getNeedsSky(biome, block) && block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
             verboseDenial("This plant needs sky access to grow.", player);
             e.setCancelled(true);
             return;

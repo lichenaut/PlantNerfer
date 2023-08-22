@@ -1,5 +1,5 @@
 # PlantNerfer
-PlantNerfer allows for very configurable plant behavior, versions 1.13+.
+PlantNerfer allows for very configurable plant behavior, versions 1.14+.
 
 [![Github All Releases](https://img.shields.io/github/downloads/lichenaut/PlantNerfer/total.svg)]()
 
@@ -32,6 +32,7 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 &nbsp;&nbsp;max-light: 15 <br>
 &nbsp;&nbsp;place-and-bone-meal-ignores-min-light-at-night: true <br>
 &nbsp;&nbsp;needs-sky: false <br>
+&nbsp;&nbsp;transparent-blocks-count-as-sky: false <br>
 &nbsp;&nbsp;no-sky-growth-rate: 10 <br>
 &nbsp;&nbsp;no-sky-death-rate: 25 <br>
 &nbsp;&nbsp;min-y: 0 <br>
@@ -48,6 +49,7 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- "world" <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max-y: 255 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;needs-sky: false <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transparent-blocks-count-as-sky: true <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no-sky-growth-rate: 100 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no-sky-death-rate: 0 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;TestGroup: <br>
@@ -123,6 +125,12 @@ If true, the plant can be placed and bone meal-ed at any light level at night.
 
 If true, the plant can only be placed, grown, and bone meal-ed if there are no blocks above it.
 
+### Transparent Blocks Count as Sky
+
+> transparent-blocks-count-as-sky: true/false
+
+If true, blocks that let light pass through them will not be checked when a needs-sky plant checks for blocks above it.
+
 ### No Sky Growth Rate
 
 > no-sky-growth-rate: #
@@ -180,6 +188,7 @@ min-light: 0 <br>
 max-light: 15 <br>
 place-and-bone-meal-ignores-min-light-at-night: true <br>
 needs-sky: false <br>
+transparent-blocks-count-as-sky: true <br>
 no-sky-growth-rate: 100 <br>
 no-sky-death-rate: 0 <br>
 min-y: 0 <br>

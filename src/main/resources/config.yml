@@ -36,6 +36,7 @@ biome-group-list:
 #  max-light: 15
 #  place-and-bone-meal-ignores-min-light-at-night: true
 #  needs-sky: false
+#  transparent-blocks-count-as-sky: false
 #  no-sky-growth-rate: 10
 #  no-sky-death-rate: 25
 #  min-y: 0
@@ -48,6 +49,7 @@ biome-group-list:
 #      growth-rate: 100
 #      bone-meal-success-rate: 100
 #      bone-meal-success-rate-dark: 100
+#      transparent-blocks-count-as-sky: true
 #      restrict-to-worlds:
 #        - "world"
 #      max-y: 255
@@ -147,7 +149,7 @@ ticks-dehydrated-crop-dirt: -1
 global-bone-meal-rate-reporting: false
   #Permission to disable individual bone meal rate reporting when the global setting is true: plantnerfer.bonemealrate.disabled
 
-#Toggle whether the player will be messaged why they cannot place a plant.
+#Toggle whether the player will be messaged as to why they cannot place a plant.
   #Individual permission: plantnerfer.verbose
 verbose-denial: false
   #Permission to disable individual verbose denial messages when the global setting is true: plantnerfer.verbose.disabled
