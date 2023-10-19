@@ -6,61 +6,100 @@ disable-plugin: false
 #Biome Groups#
 ##############
 
+#Guide: https://github.com/lichenaut/PlantNerfer/blob/master/README.md
+
 biome-group-list:
-#  TestGroup:
-#    - "PLAINS"
-#    - "SAVANNA"
-#  second-group:
+#  offland-warm:
+#    - "WARM_OCEAN"
+#  offland-lukewarm:
+#    - "OCEAN"
+#    - "DEEP_OCEAN"
+#    - "LUKEWARM_OCEAN"
+#    - "DEEP_LUKEWARM_OCEAN"
+#    - "MUSHROOM_FIELDS"
+#  offland-cold:
+#    - "COLD_OCEAN"
+#    - "DEEP_COLD_OCEAN"
+#    - "FROZEN_OCEAN"
+#    - "DEEP_FROZEN_OCEAN"
+#  highland-temperate:
+#    - "MEADOW"
+#    - "CHERRY_GROVE"
+#    - "GROVE"
+#    - "WINDSWEPT_HILLS"
+#    - "WINDSWEPT_GRAVELLY_HILLS"
+#    - "WINDSWEPT_FOREST"
+#  highland-cold:
+#    - "JAGGED_PEAKS"
+#    - "FROZEN_PEAKS"
+#    - "STONY_PEAKS"
+#    - "SNOWY_SLOPES"
+#  woodland-hot:
+#    - "JUNGLE"
+#    - "SPARSE_JUNGLE"
+#    - "BAMBOO_JUNGLE"
+#  woodland-temperate:
 #    - "FOREST"
+#    - "FLOWER_FOREST"
+#    - "TAIGA"
+#    - "OLD_GROWTH_PINE_TAIGA"
+#    - "OLD_GROWTH_SPRUCE_TAIGA"
+#    - "BIRCH_FOREST"
+#    - "OLD_GROWTH_BIRCH_FOREST"
+#    - "DARK_FOREST"
+#  woodland-cold:
+#    - "SNOWY_TAIGA"
+#  wetland-hot:
+#    - "SWAMP"
+#    - "MANGROVE_SWAMP"
+#    - "BEACH"
+#  wetland-temperate:
+#    - "RIVER"
+#  wetland-cold:
+#    - "FROZEN_RIVER"
+#    - "SNOWY_BEACH"
+#    - "STONY_SHORE"
+#  flatland-temperate:
+#    - "PLAINS"
+#    - "SUNFLOWER_PLAINS"
+#  flatland-cold:
+#    - "SNOWY_PLAINS"
+#    - "ICE_SPIKES"
+#  arid-land:
+#    - "DESERT"
+#    - "SAVANNA"
+#    - "SAVANNA_PLATEAU"
+#    - "WINDSWEPT_SAVANNA"
+#    - "BADLANDS"
+#    - "WOODED_BADLANDS"
+#    - "ERODED_BADLANDS"
+#  cave:
+#    - "DEEP_DARK"
+#    - "LUSH_CAVES"
+#    - "DRIPSTONE_CAVES"
+#  void:
+#    - "THE_VOID"
+#  nether:
+#    - "CRIMSON_FOREST"
+#    - "WARPED_FOREST"
+#    - "SOUL_SAND_VALLEY"
+#    - "BASALT_DELTAS"
+#    - "NETHER_WASTES"
+#  end:
+#    - "THE_END"
+#    - "SMALL_END_ISLANDS"
+#    - "END_MIDLANDS"
+#    - "END_HIGHLANDS"
+#    - "END_BARRENS"
+#  CreateYourOwn:
+#    - "PLAINS"
 
 
 #############
 #Nerf Plants#
 #############
 
-#Note: 'dark' light levels are between and including 0 and 7.
-#Note 2: different plants have different numbers of growth stages, which means the same growth rate can affect some plants more than others.
-#Note 3: for a successful bone meal fertilization growth, the plant must go through bone meal rate, growth rate, and vanilla bone meal chance checks.
-#Nore 4: to see the default values, visit the documentation page: https://github.com/lichenaut/PlantNerfer
-
-#Example:
-#oak-sapling:
-#  can-place: true
-#  growth-rate: 25
-#  death-rate: 10
-#  growth-rate-dark: 15
-#  death-rate-dark: 20
-#  bone-meal-success-rate: 25
-#  bone-meal-success-rate-dark: 10
-#  min-light: 9
-#  max-light: 15
-#  place-and-bone-meal-ignores-min-light-at-night: true
-#  needs-sky: false
-#  transparent-blocks-count-as-sky: false
-#  no-sky-growth-rate: 10
-#  no-sky-death-rate: 25
-#  min-y: 0
-#  max-y: 200
-#  restrict-to-worlds:
-#    - "world"
-#    - "world_nether"
-#  biome-groups:
-#    second-group:
-#      growth-rate: 100
-#      bone-meal-success-rate: 100
-#      bone-meal-success-rate-dark: 100
-#      transparent-blocks-count-as-sky: true
-#      restrict-to-worlds:
-#        - "world"
-#      max-y: 255
-#      needs-sky: false
-#      no-sky-growth-rate: 100
-#      no-sky-death-rate: 0
-#    TestGroup:
-#      can-place: false
-#      restrict-to-worlds:
-#        - "world_nether"
-
+#Guide: https://github.com/lichenaut/PlantNerfer/blob/master/README.md
 
 oak-sapling:
 dark-oak-sapling:
@@ -134,14 +173,14 @@ pink-petals:
 ###############
 
 #If empty, PlantNerfer will affect all worlds.
-  #To disable the plugin completely, scroll to the top of this file and set disable-plugin to true.
+  #To disable the plugin completely, scroll to the top of this file and set 'disable-plugin' to true.
 restrict-plugin-to-worlds:
 #  - "world"
 #  - "world_nether"
 #  - "world_the_end"
 
 #In ticks (20 ticks per second), time a dehydrated farmland with a crop on it will take to turn into dirt. Affects all plants that can be placed on farmland.
-  #-1 to disable, only available on versions 1.14+.
+  #-1 to disable.
 ticks-dehydrated-crop-dirt: -1
 
 #Toggle whether everyone can right-click a plant and see its bone meal success rate.
