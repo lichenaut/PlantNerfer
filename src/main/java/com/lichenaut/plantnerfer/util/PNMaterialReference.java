@@ -36,8 +36,8 @@ public class PNMaterialReference {
         matMap.put("lily-pad", Material.LILY_PAD);
         matMap.put("melon-stem", Material.MELON_STEM);
         matMap.put("pumpkin-stem", Material.PUMPKIN_STEM);
-        matMap.put("carrot", Material.CARROT);
-        matMap.put("potato", Material.POTATO);
+        matMap.put("carrots", Material.CARROTS);
+        matMap.put("potatoes", Material.POTATOES);
         matMap.put("beetroots", Material.BEETROOTS);
         matMap.put("wheat", Material.WHEAT);
         matMap.put("cactus", Material.CACTUS);
@@ -112,8 +112,8 @@ public class PNMaterialReference {
         farmlandSet.add(Material.ATTACHED_MELON_STEM);
         farmlandSet.add(Material.PUMPKIN_STEM);
         farmlandSet.add(Material.ATTACHED_PUMPKIN_STEM);
-        farmlandSet.add(Material.CARROT);
-        farmlandSet.add(Material.POTATO);
+        farmlandSet.add(Material.CARROTS);
+        farmlandSet.add(Material.POTATOES);
         farmlandSet.add(Material.BEETROOTS);
         farmlandSet.add(Material.WHEAT);
     }
@@ -129,8 +129,8 @@ public class PNMaterialReference {
         cropMap.put(Material.ATTACHED_MELON_STEM, Material.MELON_SEEDS);
         cropMap.put(Material.PUMPKIN_STEM, Material.PUMPKIN_SEEDS);
         cropMap.put(Material.ATTACHED_PUMPKIN_STEM, Material.PUMPKIN_SEEDS);
-        cropMap.put(Material.CARROT, Material.CARROT);
-        cropMap.put(Material.POTATO, Material.POTATO);
+        cropMap.put(Material.CARROTS, Material.CARROT);
+        cropMap.put(Material.POTATOES, Material.POTATO);
         cropMap.put(Material.BEETROOTS, Material.BEETROOT_SEEDS);
         cropMap.put(Material.WHEAT, Material.WHEAT_SEEDS);
     }
