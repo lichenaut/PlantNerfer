@@ -128,10 +128,18 @@ public class PNPlant {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getMaxY();
         return maxY;
     }
-    public String getBiomes() {//for verbose denial
-        StringBuilder biomes = new StringBuilder();
-        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) biomes.append(entry.getKey().toString()).append(", ");
-        return biomes.substring(0, biomes.length() - 2) + ".";
+    public String[] getBiomes() {//for verbose denial
+        StringBuilder biomesAllowed = new StringBuilder();
+        StringBuilder biomesDisallowed = new StringBuilder();
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) {
+            if (entry.getValue().getCanPlace()) biomesAllowed.append(entry.getKey().toString()).append(", ");
+            else biomesDisallowed.append(entry.getKey().toString()).append(", ");
+        }
+        if (biomesAllowed.length() == 0 && biomesDisallowed.length() == 0) return null;
+        String[] biomes = new String[2];
+        if (biomesAllowed.length() != 0) biomes[0] = biomesAllowed.substring(0, biomesAllowed.length() - 2) + ".";
+        if (biomesDisallowed.length() != 0) biomes[1] = biomesDisallowed.substring(0, biomesDisallowed.length() - 2) + ".";
+        return biomes;
     }
     public boolean isValidWorldAndBiome(Biome b, String worldName) {//does it have any biome groups that have both this biome and this world?
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) {

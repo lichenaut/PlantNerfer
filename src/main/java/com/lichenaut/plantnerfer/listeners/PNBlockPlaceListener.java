@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-
 public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
 
     public PNBlockPlaceListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
@@ -28,7 +27,13 @@ public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
         Biome biome = block.getBiome();
         Player player = e.getPlayer();
         if (!plant.getCanPlace(biome)) {
-            verboseDenial("Cannot place this plant in this biome. Try the following biomes: " + plant.getBiomes(), player);
+            String[] biomes = plant.getBiomes();
+            if (biomes == null) {verboseDenial("Cannot place this plant in any biome.", player);
+            } else {
+                if (biomes[1] != null) verboseDenial("Cannot place this plant in the following biomes: " + biomes[1], player);
+                if (biomes[0] != null) verboseDenial("Try the following biomes: " + biomes[0], player);
+                else verboseDenial("Try any other biomes.", player);
+            }
             e.setCancelled(true);
             return;
         }
