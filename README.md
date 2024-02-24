@@ -4,7 +4,7 @@ PlantNerfer allows for very configurable plant behavior, versions 1.14+.
 [![Github All Releases](https://img.shields.io/github/downloads/lichenaut/PlantNerfer/total.svg)]()
 
 ## Command | Permission | Description
-/pn help | plantnerfer.help | Displays the help message.
+>/pn help | plantnerfer.help | Displays the help message. <br>
 /pn reload | plantnerfer.reload | Reloads the plugin.
 
 ## Configuration
