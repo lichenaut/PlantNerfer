@@ -3,6 +3,10 @@ PlantNerfer allows for very configurable plant behavior, versions 1.14+.
 
 [![Github All Releases](https://img.shields.io/github/downloads/lichenaut/PlantNerfer/total.svg)]()
 
+## Command | Permission | Description
+/pn help | plantnerfer.help | Displays the help message.
+/pn reload | plantnerfer.reload | Reloads the plugin.
+
 ## Configuration
 
 ### Example
@@ -191,7 +195,7 @@ needs-sky: false <br>
 transparent-blocks-count-as-sky: true <br>
 no-sky-growth-rate: 100 <br>
 no-sky-death-rate: 0 <br>
-min-y: 0 <br>
+min-y: -64 <br>
 max-y: 255 <br>
 restrict-to-worlds: (empty, so any) <br>
 biome-groups: (empty) <br>

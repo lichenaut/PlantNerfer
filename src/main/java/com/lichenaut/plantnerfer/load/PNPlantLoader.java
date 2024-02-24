@@ -1,12 +1,9 @@
 package com.lichenaut.plantnerfer.load;
 
 import com.lichenaut.plantnerfer.PlantNerfer;
-import com.lichenaut.plantnerfer.listeners.*;
 import com.lichenaut.plantnerfer.util.PNMaterialReference;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.PluginManager;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -36,12 +33,12 @@ public class PNPlantLoader {
         boolean transparentBlocksCountAsSky = true;
         int noSkyGrowthRate = 100;
         int noSkyDeathRate = 0;
-        int minY = 0;
+        int minY = -64;
         int maxY = 255;
         HashSet<String> restrictToWorlds = new HashSet<>();
         TreeMap<Biome, PNPlantBiomeStats> biomeStats = new TreeMap<>();
 
-        ConfigurationSection plantSection = plugin.getPluginConfig().getConfigurationSection(plantName);
+        ConfigurationSection plantSection = plugin.getConfig().getConfigurationSection(plantName);
         if (plantSection == null) {return;}
         for (String key : plantSection.getKeys(false)) {//set biome-less data
             switch (key) {
@@ -120,19 +117,12 @@ public class PNPlantLoader {
     }
 
     public void loadPlants(int version) {// Code for version 1.13 is an artifact, that version is not supported.
-        PluginManager pMan = Bukkit.getPluginManager();//didn't include BlockPhysicsEvent for when crops get destroyed at low light levels (the vanilla mechanic) because it's a scary event to work with! it would not be worth the performance hit.
-        pMan.registerEvents(new PNBlockGrowListener(plugin, this), plugin);
-        pMan.registerEvents(new PNBlockPlaceListener(plugin, this), plugin);
-        pMan.registerEvents(new PNBoneMealListener(plugin, this), plugin);
-        pMan.registerEvents(new PNInteractListener(plugin, this), plugin);
-        if (plugin.getConfig().getInt("ticks-dehydrated-crop-dirt") >= 0) pMan.registerEvents(new PNFarmlandListener(plugin, this), plugin);
-
-        if (version == 20) {
+        if (version >= 20) {
             matRef.buildMatMap20();
             farmlandRef.buildFarmlandCropSet20();
             cropRef.buildCropDropMap20();
         } else if (version == 19) {matRef.buildMatMap19();
-        } else if (version == 17) {matRef.buildMatMap17();
+        } else if (version >= 17) {matRef.buildMatMap17();
         } else if (version == 16) {matRef.buildMatMap16();
         } else if (version == 14) {matRef.buildMatMap14();
         } else if (version == 13) {

@@ -81,6 +81,7 @@ public class PNMaterialReference {
     }
 
     public void buildMatMap17() {
+        matMap.put("cave-vines", Material.getMaterial("CAVE_VINES"));
         matMap.put("azalea", Material.getMaterial("AZALEA"));
         matMap.put("flowering-azalea", Material.getMaterial("FLOWERING_AZALEA"));
         matMap.put("moss-carpet", Material.getMaterial("MOSS_CARPET"));

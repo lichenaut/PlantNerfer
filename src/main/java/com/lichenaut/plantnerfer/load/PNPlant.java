@@ -98,14 +98,14 @@ public class PNPlant {
     }
     public boolean getNeedsSky(Biome biome, Block block) {
         if (!getTransparentBlocksCountAsSky(biome)) {
-            for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(biome)) return entry.getValue().getNeedsSky();
-            return needsSky;
-        } else {
             while (block.getY() < block.getWorld().getMaxHeight()) {// Checking for non-transparent blocks above, then combining this return value to whether or not the block's height is the highest in its X and Z in other parts of the code can be optimized
                 // Once this finds a non-transparent block, figuring out the latter shouldn't need to happen. Perhaps combine into a single method?
                 if (!block.getType().isOccluding()) block = block.getRelative(0, 1, 0);else return true;
             }
             return false;
+        } else {
+            for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(biome)) return entry.getValue().getNeedsSky();
+            return needsSky;
         }
     }
     public boolean getTransparentBlocksCountAsSky(Biome b) {
