@@ -73,7 +73,7 @@ Can the plant be placed?
 
 > growth-rate: #
 
-A value of 100 is the vanilla growth rate. A value of 50 would make each progression to the next maturation stage a coin flip.
+A value of 100 is the vanilla growth rate. A value of 50 would make each progression to the next maturation stage a coin flip. This plugin cannot make plants grow faster.
 
 ### Growth Rate Dark
 
