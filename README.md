@@ -32,6 +32,7 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 &nbsp;&nbsp;death-rate-dark: 20 <br>
 &nbsp;&nbsp;bone-meal-success-rate: 25 <br>
 &nbsp;&nbsp;bone-meal-success-rate-dark: 10 <br>
+&nbsp;&nbsp;needs-hoe-for-drops: true <br>
 &nbsp;&nbsp;min-light: 9 <br>
 &nbsp;&nbsp;max-light: 15 <br>
 &nbsp;&nbsp;place-and-bone-meal-ignores-min-light-at-night: true <br>
@@ -49,6 +50,7 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;growth-rate: 100 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bone-meal-success-rate: 100 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bone-meal-success-rate-dark: 100 <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;needs-hoe-for-drops: false <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restrict-to-worlds: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- "world" <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max-y: 255 <br>
@@ -61,7 +63,7 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restrict-to-worlds: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- "world_nether" <br>
 
-Oak saplings have poor rates normally, but in the biome group "second-group" they have an overall growth rate of 100. In the biome group "TestGroup", they can't be placed, ruling out its biomes.
+Oak saplings have poor mechanics normally, but in the biome group "second-group" they have an overall growth rate of 100. In the biome group "TestGroup", they can't be placed, ruling out its biomes.
 
 ### Can Place
 
