@@ -7,6 +7,7 @@ disable-plugin: false
 ##############
 
 #Guide: https://github.com/lichenaut/PlantNerfer/blob/master/README.md
+#Request custom biome support: https://github.com/lichenaut/PlantNerfer/issues/3
 
 biome-group-list:
 #  offland-warm:
@@ -169,6 +170,15 @@ lily-of-the-valley:
 pink-petals:
 
 
+##############
+#Nerf Farming#
+##############
+
+#In ticks (20 ticks per second), time a dehydrated farmland with a crop on it will take to turn into dirt. Affects all plants that can be placed on farmland.
+  #-1 to disable.
+ticks-dehydrated-crop-dirt: -1
+
+
 ###############
 #Miscellaneous#
 ###############
@@ -180,16 +190,12 @@ restrict-plugin-to-worlds:
 #  - "world_nether"
 #  - "world_the_end"
 
-#In ticks (20 ticks per second), time a dehydrated farmland with a crop on it will take to turn into dirt. Affects all plants that can be placed on farmland.
-  #-1 to disable.
-ticks-dehydrated-crop-dirt: -1
-
-#Toggle whether everyone can right-click a plant and see its bone meal success rate.
+#Toggle whether everyone can right-click a plant and see its bone meal success rate. Disabled for operators.
   #Individual permission: plantnerfer.bonemealrate
 global-bone-meal-rate-reporting: false
   #Permission to disable individual bone meal rate reporting when the global setting is true: plantnerfer.bonemealrate.disabled
 
-#Toggle whether the player will be messaged as to why they cannot place a plant.
+#Toggle whether the player will be messaged as to why plugin mechanics are happening.
   #Individual permission: plantnerfer.verbose
 verbose-denial: false
   #Permission to disable individual verbose denial messages when the global setting is true: plantnerfer.verbose.disabled

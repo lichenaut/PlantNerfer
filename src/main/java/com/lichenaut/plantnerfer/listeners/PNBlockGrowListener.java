@@ -37,8 +37,8 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
             if (!chance(plant.getNoSkyGrowthRate(biome))) e.setCancelled(true);return;
         }
 
-        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {block.setType(Material.AIR);return;}
-        } else if (chance(plant.getDeathRate(biome))) {block.setType(Material.AIR);return;}
+        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
 
         if (lightLevel < 8) {if (!chance(plant.getDarkGrowthRate(biome))) e.setCancelled(true);
         } else if (!chance(plant.getGrowthRate(biome))) e.setCancelled(true);

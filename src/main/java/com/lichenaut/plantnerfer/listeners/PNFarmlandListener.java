@@ -15,7 +15,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PNFarmlandListener extends PNListenerUtil implements Listener {
 
-    public PNFarmlandListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
+    private final int ticksToDehydrate;
+
+    public PNFarmlandListener(PlantNerfer plugin, PNPlantLoader loader, int ticksToDehydrate) {
+        super(plugin, loader);
+        this.ticksToDehydrate = ticksToDehydrate;
+    }
 
     @EventHandler
     public void onDehydrate(MoistureChangeEvent e) {
@@ -30,7 +35,7 @@ public class PNFarmlandListener extends PNListenerUtil implements Listener {
                 above.setType(Material.AIR);
                 block.setType(Material.DIRT);
             }
-        }.runTaskLater(plugin, plugin.getConfig().getInt("ticks-dehydrated-crop-dirt"));//surely someone won't put a value over the int limit!
+        }.runTaskLater(plugin, ticksToDehydrate);
     }
 
     @EventHandler
@@ -46,6 +51,6 @@ public class PNFarmlandListener extends PNListenerUtil implements Listener {
                 above.setType(Material.AIR);
                 block.setType(Material.DIRT);
             }
-        }.runTaskLater(plugin, plugin.getConfig().getInt("ticks-dehydrated-crop-dirt"));
+        }.runTaskLater(plugin, ticksToDehydrate);
     }
 }

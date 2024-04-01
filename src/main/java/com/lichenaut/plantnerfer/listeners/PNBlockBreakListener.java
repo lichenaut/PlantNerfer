@@ -1,0 +1,57 @@
+package com.lichenaut.plantnerfer.listeners;
+
+import com.lichenaut.plantnerfer.PlantNerfer;
+import com.lichenaut.plantnerfer.load.PNPlant;
+import com.lichenaut.plantnerfer.load.PNPlantLoader;
+import com.lichenaut.plantnerfer.util.PNListenerUtil;
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+
+public class PNBlockBreakListener extends PNListenerUtil implements Listener {
+
+    public PNBlockBreakListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
+
+    @EventHandler
+    public void onBlockBreakHoeDirt(BlockBreakEvent e) {
+        Block above = e.getBlock();
+        Block block = above.getRelative(0, -1, 0);
+        if (block.getType() != Material.FARMLAND || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {return;}
+        String worldName = above.getWorld().getName();
+        if (invalidWorld(worldName)) {return;}
+        PNPlant plant = plugin.getPlant(above.getType());
+        if (plant == null) {return;}
+        Biome biome = above.getBiome();
+        if (!plant.getNeedsHoeForFarmlandRetain(biome)) {return;}
+
+        Player p = e.getPlayer();
+        //I do not check for offhand, as this would enable players to hold the hoe in the offhand and break crop with their mainhand fist.
+        if (loader.getHoeReference().getHoeSet().contains(p.getInventory().getItemInMainHand().getType())) {return;}
+
+        block.setType(Material.DIRT);
+        verboseDenial("Farmland turned to dirt because plant was broken without a hoe in the main hand.", p);
+    }
+
+    @EventHandler
+    public void onBlockBreakHoeDrops(BlockBreakEvent e) {
+        Block block = e.getBlock();
+        String worldName = block.getWorld().getName();
+        if (invalidWorld(worldName)) {return;}
+        PNPlant plant = plugin.getPlant(block.getType());
+        if (plant == null) {return;}
+        Biome biome = block.getBiome();
+        if (!plant.getNeedsHoeForDrops(biome)) {return;}
+
+        Player p = e.getPlayer();
+        //I do not check for offhand, as this would enable players to hold the hoe in the offhand and break crop with their mainhand fist.
+        if (loader.getHoeReference().getHoeSet().contains(p.getInventory().getItemInMainHand().getType())) {return;}
+
+        e.setCancelled(true);
+        block.setType(Material.AIR);
+        verboseDenial("Plant dropped nothing because it was broken without a hoe in the main hand.", p);
+    }
+}

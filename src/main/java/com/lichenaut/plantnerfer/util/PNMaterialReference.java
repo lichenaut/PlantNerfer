@@ -10,6 +10,7 @@ public class PNMaterialReference {
     HashMap<String, Material> matMap = new HashMap<>();
     HashSet<Material> farmlandSet = new HashSet<>();
     HashMap<Material, Material> cropMap = new HashMap<>();
+    HashSet<Material> hoeSet = new HashSet<>();
 
     public void buildMatMap13() {
         matMap.put("oak-sapling", Material.OAK_SAPLING);
@@ -142,9 +143,23 @@ public class PNMaterialReference {
         buildCropDropMap13();
     }
 
+    public void buildHoeSet13() {
+        hoeSet.add(Material.WOODEN_HOE);
+        hoeSet.add(Material.STONE_HOE);
+        hoeSet.add(Material.IRON_HOE);
+        hoeSet.add(Material.GOLDEN_HOE);
+        hoeSet.add(Material.DIAMOND_HOE);
+    }
+
+    public void buildHoeSet16() {
+        hoeSet.add(Material.getMaterial("NETHERITE_HOE"));
+        buildHoeSet13();
+    }
+
     public HashMap<String, Material> getMatMap() {return matMap;}
     public HashSet<Material> getFarmlandSet() {return farmlandSet;}
     public HashMap<Material, Material> getCropMap() {return cropMap;}
+    public HashSet<Material> getHoeSet() {return hoeSet;}
     public Material getMaterial(String name) {return matMap.get(name);}
     public boolean isNotPlantBlock(Material material) {return !matMap.containsValue(material);}
 }

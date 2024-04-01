@@ -20,6 +20,8 @@ public class PNPlant {
     private final int darkDeathRate;
     private final int boneMealRate;
     private final int darkBoneMealRate;
+    private final boolean needsHoeForDrops;
+    private final boolean needsHoeForFarmlandRetain;
     private final int minLight;
     private final int maxLight;
     private final boolean ignoreLightWhenNight;
@@ -32,7 +34,7 @@ public class PNPlant {
     private final HashSet<String> restrictToWorlds;
     private final TreeMap<Biome, PNPlantBiomeStats> biomeStats;
 
-    public PNPlant(PlantNerfer plugin, Material material, boolean canPlace, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, boolean transparentBlocksCountAsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
+    public PNPlant(PlantNerfer plugin, Material material, boolean canPlace, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, boolean needsHoeForDrops, boolean needsHoeForFarmlandRetain, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, boolean transparentBlocksCountAsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PNPlantBiomeStats> biomeStats) {
         this.plugin = plugin;
         this.material = material;
         this.canPlace = canPlace;
@@ -42,6 +44,8 @@ public class PNPlant {
         this.darkDeathRate = darkDeathRate;
         this.boneMealRate = boneMealRate;
         this.darkBoneMealRate = darkBoneMealRate;
+        this.needsHoeForDrops = needsHoeForDrops;
+        this.needsHoeForFarmlandRetain = needsHoeForFarmlandRetain;
         this.minLight = minLight;
         this.maxLight = maxLight;
         this.ignoreLightWhenNight = ignoreLightWhenNight;
@@ -83,6 +87,14 @@ public class PNPlant {
     public int getDarkBoneMealRate(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getDarkBoneMealRate();
         return darkBoneMealRate;
+    }
+    public boolean getNeedsHoeForDrops(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getNeedsHoeForDrops();
+        return needsHoeForDrops;
+    }
+    public boolean getNeedsHoeForFarmlandRetain(Biome b) {
+        for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getNeedsHoeForFarmlandRetain();
+        return needsHoeForFarmlandRetain;
     }
     public int getMinLight(Biome b) {
         for (Map.Entry<Biome, PNPlantBiomeStats> entry : biomeStats.entrySet()) if (entry.getKey().equals(b)) return entry.getValue().getMinLight();

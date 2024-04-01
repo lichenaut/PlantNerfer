@@ -33,6 +33,7 @@ public class PNInteractListener extends PNListenerUtil implements Listener {
         Biome biome = block.getBiome();
 
         Player player = e.getPlayer();
+        if (player.isOp()) {return;}
         if ((player.hasPermission("plantnerfer.bonemealrate") && !plugin.getConfig().getBoolean("global-bone-meal-rate-reporting")) || (!player.hasPermission("plantnerfer.bonemealrate.disabled") && plugin.getConfig().getBoolean("global-bone-meal-rate-reporting"))) {
             if (block.getRelative(0, 1, 0).getLightLevel() < 8) {player.sendMessage("Bone Meal Success Rate: " + plant.getDarkBoneMealRate(biome) + "%");
             } else player.sendMessage("Bone Meal Success Rate: " + plant.getBoneMealRate(biome) + "%");

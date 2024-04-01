@@ -76,7 +76,9 @@ public final class PlantNerfer extends JavaPlugin {
                 pMan.registerEvents(new PNBlockPlaceListener(plugin, plantLoader), plugin);
                 pMan.registerEvents(new PNBoneMealListener(plugin, plantLoader), plugin);
                 pMan.registerEvents(new PNInteractListener(plugin, plantLoader), plugin);
-                if (plugin.getConfig().getInt("ticks-dehydrated-crop-dirt") >= 0) pMan.registerEvents(new PNFarmlandListener(plugin, plantLoader), plugin);
+                pMan.registerEvents(new PNBlockBreakListener(plugin, plantLoader), plugin);
+                int ticksToDehydrate = config.getInt("ticks-dehydrated-crop-dirt");
+                if (ticksToDehydrate >= 0) pMan.registerEvents(new PNFarmlandListener(plugin, plantLoader, ticksToDehydrate), plugin);
             } else log.severe("Unsupported version detected: " + sVersion + "! Disabling plugin.");
         }
     }

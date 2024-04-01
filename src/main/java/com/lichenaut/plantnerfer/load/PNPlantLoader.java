@@ -15,6 +15,7 @@ public class PNPlantLoader {
     private final PNMaterialReference matRef = new PNMaterialReference();//general reference
     private final PNMaterialReference farmlandRef = new PNMaterialReference();//farmland crop reference
     private final PNMaterialReference cropRef = new PNMaterialReference();//items that can be planted on farmland (dropped when farmland turns to dirt)
+    private final PNMaterialReference hoeRef = new PNMaterialReference();
 
     public PNPlantLoader(PlantNerfer plugin) {this.plugin = plugin;}
 
@@ -26,6 +27,8 @@ public class PNPlantLoader {
         int deathRateDark = 0;
         int boneMealSuccessRate = 100;
         int boneMealSuccessRateDark = 100;
+        boolean needsHoeForDrops = false;
+        boolean needsHoeForFarmlandRetain = false;
         int minLight = 0;
         int maxLight = 15;
         boolean ignoreLightWhenNight = true;
@@ -49,6 +52,8 @@ public class PNPlantLoader {
                 case "death-rate-dark": deathRateDark = plantSection.getInt(key);break;
                 case "bone-meal-success-rate": boneMealSuccessRate = plantSection.getInt(key);break;
                 case "bone-meal-success-rate-dark": boneMealSuccessRateDark = plantSection.getInt(key);break;
+                case "needs-hoe-for-drops": needsHoeForDrops = plantSection.getBoolean(key);break;
+                case "needs-hoe-for-farmland-retain": needsHoeForFarmlandRetain = plantSection.getBoolean(key);break;
                 case "min-light": minLight = plantSection.getInt(key);break;
                 case "max-light": maxLight = plantSection.getInt(key);break;
                 case "place-and-bone-meal-ignores-min-light-at-night": ignoreLightWhenNight = plantSection.getBoolean(key);break;
@@ -72,6 +77,8 @@ public class PNPlantLoader {
                     int deathRateDarkGroup = deathRateDark;
                     int boneMealSuccessRateGroup = boneMealSuccessRate;
                     int boneMealSuccessRateDarkGroup = boneMealSuccessRateDark;
+                    boolean needsHoeForDropsGroup = needsHoeForDrops;
+                    boolean needsHoeForFarmlandRetainGroup = needsHoeForFarmlandRetain;
                     int minLightGroup = minLight;
                     int maxLightGroup = maxLight;
                     boolean ignoreLightWhenNightGroup = ignoreLightWhenNight;
@@ -94,6 +101,8 @@ public class PNPlantLoader {
                                 case "death-rate-dark": deathRateDarkGroup = groupSection.getInt(groupKey);break;
                                 case "bone-meal-success-rate": boneMealSuccessRateGroup = groupSection.getInt(groupKey);break;
                                 case "bone-meal-success-rate-dark": boneMealSuccessRateDarkGroup = groupSection.getInt(groupKey);break;
+                                case "needs-hoe-for-drops": needsHoeForDropsGroup = groupSection.getBoolean(groupKey);break;
+                                case "needs-hoe-for-farmland-retain": needsHoeForFarmlandRetainGroup = groupSection.getBoolean(groupKey);break;
                                 case "min-light": minLightGroup = groupSection.getInt(groupKey);break;
                                 case "max-light": maxLightGroup = groupSection.getInt(groupKey);break;
                                 case "place-and-bone-meal-ignores-min-light-at-night": ignoreLightWhenNightGroup = groupSection.getBoolean(groupKey);break;
@@ -108,12 +117,12 @@ public class PNPlantLoader {
                         }
                     }
 
-                    for (Biome biome : plugin.getBiomeGroups().get(group)) biomeStats.put(biome, new PNPlantBiomeStats(canPlaceGroup, growthRateGroup, growthRateDarkGroup, deathRateGroup, deathRateDarkGroup, boneMealSuccessRateGroup, boneMealSuccessRateDarkGroup, minLightGroup, maxLightGroup, ignoreLightWhenNightGroup, needsSkyGroup, transparentBlocksCountAsSkyGroup, noSkyGrowthRateGroup, noSkyDeathRateGroup, minYGroup, maxYGroup, restrictToWorldsGroup));//add biome-plant data to biomeStats
+                    for (Biome biome : plugin.getBiomeGroups().get(group)) biomeStats.put(biome, new PNPlantBiomeStats(canPlaceGroup, growthRateGroup, deathRateGroup, growthRateDarkGroup, deathRateDarkGroup, boneMealSuccessRateGroup, boneMealSuccessRateDarkGroup, needsHoeForDropsGroup, needsHoeForFarmlandRetainGroup, minLightGroup, maxLightGroup, ignoreLightWhenNightGroup, needsSkyGroup, transparentBlocksCountAsSkyGroup, noSkyGrowthRateGroup, noSkyDeathRateGroup, minYGroup, maxYGroup, restrictToWorldsGroup));//add biome-plant data to biomeStats
                 }
             }
         }
 
-        plugin.addPlant(new PNPlant(plugin, matRef.getMaterial(plantName), canPlace, growthRate, growthRateDark, deathRate, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, minLight, maxLight, ignoreLightWhenNight, needsSky, transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, restrictToWorlds, biomeStats));
+        plugin.addPlant(new PNPlant(plugin, matRef.getMaterial(plantName), canPlace, growthRate, deathRate, growthRateDark, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, needsHoeForDrops, needsHoeForFarmlandRetain, minLight, maxLight, ignoreLightWhenNight, needsSky, transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, restrictToWorlds, biomeStats));
     }
 
     public void loadPlants(int version) {// Code for version 1.13 is an artifact, that version is not supported.
@@ -121,14 +130,42 @@ public class PNPlantLoader {
             matRef.buildMatMap20();
             farmlandRef.buildFarmlandCropSet20();
             cropRef.buildCropDropMap20();
-        } else if (version == 19) {matRef.buildMatMap19();
-        } else if (version >= 17) {matRef.buildMatMap17();
-        } else if (version == 16) {matRef.buildMatMap16();
-        } else if (version == 14) {matRef.buildMatMap14();
+            hoeRef.buildHoeSet16();
+        } else if (version == 19) {
+            matRef.buildMatMap19();
+            farmlandRef.buildFarmlandCropSet13();
+            cropRef.buildCropDropMap13();
+            hoeRef.buildHoeSet16();
+        } else if (version == 18) {
+            matRef.buildMatMap17();
+            farmlandRef.buildFarmlandCropSet13();
+            cropRef.buildCropDropMap13();
+            hoeRef.buildHoeSet16();
+        } else if (version == 17) {
+            matRef.buildMatMap17();
+            farmlandRef.buildFarmlandCropSet13();
+            cropRef.buildCropDropMap13();
+            hoeRef.buildHoeSet16();
+        } else if (version == 16) {
+            matRef.buildMatMap16();
+            farmlandRef.buildFarmlandCropSet13();
+            cropRef.buildCropDropMap13();
+            hoeRef.buildHoeSet16();
+        } else if (version == 15) {
+            matRef.buildMatMap14();
+            farmlandRef.buildFarmlandCropSet13();
+            cropRef.buildCropDropMap13();
+            hoeRef.buildHoeSet13();
+        } else if (version == 14) {
+            matRef.buildMatMap14();
+            farmlandRef.buildFarmlandCropSet13();
+            cropRef.buildCropDropMap13();
+            hoeRef.buildHoeSet13();
         } else if (version == 13) {
             matRef.buildMatMap13();
             farmlandRef.buildFarmlandCropSet13();
             cropRef.buildCropDropMap13();
+            hoeRef.buildHoeSet13();
         }
 
         for (String key : matRef.getMatMap().keySet()) loadPlant(key);
@@ -137,4 +174,5 @@ public class PNPlantLoader {
     public PNMaterialReference getReference() {return matRef;}
     public PNMaterialReference getFarmlandReference() {return farmlandRef;}
     public PNMaterialReference getCropReference() {return cropRef;}
+    public PNMaterialReference getHoeReference() {return hoeRef;}
 }

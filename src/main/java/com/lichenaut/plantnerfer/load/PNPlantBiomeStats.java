@@ -11,6 +11,8 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
     private final int darkDeathRate;
     private final int boneMealRate;
     private final int darkBoneMealRate;
+    private final boolean needsHoeForDrops;
+    private final boolean needsHoeForFarmlandRetain;
     private final int minLight;
     private final int maxLight;
     private final boolean ignoreLightWhenNight;
@@ -22,7 +24,7 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
     private final int maxY;
     private final HashSet<String> worlds;
 
-    public PNPlantBiomeStats(boolean canPlace, int growthRate, int darkGrowthRate, int deathRate, int darkDeathRate, int boneMealRate, int darkBoneMealRate, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, boolean transparentBlocksCountAsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY, HashSet<String> restrictToWorlds) {
+    public PNPlantBiomeStats(boolean canPlace, int growthRate, int deathRate, int darkGrowthRate,  int darkDeathRate, int boneMealRate, int darkBoneMealRate, boolean needsHoeForDrops, boolean needsHoeForFarmlandRetain, int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky, boolean transparentBlocksCountAsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY, HashSet<String> restrictToWorlds) {
         this.canPlace = canPlace;
         this.growthRate = growthRate;
         this.deathRate = deathRate;
@@ -30,6 +32,8 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
         this.darkDeathRate = darkDeathRate;
         this.boneMealRate = boneMealRate;
         this.darkBoneMealRate = darkBoneMealRate;
+        this.needsHoeForDrops = needsHoeForDrops;
+        this.needsHoeForFarmlandRetain = needsHoeForFarmlandRetain;
         this.minLight = minLight;
         this.maxLight = maxLight;
         this.ignoreLightWhenNight = ignoreLightWhenNight;
@@ -49,6 +53,8 @@ public class PNPlantBiomeStats {//represents the biome-specific stats of a plant
     public int getDarkDeathRate() {return darkDeathRate;}
     public int getBoneMealRate() {return boneMealRate;}
     public int getDarkBoneMealRate() {return darkBoneMealRate;}
+    public boolean getNeedsHoeForDrops() {return needsHoeForDrops;}
+    public boolean getNeedsHoeForFarmlandRetain() {return needsHoeForFarmlandRetain;}
     public int getMinLight() {return minLight;}
     public int getMaxLight() {return maxLight;}
     public boolean getIgnoreLightWhenNight() {return ignoreLightWhenNight;}

@@ -32,7 +32,7 @@ public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
             } else {
                 if (biomes[1] != null) verboseDenial("Cannot place this plant in the following biomes: " + biomes[1], player);
                 if (biomes[0] != null) verboseDenial("Try the following biomes: " + biomes[0], player);
-                else verboseDenial("Try any other biomes.", player);
+                else verboseDenial("Try any other biome.", player);
             }
             e.setCancelled(true);
             return;
@@ -68,7 +68,7 @@ public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
         }
 
         if (!plant.isValidWorldAndBiome(biome, worldName)) {
-            verboseDenial("Plant cannot be placed in this world and biome.", player);
+            verboseDenial("Plant cannot be placed in this specific world and biome combination.", player);
             e.setCancelled(true);
         }
     }

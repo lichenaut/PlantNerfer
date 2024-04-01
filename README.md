@@ -105,6 +105,18 @@ A value of 100 would make the plant try to grow whenever bone meal is used on it
 
 Similar to bone-meal-success-rate, but applies to plants in light levels under 8.
 
+### Hoe-Reliant Drops
+
+> needs-hoe-for-drops: true/false
+
+If true, the plant will only drop its items when broken with a hoe.
+
+### Hoe-Reliant Farmland Retaining
+
+> needs-hoe-for-farmland-retain: true/false
+
+If true, the Farmland the Farmland-related plant is broken on will turn into Dirt if not broken with a hoe.
+
 ### Minimum Light
 
 > min-light: #
@@ -165,6 +177,8 @@ The maximum y-level allowed for plant placement.
 &nbsp;&nbsp;- "example_world_name" <br>
 &nbsp;&nbsp;- "example_world_name_2"
 
+Restrict plant placement to certain worlds.
+
 ### Biome Groups
 
 > See example under the "Plant Section" header
@@ -188,6 +202,8 @@ death-rate: 0 <br>
 death-rate-dark: 0 <br>
 bone-meal-success-rate: 100 <br>
 bone-meal-success-rate-dark: 100 <br>
+needs-hoe-for-drops: false <br>
+needs-hoe-for-farmland-retain: false <br>
 min-light: 0 <br>
 max-light: 15 <br>
 place-and-bone-meal-ignores-min-light-at-night: true <br>
