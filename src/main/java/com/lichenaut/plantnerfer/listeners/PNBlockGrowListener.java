@@ -15,7 +15,21 @@ import org.bukkit.event.world.StructureGrowEvent;
 
 public class PNBlockGrowListener extends PNListenerUtil implements Listener {
 
-    public PNBlockGrowListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
+    private final boolean deathTurnsIntoBush;
+
+    public PNBlockGrowListener(PlantNerfer plugin, PNPlantLoader loader, boolean deathTurnsIntoBush) {
+        super(plugin, loader);
+        this.deathTurnsIntoBush = deathTurnsIntoBush;
+    }
+
+    private void killPlant(Block block) {
+        block.setType(Material.AIR);
+        if (deathTurnsIntoBush) {
+            Block below = block.getRelative(0, -1, 0);
+            if (below.getType() == Material.FARMLAND) {below.setType(Material.DIRT);}
+            block.setType(Material.DEAD_BUSH);
+        }
+    }
 
     @EventHandler
     public void onPlantGrowth(BlockGrowEvent e) {
@@ -33,12 +47,12 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         if (notIgnoreLightWhenNight(block, plant) || lightLevel > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
         if (block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
-            if (chance(plant.getNoSkyDeathRate(biome))) {block.setType(Material.AIR);return;}
+            if (chance(plant.getNoSkyDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
             if (!chance(plant.getNoSkyGrowthRate(biome))) e.setCancelled(true);return;
         }
 
-        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
-        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
+        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
 
         if (lightLevel < 8) {if (!chance(plant.getDarkGrowthRate(biome))) e.setCancelled(true);
         } else if (!chance(plant.getGrowthRate(biome))) e.setCancelled(true);
@@ -60,12 +74,12 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         if (notIgnoreLightWhenNight(block, plant) || lightLevel > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
         if (block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
-            if (chance(plant.getNoSkyDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+            if (chance(plant.getNoSkyDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
             if (!chance(plant.getNoSkyGrowthRate(biome))) e.setCancelled(true);return;
         }
 
-        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
-        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
+        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
 
         if (lightLevel < 8) {if (!chance(plant.getDarkGrowthRate(biome))) e.setCancelled(true);
         } else if (!chance(plant.getGrowthRate(biome))) e.setCancelled(true);
@@ -87,12 +101,12 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
         if (notIgnoreLightWhenNight(block, plant) || lightLevel > plant.getMaxLight(biome)) {e.setCancelled(true);return;}
 
         if (block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
-            if (chance(plant.getNoSkyDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+            if (chance(plant.getNoSkyDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
             if (!chance(plant.getNoSkyGrowthRate(biome))) e.setCancelled(true);return;
         }
 
-        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
-        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);block.setType(Material.AIR);return;}
+        if (lightLevel < 8) {if (chance(plant.getDarkDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
+        } else if (chance(plant.getDeathRate(biome))) {e.setCancelled(true);killPlant(block);return;}
 
         if (lightLevel < 8) {if (!chance(plant.getDarkGrowthRate(biome))) e.setCancelled(true);
         } else if (!chance(plant.getGrowthRate(biome))) e.setCancelled(true);

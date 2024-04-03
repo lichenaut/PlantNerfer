@@ -177,11 +177,39 @@ pink-petals:
 #In ticks (20 ticks per second), time a dehydrated farmland with a crop on it will take to turn into dirt. Affects all plants that can be placed on farmland.
   #-1 to disable.
 ticks-dehydrated-crop-dirt: -1
+  #This setting does not dehydrate anything, and instead reacts to dehydration events.
+
+#Whether plants turn into Dead Bushes when they die. If false, they will turn into Air.
+  #Enabling this means that dying farmland crops turn their respective Farmland blocks into Dirt.
+death-turns-into-bush: false
+
+#0-100 the chance that Farmland will turn into Dirt when its crop is harvested, even if hydrated and done so with a hoe.
+farmed-farmland-turns-into-dirt: 0
+
+
+###########
+#Messaging#
+###########
+
+  #Toggle whether everyone can right-click a custom plant and see its bone meal success rate. Disabled for operators.
+#Individual permission: plantnerfer.bonemealrate
+global-bone-meal-rate-reporting: false
+  #Permission to disable individual bone meal rate reporting when the global setting is true: plantnerfer.bonemealrate.disabled
+
+  #Toggle whether the player will be messaged as to why plugin mechanics are happening. Disabled for operators.
+#Individual permission: plantnerfer.verbose
+verbose-denial: true
+  #Permission to disable individual verbose denial messages when the global setting is true: plantnerfer.verbose.disabled
 
 
 ###############
 #Miscellaneous#
 ###############
+
+#Locale for PlantNerfer messages.
+  #Rewrite 'en_US.properties' if your language has not been added yet.
+locale: "en_US"
+  #Help me support more languages by submitting translations: https://discord.gg/txJDdYcRV6
 
 #If empty, PlantNerfer will affect all worlds.
   #To disable the plugin completely, scroll to the top of this file and set 'disable-plugin' to true.
@@ -189,13 +217,3 @@ restrict-plugin-to-worlds:
 #  - "world"
 #  - "world_nether"
 #  - "world_the_end"
-
-#Toggle whether everyone can right-click a plant and see its bone meal success rate. Disabled for operators.
-  #Individual permission: plantnerfer.bonemealrate
-global-bone-meal-rate-reporting: false
-  #Permission to disable individual bone meal rate reporting when the global setting is true: plantnerfer.bonemealrate.disabled
-
-#Toggle whether the player will be messaged as to why plugin mechanics are happening.
-  #Individual permission: plantnerfer.verbose
-verbose-denial: false
-  #Permission to disable individual verbose denial messages when the global setting is true: plantnerfer.verbose.disabled

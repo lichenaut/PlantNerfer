@@ -7,7 +7,7 @@ PlantNerfer allows for very configurable plant behavior, versions 1.14+.
 >/pn help | plantnerfer.help | Links to this README. <br>
 /pn reload | plantnerfer.reload | Reloads the plugin.
 
-## Configuration
+## Plant Configuration
 
 ### Example
 
@@ -191,7 +191,10 @@ Any settings for a plant can also be defined in this section for per-group confi
 
 Note: 'dark' light levels are between and including 0 and 7.
 
-Note 2: different plants have different numbers of growth stages, which means the same growth rate can affect some plants more than others.
+Note 2: different plants have different numbers of growth stages, which means the same rate can affect some plants more than others.
+
+Formula for the chance a plant survives to maturation: (1 - (death rate / 100)) ^ (number of growth stages).
+For example, a 'death-rate' of 8 with 8 growth stages makes maturation about a coin flip... unless you have also slowed its growth rate with this plugin.
 
 Note 3: for a successful bone meal fertilization growth, the plant must go through bone meal rate, growth rate, and vanilla bone meal chance checks.
 
