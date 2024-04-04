@@ -184,6 +184,7 @@ ticks-dehydrated-crop-dirt: -1
 death-turns-into-bush: false
 
 #0-100 the chance that Farmland will turn into Dirt when its crop is harvested, even if hydrated and done so with a hoe.
+  #Affects even plants with empty configurations.
 farmed-farmland-turns-into-dirt: 0
 
 

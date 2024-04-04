@@ -31,7 +31,7 @@ public final class PlantNerfer extends JavaPlugin {
 
     private final PlantNerfer plugin = this;
     private final Logger log = getLogger();
-    private final Configuration config = getConfig();
+    private Configuration config = getConfig();
     private final TreeMap<String, HashSet<Biome>> biomeGroups = new TreeMap<>();//preserve order in anything biome group-related so that results are consistent
     private final HashMap<Material, PNPlant> plants = new HashMap<>();
     private final PluginManager pMan = Bukkit.getPluginManager();//didn't include BlockPhysicsEvent for when crops get destroyed at low light levels (the vanilla mechanic) because it's a scary event to work with! it would not be worth the performance hit.
@@ -54,6 +54,7 @@ public final class PlantNerfer extends JavaPlugin {
 
     public void reloadPlugin() {
         reloadConfig();
+        config = getConfig();
         biomeGroups.clear();
         plants.clear();
         HandlerList.unregisterAll(this);
@@ -76,6 +77,8 @@ public final class PlantNerfer extends JavaPlugin {
         if (!new File(esPath).exists()) {try {PNCopier.smallCopy(this.getResource("locales" + PNSep.getSep() + "es.properties"), esPath);} catch (IOException e) {throw new RuntimeException(e);}}
         String frPath = localesFolderPath + PNSep.getSep() + "fr.properties";
         if (!new File(frPath).exists()) {try {PNCopier.smallCopy(this.getResource("locales" + PNSep.getSep() + "fr.properties"), frPath);} catch (IOException e) {throw new RuntimeException(e);}}
+        String ruPath = localesFolderPath + PNSep.getSep() + "ru.properties";
+        if (!new File(ruPath).exists()) {try {PNCopier.smallCopy(this.getResource("locales" + PNSep.getSep() + "ru.properties"), ruPath);} catch (IOException e) {throw new RuntimeException(e);}}
         try {messageParser.loadLocaleMessages();} catch (IOException e) {throw new RuntimeException(e);}
 
         String sVersion = Bukkit.getServer().getBukkitVersion();
