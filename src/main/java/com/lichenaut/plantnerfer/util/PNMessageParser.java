@@ -36,7 +36,7 @@ public class PNMessageParser {
     private BaseComponent[] boneMealSuccessRate;
     private BaseComponent[] boneMealSuccessRateDark;
 
-    public PNMessageParser(PlantNerfer plugin) throws IOException {this.plugin = plugin;}
+    public PNMessageParser(PlantNerfer plugin) {this.plugin = plugin;}
 
     public void loadLocaleMessages() throws IOException {
         locale = plugin.getConfig().getString("locale");

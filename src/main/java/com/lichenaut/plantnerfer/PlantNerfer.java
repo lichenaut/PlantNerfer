@@ -41,7 +41,7 @@ public final class PlantNerfer extends JavaPlugin {
     public void onEnable() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        try {messageParser = new PNMessageParser(this);} catch (IOException e) {throw new RuntimeException(e);}
+        messageParser = new PNMessageParser(this);
 
         int pluginId = 18989;
         Metrics metrics = new Metrics(plugin, pluginId);
