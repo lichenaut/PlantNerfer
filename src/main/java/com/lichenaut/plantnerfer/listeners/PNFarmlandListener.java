@@ -23,7 +23,7 @@ public class PNFarmlandListener extends PNListenerUtil implements Listener {
     }
 
     @EventHandler
-    public void onDehydrate(MoistureChangeEvent e) {
+    private void onDehydrate(MoistureChangeEvent e) {
         Block block = e.getBlock();
         Block above = block.getRelative(0, 1, 0);
         if (block.getType() != Material.FARMLAND || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {return;}
@@ -39,7 +39,7 @@ public class PNFarmlandListener extends PNListenerUtil implements Listener {
     }
 
     @EventHandler
-    public void onCropPlace(BlockPlaceEvent e) {
+    private void onCropPlace(BlockPlaceEvent e) {
         Block above = e.getBlock();
         Block block = above.getRelative(0, -1, 0);
         if (block.getType() != Material.FARMLAND || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {return;}

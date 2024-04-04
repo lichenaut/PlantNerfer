@@ -4,6 +4,7 @@ import com.lichenaut.plantnerfer.PlantNerfer;
 import com.lichenaut.plantnerfer.load.PNPlant;
 import com.lichenaut.plantnerfer.load.PNPlantLoader;
 import com.lichenaut.plantnerfer.util.PNListenerUtil;
+import com.lichenaut.plantnerfer.util.PNMessageParser;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -15,14 +16,16 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class PNBlockBreakListener extends PNListenerUtil implements Listener {
 
     private final int farmedFarmlandTurnsIntoDirt;
+    private final PNMessageParser messageParser;
 
     public PNBlockBreakListener(PlantNerfer plugin, PNPlantLoader loader, int farmedFarmlandTurnsIntoDirt) {
         super(plugin, loader);
         this.farmedFarmlandTurnsIntoDirt = farmedFarmlandTurnsIntoDirt;
+        this.messageParser = plugin.getMessageParser();
     }
 
     @EventHandler
-    public void onBlockBreakDirt(BlockBreakEvent e) {
+    private void onBlockBreakDirt(BlockBreakEvent e) {
         Block above = e.getBlock();
         Block block = above.getRelative(0, -1, 0);
         if (block.getType() != Material.FARMLAND || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {return;}
@@ -38,11 +41,11 @@ public class PNBlockBreakListener extends PNListenerUtil implements Listener {
         if (loader.getHoeReference().getHoeSet().contains(player.getInventory().getItemInMainHand().getType())) {return;}
 
         block.setType(Material.DIRT);
-        verboseDenial("Farmland turned to dirt because plant was broken without a hoe.", player);
+        verboseDenial(messageParser.getFarmlandIntoDirt(), player);
     }
 
     @EventHandler
-    public void onBlockBreakHoeDrops(BlockBreakEvent e) {
+    private void onBlockBreakHoeDrops(BlockBreakEvent e) {
         Block block = e.getBlock();
         String worldName = block.getWorld().getName();
         if (invalidWorld(worldName)) {return;}
@@ -57,6 +60,6 @@ public class PNBlockBreakListener extends PNListenerUtil implements Listener {
 
         e.setCancelled(true);
         block.setType(Material.AIR);
-        verboseDenial("Plant dropped nothing because it was broken without a hoe", player);
+        verboseDenial(messageParser.getPlantDroppedNothing(), player);
     }
 }

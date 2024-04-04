@@ -4,6 +4,7 @@ import com.lichenaut.plantnerfer.PlantNerfer;
 import com.lichenaut.plantnerfer.load.PNPlant;
 import com.lichenaut.plantnerfer.load.PNPlantLoader;
 import com.lichenaut.plantnerfer.util.PNListenerUtil;
+import com.lichenaut.plantnerfer.util.PNMessageParser;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -11,12 +12,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import java.util.Arrays;
+
 public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
 
-    public PNBlockPlaceListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
+    private final PNMessageParser messageParser;
+
+    public PNBlockPlaceListener(PlantNerfer plugin, PNPlantLoader loader) {
+        super(plugin, loader);
+        this.messageParser = plugin.getMessageParser();
+    }
 
     @EventHandler
-    public void onPlantPlace(BlockPlaceEvent e) {
+    private void onPlantPlace(BlockPlaceEvent e) {
         Block block = e.getBlock();
         if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
@@ -28,47 +36,50 @@ public class PNBlockPlaceListener extends PNListenerUtil implements Listener {
         Player player = e.getPlayer();
         if (!plant.getCanPlace(biome)) {
             String[] biomes = plant.getBiomes();
-            if (biomes == null) {verboseDenial("Cannot place this plant in any biome.", player);
+            if (biomes == null) {verboseDenial(messageParser.getCannotPlaceAnyBiome(), player);
             } else {
-                if (biomes[1] != null) verboseDenial("Cannot place this plant in the following biomes: " + biomes[1], player);
-                if (biomes[0] != null) verboseDenial("Try the following biomes: " + biomes[0], player);
-                else verboseDenial("Try any other biome.", player);
+                if (biomes[1] != null) verboseDenial(Arrays.toString(messageParser.getCannotPlaceFollowingBiomes()) + biomes[1], player);
+                if (biomes[0] != null) verboseDenial(Arrays.toString(messageParser.getTryFollowingBiomes()) + biomes[0], player);
+                else verboseDenial(messageParser.getTryOtherBiomes(), player);
             }
             e.setCancelled(true);
             return;
         }
 
         if (plant.getNeedsSky(biome, block) && block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
-            verboseDenial("This plant needs sky access to grow.", player);
+            verboseDenial(messageParser.getPlantNeedsSky(), player);
             e.setCancelled(true);
             return;
         }
 
         if (notIgnoreLightWhenNight(block, plant)) {
-            verboseDenial("Plant cannot be placed in light levels below " + plant.getMinLight(biome) + ".", player);
+            verboseDenial(messageParser.combineMessage(messageParser.getCannotPlaceDark(), plant.getMinLight(biome) + "."), player);
             e.setCancelled(true);
             return;
         }
-        if (block.getRelative(0, 1, 0).getLightLevel() > plant.getMaxLight(biome)) {
-            verboseDenial("Plant cannot be placed in light levels above " + plant.getMaxLight(biome) + ".", player);
+        int maxLight = plant.getMaxLight(biome);
+        if (block.getRelative(0, 1, 0).getLightLevel() > maxLight) {
+            verboseDenial(messageParser.combineMessage(messageParser.getCannotPlaceBright(), maxLight + "."), player);
             e.setCancelled(true);
             return;
         }
 
         int y = block.getY();
-        if (y < plant.getMinY(biome)) {
-            verboseDenial("Plant cannot be placed below Y=" + plant.getMinY(biome), player);
+        int minY = plant.getMinY(biome);
+        if (y < minY) {
+            verboseDenial(messageParser.combineMessage(messageParser.getCannotPlaceBelow(), minY + "."), player);
             e.setCancelled(true);
             return;
         }
-        if (y > plant.getMaxY(biome)) {
-            verboseDenial("Plant cannot be placed above Y=" + plant.getMaxY(biome), player);
+        int maxY = plant.getMaxY(biome);
+        if (y > maxY) {
+            verboseDenial(messageParser.combineMessage(messageParser.getCannotPlaceAbove(), maxY + "."), player);
             e.setCancelled(true);
             return;
         }
 
         if (!plant.isValidWorldAndBiome(biome, worldName)) {
-            verboseDenial("Plant cannot be placed in this specific world and biome combination.", player);
+            verboseDenial(messageParser.getCannotPlaceSpecific(), player);
             e.setCancelled(true);
         }
     }

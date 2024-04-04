@@ -207,8 +207,8 @@ verbose-denial: true
 ###############
 
 #Locale for PlantNerfer messages.
-  #Rewrite 'en_US.properties' if your language has not been added yet.
-locale: "en_US"
+  #Rewrite 'en.properties' if your language has not been added yet.
+locale: "en"
   #Help me support more languages by submitting translations: https://discord.gg/txJDdYcRV6
 
 #If empty, PlantNerfer will affect all worlds.

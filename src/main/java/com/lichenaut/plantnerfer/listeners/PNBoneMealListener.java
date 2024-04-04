@@ -15,7 +15,7 @@ public class PNBoneMealListener extends PNListenerUtil implements Listener {
     public PNBoneMealListener(PlantNerfer plugin, PNPlantLoader loader) {super(plugin, loader);}
 
     @EventHandler
-    public void onBoneMealUse(BlockFertilizeEvent e) {
+    private void onBoneMealUse(BlockFertilizeEvent e) {
         Block block = e.getBlock();
         if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();

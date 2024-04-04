@@ -32,7 +32,7 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
     }
 
     @EventHandler
-    public void onPlantGrowth(BlockGrowEvent e) {
+    private void onPlantGrowth(BlockGrowEvent e) {
         Block block = e.getBlock();
         if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
@@ -59,7 +59,7 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
     }
 
     @EventHandler
-    public void onPlantStructureGrowth(StructureGrowEvent e) {
+    private void onPlantStructureGrowth(StructureGrowEvent e) {
         Block block = e.getLocation().getBlock();
         if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();
@@ -86,7 +86,7 @@ public class PNBlockGrowListener extends PNListenerUtil implements Listener {
     }
 
     @EventHandler
-    public void onPlantSpread(BlockSpreadEvent e) {
+    private void onPlantSpread(BlockSpreadEvent e) {
         Block block = e.getBlock();
         if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {return;}
         String worldName = block.getWorld().getName();

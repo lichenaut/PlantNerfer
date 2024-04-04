@@ -6,6 +6,7 @@ import com.lichenaut.plantnerfer.listeners.*;
 import com.lichenaut.plantnerfer.load.PNPlant;
 import com.lichenaut.plantnerfer.load.PNPlantLoader;
 import com.lichenaut.plantnerfer.util.PNCopier;
+import com.lichenaut.plantnerfer.util.PNMessageParser;
 import com.lichenaut.plantnerfer.util.PNSep;
 import com.lichenaut.plantnerfer.util.PNUpdateChecker;
 import org.bstats.bukkit.Metrics;
@@ -34,17 +35,13 @@ public final class PlantNerfer extends JavaPlugin {
     private final TreeMap<String, HashSet<Biome>> biomeGroups = new TreeMap<>();//preserve order in anything biome group-related so that results are consistent
     private final HashMap<Material, PNPlant> plants = new HashMap<>();
     private final PluginManager pMan = Bukkit.getPluginManager();//didn't include BlockPhysicsEvent for when crops get destroyed at low light levels (the vanilla mechanic) because it's a scary event to work with! it would not be worth the performance hit.
+    private PNMessageParser messageParser;
 
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-
-        String localesFolderPath = getDataFolder().getPath() + PNSep.getSep() + "locales";
-        File localesFolder = new File(localesFolderPath);
-        if (!localesFolder.exists()) {localesFolder.mkdirs();}
-        String enUSPath = localesFolderPath + PNSep.getSep() + "en_US.properties";
-        if (!new File(enUSPath).exists()) {try {PNCopier.smallCopy(this.getResource("locales" + PNSep.getSep() + "en_US.properties"), enUSPath);} catch (IOException e) {throw new RuntimeException(e);}}
+        try {messageParser = new PNMessageParser(this);} catch (IOException e) {throw new RuntimeException(e);}
 
         int pluginId = 18989;
         Metrics metrics = new Metrics(plugin, pluginId);
@@ -67,6 +64,19 @@ public final class PlantNerfer extends JavaPlugin {
         if (config.getBoolean("disable-plugin")) {log.info("Plugin disabled in config.yml.");return;}
 
         new PNUpdateChecker(this, plugin).getVersion(version -> {if (!this.getDescription().getVersion().equals(version)) {getLog().info("Update available.");}});
+
+        String localesFolderPath = getDataFolder().getPath() + PNSep.getSep() + "locales";
+        File localesFolder = new File(localesFolderPath);
+        if (!localesFolder.exists()) {localesFolder.mkdirs();}
+        String dePath = localesFolderPath + PNSep.getSep() + "de.properties";
+        if (!new File(dePath).exists()) {try {PNCopier.smallCopy(this.getResource("locales" + PNSep.getSep() + "de.properties"), dePath);} catch (IOException e) {throw new RuntimeException(e);}}
+        String enPath = localesFolderPath + PNSep.getSep() + "en.properties";
+        if (!new File(enPath).exists()) {try {PNCopier.smallCopy(this.getResource("locales" + PNSep.getSep() + "en.properties"), enPath);} catch (IOException e) {throw new RuntimeException(e);}}
+        String esPath = localesFolderPath + PNSep.getSep() + "es.properties";
+        if (!new File(esPath).exists()) {try {PNCopier.smallCopy(this.getResource("locales" + PNSep.getSep() + "es.properties"), esPath);} catch (IOException e) {throw new RuntimeException(e);}}
+        String frPath = localesFolderPath + PNSep.getSep() + "fr.properties";
+        if (!new File(frPath).exists()) {try {PNCopier.smallCopy(this.getResource("locales" + PNSep.getSep() + "fr.properties"), frPath);} catch (IOException e) {throw new RuntimeException(e);}}
+        try {messageParser.loadLocaleMessages();} catch (IOException e) {throw new RuntimeException(e);}
 
         String sVersion = Bukkit.getServer().getBukkitVersion();
         int version = Integer.parseInt(sVersion.split("-")[0].split(Pattern.quote("."))[1]);
@@ -96,4 +106,5 @@ public final class PlantNerfer extends JavaPlugin {
     public TreeMap<String, HashSet<Biome>> getBiomeGroups() {return biomeGroups;}
     public void addPlant(PNPlant plant) {plants.put(plant.getMaterial(), plant);}
     public PNPlant getPlant(Material material) {return plants.get(material);}
+    public PNMessageParser getMessageParser() {return messageParser;}
 }
