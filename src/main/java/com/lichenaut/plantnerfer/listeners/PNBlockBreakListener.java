@@ -33,7 +33,7 @@ public class PNBlockBreakListener extends PNListenerUtil implements Listener {
         if (invalidWorld(worldName)) {return;}
         PNPlant plant = plugin.getPlant(above.getType());
         if (plant == null) {return;}
-        if (chance(farmedFarmlandTurnsIntoDirt)) {block.setType(Material.DIRT);return;}
+        if (farmedFarmlandTurnsIntoDirt > 0) if (chance(farmedFarmlandTurnsIntoDirt)) {block.setType(Material.DIRT);return;}
         Biome biome = above.getBiome();
         if (!plant.getNeedsHoeForFarmlandRetain(biome)) {return;}
 
