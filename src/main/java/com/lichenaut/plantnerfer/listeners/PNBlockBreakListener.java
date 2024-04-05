@@ -48,7 +48,6 @@ public class PNBlockBreakListener extends PNListenerUtil implements Listener {
 
         if (plant.getNeedsHoeForFarmlandRetain(biome) && !holdingHoe) {
             below.setType(Material.DIRT);
-            System.out.println("last");
             verboseDenial(messageParser.getFarmlandIntoDirt(), player);
         }
     }
