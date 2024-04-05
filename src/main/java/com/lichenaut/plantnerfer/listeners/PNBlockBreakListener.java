@@ -25,28 +25,9 @@ public class PNBlockBreakListener extends PNListenerUtil implements Listener {
     }
 
     @EventHandler
-    private void onBlockBreakDirt(BlockBreakEvent e) {
-        Block above = e.getBlock();
-        Block block = above.getRelative(0, -1, 0);
-        if (block.getType() != Material.FARMLAND || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {return;}
-        String worldName = above.getWorld().getName();
-        if (invalidWorld(worldName)) {return;}
-        if (farmedFarmlandTurnsIntoDirt > 0) if (chance(farmedFarmlandTurnsIntoDirt)) {block.setType(Material.DIRT);return;}
-        PNPlant plant = plugin.getPlant(above.getType());
-        if (plant == null) {return;}
-        Biome biome = above.getBiome();
-        if (!plant.getNeedsHoeForFarmlandRetain(biome)) {return;}
-
-        Player player = e.getPlayer();
-        if (loader.getHoeReference().getHoeSet().contains(player.getInventory().getItemInMainHand().getType())) {return;}
-
-        block.setType(Material.DIRT);
-        verboseDenial(messageParser.getFarmlandIntoDirt(), player);
-    }
-
-    @EventHandler
     private void onBlockBreakHoeDrops(BlockBreakEvent e) {
         Block block = e.getBlock();
+        Block below = block.getRelative(0, -1, 0);
         String worldName = block.getWorld().getName();
         if (invalidWorld(worldName)) {return;}
         PNPlant plant = plugin.getPlant(block.getType());
@@ -60,6 +41,26 @@ public class PNBlockBreakListener extends PNListenerUtil implements Listener {
 
         e.setCancelled(true);
         block.setType(Material.AIR);
+        if (farmedFarmlandTurnsIntoDirt > 0) if (chance(farmedFarmlandTurnsIntoDirt)) {below.setType(Material.DIRT);return;}
         verboseDenial(messageParser.getPlantDroppedNothing(), player);
+    }
+
+    @EventHandler
+    private void onBlockHoeDirt(BlockBreakEvent e) {
+        Block above = e.getBlock();
+        Block block = above.getRelative(0, -1, 0);
+        if (block.getType() != Material.FARMLAND || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {return;}
+        String worldName = above.getWorld().getName();
+        if (invalidWorld(worldName)) {return;}
+        PNPlant plant = plugin.getPlant(above.getType());
+        if (plant == null) {return;}
+        Biome biome = above.getBiome();
+        if (!plant.getNeedsHoeForFarmlandRetain(biome)) {return;}
+
+        Player player = e.getPlayer();
+        if (loader.getHoeReference().getHoeSet().contains(player.getInventory().getItemInMainHand().getType())) {return;}
+
+        block.setType(Material.DIRT);
+        verboseDenial(messageParser.getFarmlandIntoDirt(), player);
     }
 }
