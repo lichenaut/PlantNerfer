@@ -25,42 +25,31 @@ public class PNBlockBreakListener extends PNListenerUtil implements Listener {
     }
 
     @EventHandler
-    private void onBlockBreakHoeDrops(BlockBreakEvent e) {
-        Block block = e.getBlock();
-        Block below = block.getRelative(0, -1, 0);
-        String worldName = block.getWorld().getName();
-        if (invalidWorld(worldName)) {return;}
-        PNPlant plant = plugin.getPlant(block.getType());
-        if (plant == null) {return;}
-        Biome biome = block.getBiome();
-        if (!plant.getNeedsHoeForDrops(biome)) {return;}
-
-        Player player = e.getPlayer();
-        //I do not check for offhand, as this would enable players to hold the hoe in the offhand and break crop with their mainhand fist.
-        if (loader.getHoeReference().getHoeSet().contains(player.getInventory().getItemInMainHand().getType())) {return;}
-
-        e.setCancelled(true);
-        block.setType(Material.AIR);
-        if (farmedFarmlandTurnsIntoDirt > 0) if (chance(farmedFarmlandTurnsIntoDirt)) {below.setType(Material.DIRT);return;}
-        verboseDenial(messageParser.getPlantDroppedNothing(), player);
-    }
-
-    @EventHandler
-    private void onBlockHoeDirt(BlockBreakEvent e) {
+    private void onBlockBreak(BlockBreakEvent e) {
         Block above = e.getBlock();
-        Block block = above.getRelative(0, -1, 0);
-        if (block.getType() != Material.FARMLAND || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {return;}
-        String worldName = above.getWorld().getName();
-        if (invalidWorld(worldName)) {return;}
         PNPlant plant = plugin.getPlant(above.getType());
         if (plant == null) {return;}
-        Biome biome = above.getBiome();
-        if (!plant.getNeedsHoeForFarmlandRetain(biome)) {return;}
+        String worldName = above.getWorld().getName();
+        if (invalidWorld(worldName)) {return;}
 
         Player player = e.getPlayer();
-        if (loader.getHoeReference().getHoeSet().contains(player.getInventory().getItemInMainHand().getType())) {return;}
+        boolean holdingHoe = loader.getHoeReference().getHoeSet().contains(player.getInventory().getItemInMainHand().getType());
+        Biome biome = above.getBiome();
 
-        block.setType(Material.DIRT);
-        verboseDenial(messageParser.getFarmlandIntoDirt(), player);
+        if (plant.getNeedsHoeForDrops(biome) && !holdingHoe) {
+            e.setCancelled(true);
+            above.setType(Material.AIR);
+            verboseDenial(messageParser.getPlantDroppedNothing(), player);
+        }
+
+        Block below = above.getRelative(0, -1, 0);
+        if (below.getType() != Material.FARMLAND) {return;}
+        if (farmedFarmlandTurnsIntoDirt > 0) if (chance(farmedFarmlandTurnsIntoDirt)) {below.setType(Material.DIRT);return;}
+
+        if (plant.getNeedsHoeForFarmlandRetain(biome) && !holdingHoe) {
+            below.setType(Material.DIRT);
+            System.out.println("last");
+            verboseDenial(messageParser.getFarmlandIntoDirt(), player);
+        }
     }
 }
