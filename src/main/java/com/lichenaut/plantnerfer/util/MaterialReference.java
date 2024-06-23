@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class PNMaterialReference {
+public class MaterialReference {
 
     HashMap<String, Material> matMap = new HashMap<>();
     HashSet<Material> farmlandSet = new HashSet<>();
@@ -156,10 +156,27 @@ public class PNMaterialReference {
         buildHoeSet13();
     }
 
-    public HashMap<String, Material> getMatMap() {return matMap;}
-    public HashSet<Material> getFarmlandSet() {return farmlandSet;}
-    public HashMap<Material, Material> getCropMap() {return cropMap;}
-    public HashSet<Material> getHoeSet() {return hoeSet;}
-    public Material getMaterial(String name) {return matMap.get(name);}
-    public boolean isNotPlantBlock(Material material) {return !matMap.containsValue(material);}
+    public HashMap<String, Material> getMatMap() {
+        return matMap;
+    }
+
+    public HashSet<Material> getFarmlandSet() {
+        return farmlandSet;
+    }
+
+    public HashMap<Material, Material> getCropMap() {
+        return cropMap;
+    }
+
+    public HashSet<Material> getHoeSet() {
+        return hoeSet;
+    }
+
+    public Material getMaterial(String name) {
+        return matMap.get(name);
+    }
+
+    public boolean isNotPlantBlock(Material material) {
+        return !matMap.containsValue(material);
+    }
 }

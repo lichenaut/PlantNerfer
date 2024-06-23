@@ -1,0 +1,128 @@
+package com.lichenaut.plantnerfer.load;
+
+import java.util.HashSet;
+
+public class PlantBiomeStats {// represents the biome-specific stats of a plant
+
+    private final boolean canPlace;
+    private final int growthRate;
+    private final int deathRate;
+    private final int darkGrowthRate;
+    private final int darkDeathRate;
+    private final int boneMealRate;
+    private final int darkBoneMealRate;
+    private final boolean needsHoeForDrops;
+    private final boolean needsHoeForFarmlandRetain;
+    private final int minLight;
+    private final int maxLight;
+    private final boolean ignoreLightWhenNight;
+    private final boolean needsSky;
+    private final boolean transparentBlocksCountAsSky;
+    private final int noSkyGrowthRate;
+    private final int noSkyDeathRate;
+    private final int minY;
+    private final int maxY;
+    private final HashSet<String> worlds;
+
+    public PlantBiomeStats(boolean canPlace, int growthRate, int deathRate, int darkGrowthRate, int darkDeathRate,
+            int boneMealRate, int darkBoneMealRate, boolean needsHoeForDrops, boolean needsHoeForFarmlandRetain,
+            int minLight, int maxLight, boolean ignoreLightWhenNight, boolean needsSky,
+            boolean transparentBlocksCountAsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY, int maxY,
+            HashSet<String> restrictToWorlds) {
+        this.canPlace = canPlace;
+        this.growthRate = growthRate;
+        this.deathRate = deathRate;
+        this.darkGrowthRate = darkGrowthRate;
+        this.darkDeathRate = darkDeathRate;
+        this.boneMealRate = boneMealRate;
+        this.darkBoneMealRate = darkBoneMealRate;
+        this.needsHoeForDrops = needsHoeForDrops;
+        this.needsHoeForFarmlandRetain = needsHoeForFarmlandRetain;
+        this.minLight = minLight;
+        this.maxLight = maxLight;
+        this.ignoreLightWhenNight = ignoreLightWhenNight;
+        this.needsSky = needsSky;
+        this.transparentBlocksCountAsSky = transparentBlocksCountAsSky;
+        this.noSkyGrowthRate = noSkyGrowthRate;
+        this.noSkyDeathRate = noSkyDeathRate;
+        this.minY = minY;
+        this.maxY = maxY;
+        this.worlds = restrictToWorlds;
+    }
+
+    public boolean getCanPlace() {
+        return canPlace;
+    }
+
+    public int getGrowthRate() {
+        return growthRate;
+    }
+
+    public int getDeathRate() {
+        return deathRate;
+    }
+
+    public int getDarkGrowthRate() {
+        return darkGrowthRate;
+    }
+
+    public int getDarkDeathRate() {
+        return darkDeathRate;
+    }
+
+    public int getBoneMealRate() {
+        return boneMealRate;
+    }
+
+    public int getDarkBoneMealRate() {
+        return darkBoneMealRate;
+    }
+
+    public boolean getNeedsHoeForDrops() {
+        return needsHoeForDrops;
+    }
+
+    public boolean getNeedsHoeForFarmlandRetain() {
+        return needsHoeForFarmlandRetain;
+    }
+
+    public int getMinLight() {
+        return minLight;
+    }
+
+    public int getMaxLight() {
+        return maxLight;
+    }
+
+    public boolean getIgnoreLightWhenNight() {
+        return ignoreLightWhenNight;
+    }
+
+    public boolean getNeedsSky() {
+        return needsSky;
+    }
+
+    public boolean getTransparentBlocksCountAsSky() {
+        return transparentBlocksCountAsSky;
+    }
+
+    public int getNoSkyGrowthRate() {
+        return noSkyGrowthRate;
+    }
+
+    public int getNoSkyDeathRate() {
+        return noSkyDeathRate;
+    }
+
+    public int getMinY() {
+        return minY;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
+
+    public HashSet<String> getWorlds() {
+        return worlds;
+    }
+}

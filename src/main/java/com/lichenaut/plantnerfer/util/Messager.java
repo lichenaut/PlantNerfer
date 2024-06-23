@@ -1,23 +1,34 @@
 package com.lichenaut.plantnerfer.util;
 
-import com.lichenaut.plantnerfer.PlantNerfer;
+import com.lichenaut.plantnerfer.Main;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.logging.log4j.Logger;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PNMessageParser {
+@RequiredArgsConstructor
+@Getter
+public class Messager {
 
-    private final PlantNerfer plugin;
-    private String locale;
+    private final Logger logger;
+    private final Main main;
+    private final String locale;
+    private final String separator;
+    private BaseComponent[] prefix;
     private BaseComponent[] helpCommand;
     private BaseComponent[] invalidCommand;
     private BaseComponent[] reloadCommand;
@@ -36,12 +47,13 @@ public class PNMessageParser {
     private BaseComponent[] boneMealSuccessRate;
     private BaseComponent[] boneMealSuccessRateDark;
 
-    public PNMessageParser(PlantNerfer plugin) {this.plugin = plugin;}
-
     public void loadLocaleMessages() throws IOException {
-        locale = plugin.getConfig().getString("locale");
         Properties properties = new Properties();
-        try (FileInputStream inputStream = new FileInputStream(new File(plugin.getDataFolder(), "locales" + PNSep.getSep() + locale + ".properties"))) {properties.load(inputStream);}
+        try (FileInputStream inputStream = new FileInputStream(
+                new File(main.getDataFolder(), "locales" + separator + locale + ".properties"))) {
+            properties.load(inputStream);
+        }
+        prefix = getColoredMessage("prefix", properties);
         helpCommand = getColoredMessage("helpCommand", properties);
         invalidCommand = getColoredMessage("invalidCommand", properties);
         reloadCommand = getColoredMessage("reloadCommand", properties);
@@ -64,14 +76,17 @@ public class PNMessageParser {
     private BaseComponent[] getColoredMessage(String key, Properties properties) {
         String message = properties.getProperty(key);
         if (message == null) {
-            plugin.getLog().warning("Missing message key: " + key + " in locale: " + locale);
-            return new BaseComponent[]{new TextComponent("")};
+            main.getLog().warning("Missing message key: " + key + " in locale: " + locale);
+            return new BaseComponent[] { new TextComponent("") };
         }
 
         Pattern pattern = Pattern.compile("<([^>]+)>(.*?)\\s*(?=<[^>]+>|\\z)");
         Matcher matcher = pattern.matcher(message);
         ArrayList<String> resultList = new ArrayList<>();
-        while (matcher.find()) {resultList.add(matcher.group(2));resultList.add(matcher.group(1));}
+        while (matcher.find()) {
+            resultList.add(matcher.group(2));
+            resultList.add(matcher.group(1));
+        }
         String[] resultArray = resultList.toArray(new String[0]);
 
         ComponentBuilder builder = new ComponentBuilder("");
@@ -148,44 +163,58 @@ public class PNMessageParser {
                     break;
             }
         }
+
         builder.append(" ");
         return builder.create();
     }
 
-    public BaseComponent[] getHelpCommand() {return helpCommand;}
-    public BaseComponent[] getInvalidCommand() {return invalidCommand;}
-    public BaseComponent[] getReloadCommand() {return reloadCommand;}
-    public BaseComponent[] getFarmlandIntoDirt() {return farmlandIntoDirt;}
-    public BaseComponent[] getPlantDroppedNothing() {return plantDroppedNothing;}
-    public BaseComponent[] getCannotPlaceAnyBiome() {return cannotPlaceAnyBiome;}
-    public BaseComponent[] getTryOtherBiomes() {return tryOtherBiomes;}
-    public BaseComponent[] getPlantNeedsSky() {return plantNeedsSky;}
-    public BaseComponent[] getCannotPlaceFollowingBiomes() {return cannotPlaceFollowingBiomes;}
-    public BaseComponent[] getTryFollowingBiomes() {return tryFollowingBiomes;}
-    public BaseComponent[] getCannotPlaceDark() {return cannotPlaceDark;}
-    public BaseComponent[] getCannotPlaceBright() {return cannotPlaceBright;}
-    public BaseComponent[] getCannotPlaceBelow() {return cannotPlaceBelow;}
-    public BaseComponent[] getCannotPlaceAbove() {return cannotPlaceAbove;}
-    public BaseComponent[] getCannotPlaceSpecific() {return cannotPlaceSpecific;}
-    public BaseComponent[] getBoneMealSuccessRate() {return boneMealSuccessRate;}
-    public BaseComponent[] getBoneMealSuccessRateDark() {return boneMealSuccessRateDark;}
-    public net.md_5.bungee.api.ChatColor getLastColor(BaseComponent[] components) {
+    public void sendMsg(CommandSender sender, BaseComponent[] message, boolean includePrefix) {
+        if (sender instanceof Player) {
+            if (prefix == null || !includePrefix) {
+                sender.spigot().sendMessage(message);
+            } else {
+                sender.spigot().sendMessage(concatArrays(prefix, message));
+            }
+
+            return;
+        }
+
+        infoLog(message);
+    }
+
+    private void infoLog(BaseComponent[] message) {
+        logger.info(new TextComponent(message).toLegacyText().replaceAll("§[0-9a-fA-FklmnoKLMNO]", ""));
+    }
+
+    public BaseComponent[] concatArrays(BaseComponent[]... arrays) {
+        ArrayList<BaseComponent> resultList = new ArrayList<>();
+        for (BaseComponent[] array : arrays) resultList.addAll(Arrays.asList(array));
+        return resultList.toArray(new BaseComponent[0]);
+    }
+
+    public ChatColor getLastColor(BaseComponent[] components) {
         for (int i = components.length - 1; i >= 0; i--) {
             BaseComponent component = components[i];
-            if (component.getColor() != null) return component.getColor();
+            if (component.getColor() != null)
+                return component.getColor();
         }
-        return net.md_5.bungee.api.ChatColor.WHITE;
+        return ChatColor.WHITE;
     }
 
     public BaseComponent[] combineMessage(BaseComponent[] message, String messageText) {
-        if (messageText == null || messageText.isEmpty()) {return message;}
+        if (messageText == null || messageText.isEmpty()) {
+            return message;
+        }
 
         BaseComponent[] textComponent = TextComponent.fromLegacyText(messageText);
-        if (textComponent == null || textComponent.length == 0) return message;
+        if (textComponent == null || textComponent.length == 0)
+            return message;
 
-        net.md_5.bungee.api.ChatColor lastColor = getLastColor(message);
-        if (lastColor == null) lastColor = net.md_5.bungee.api.ChatColor.WHITE;
-        for (BaseComponent component : textComponent) component.setColor(lastColor);
+        ChatColor lastColor = getLastColor(message);
+        if (lastColor == null)
+            lastColor = ChatColor.WHITE;
+        for (BaseComponent component : textComponent)
+            component.setColor(lastColor);
         BaseComponent[] combined = new BaseComponent[message.length + textComponent.length];
         System.arraycopy(message, 0, combined, 0, message.length);
         System.arraycopy(textComponent, 0, combined, message.length, textComponent.length);

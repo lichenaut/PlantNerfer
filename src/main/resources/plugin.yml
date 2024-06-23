@@ -1,10 +1,9 @@
 name: PlantNerfer
-version: '${project.version}'
-main: com.lichenaut.plantnerfer.PlantNerfer
-api-version: '1.14'
+version: "${project.version}"
+main: com.lichenaut.plantnerfer.Main
+api-version: "1.20"
 author: lichenaut
-description:
-  PlantNerfer allows for very configurable plant behavior, versions 1.14+.
+description: PlantNerfer allows for very configurable plant behavior.
 commands:
   plantnerfer:
     description: "Base command for PlantNerfer plugin."
