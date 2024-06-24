@@ -1,7 +1,6 @@
 package com.lichenaut.plantnerfer.util;
 
 import com.lichenaut.plantnerfer.Main;
-import com.lichenaut.plantnerfer.load.PlantLoader;
 import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.entity.Player;
@@ -11,9 +10,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ListenerUtil {
 
-        protected final Main main;
+        private final Main main;
         private final Messager messager;
-        protected final PlantLoader loader;
 
         public boolean chance(int chance) {
                 return Math.random() * 100 < chance;

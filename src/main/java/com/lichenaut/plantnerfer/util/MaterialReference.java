@@ -1,10 +1,12 @@
 package com.lichenaut.plantnerfer.util;
 
+import lombok.Getter;
 import org.bukkit.Material;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
+@Getter
 public class MaterialReference {
 
     HashMap<String, Material> matMap = new HashMap<>();
@@ -28,7 +30,7 @@ public class MaterialReference {
         matMap.put("sea-pickle", Material.SEA_PICKLE);
         matMap.put("kelp", Material.KELP);
         matMap.put("seagrass", Material.SEAGRASS);
-        matMap.put("grass", Material.GRASS);
+        matMap.put("grass", Material.SHORT_GRASS);
         matMap.put("tall-grass", Material.TALL_GRASS);
         matMap.put("grass-block", Material.GRASS_BLOCK);
         matMap.put("fern", Material.FERN);
@@ -154,22 +156,6 @@ public class MaterialReference {
     public void buildHoeSet16() {
         hoeSet.add(Material.getMaterial("NETHERITE_HOE"));
         buildHoeSet13();
-    }
-
-    public HashMap<String, Material> getMatMap() {
-        return matMap;
-    }
-
-    public HashSet<Material> getFarmlandSet() {
-        return farmlandSet;
-    }
-
-    public HashMap<Material, Material> getCropMap() {
-        return cropMap;
-    }
-
-    public HashSet<Material> getHoeSet() {
-        return hoeSet;
     }
 
     public Material getMaterial(String name) {

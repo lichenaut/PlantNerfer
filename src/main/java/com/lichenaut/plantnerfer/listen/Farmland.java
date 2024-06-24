@@ -2,7 +2,7 @@ package com.lichenaut.plantnerfer.listen;
 
 import com.lichenaut.plantnerfer.Main;
 import com.lichenaut.plantnerfer.load.PlantLoader;
-import com.lichenaut.plantnerfer.util.ListenerUtil;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -12,62 +12,47 @@ import org.bukkit.event.block.MoistureChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Farmland extends ListenerUtil implements Listener {
+@RequiredArgsConstructor
+public class Farmland implements Listener {
 
     private final int ticksToDehydrate;
-
-    public Farmland(Main main, PlantLoader loader, int ticksToDehydrate) {
-        super(plugin, loader);
-        this.ticksToDehydrate = ticksToDehydrate;
-    }
+    private final Main main;
+    private final PlantLoader loader;
 
     @EventHandler
     private void onDehydrate(MoistureChangeEvent event) {
-        Block block = e.getBlock();
-        Block above = block.getRelative(0, 1, 0);
-        if (block.getType() != Material.FARMLAND
-                || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {
-            return;
-        }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (block.getType() != Material.FARMLAND
-                        || ((org.bukkit.block.data.type.Farmland) block.getBlockData()).getMoisture() != 0
-                        || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {
-                    cancel();
-                    return;
-                }
-                block.getWorld().dropItemNaturally(above.getLocation(),
-                        new ItemStack(loader.getCropReference().getCropMap().get(above.getType())));
-                above.setType(Material.AIR);
-                block.setType(Material.DIRT);
-            }
-        }.runTaskLater(plugin, ticksToDehydrate);
+        Block block = event.getBlock();
+        scheduleToDirt(block, block.getRelative(0, 1, 0));
     }
 
     @EventHandler
     private void onCropPlace(BlockPlaceEvent event) {
-        Block above = e.getBlock();
-        Block block = above.getRelative(0, -1, 0);
+        Block above = event.getBlock();
+        scheduleToDirt(above.getRelative(0, -1, 0), above);
+    }
+
+    private void scheduleToDirt(Block block, Block above) {
         if (block.getType() != Material.FARMLAND
                 || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {
             return;
         }
+
         new BukkitRunnable() {
             @Override
             public void run() {
+                Material aboveType = above.getType();
                 if (block.getType() != Material.FARMLAND
                         || ((org.bukkit.block.data.type.Farmland) block.getBlockData()).getMoisture() != 0
-                        || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {
+                        || !loader.getFarmlandReference().getFarmlandSet().contains(aboveType)) {
                     cancel();
                     return;
                 }
+
                 block.getWorld().dropItemNaturally(above.getLocation(),
-                        new ItemStack(loader.getCropReference().getCropMap().get(above.getType())));
+                        new ItemStack(loader.getCropReference().getCropMap().get(aboveType)));
                 above.setType(Material.AIR);
                 block.setType(Material.DIRT);
             }
-        }.runTaskLater(plugin, ticksToDehydrate);
+        }.runTaskLater(main, ticksToDehydrate);
     }
 }

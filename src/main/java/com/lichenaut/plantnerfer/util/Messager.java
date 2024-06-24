@@ -7,6 +7,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -68,8 +69,8 @@ public class Messager {
     private BaseComponent[] getColoredMessage(String key, Properties properties) {
         String message = properties.getProperty(key);
         if (message == null) {
-            main.getLog().warning("Missing message key: " + key + " in locale: " + locale);
-            return new BaseComponent[] { new TextComponent("") };
+            logger.error("Missing message key: {} in locale: {}", key, locale);
+            return new BaseComponent[]{new TextComponent("")};
         }
 
         Pattern pattern = Pattern.compile("<([^>]+)>(.*?)\\s*(?=<[^>]+>|\\z)");
@@ -80,7 +81,6 @@ public class Messager {
             resultList.add(matcher.group(1));
         }
         String[] resultArray = resultList.toArray(new String[0]);
-
         ComponentBuilder builder = new ComponentBuilder("");
         for (String part : resultArray) {
             switch (part.toLowerCase()) {
@@ -180,16 +180,21 @@ public class Messager {
 
     public BaseComponent[] concatArrays(BaseComponent[]... arrays) {
         ArrayList<BaseComponent> resultList = new ArrayList<>();
-        for (BaseComponent[] array : arrays) resultList.addAll(Arrays.asList(array));
+        for (BaseComponent[] array : arrays) {
+            resultList.addAll(Arrays.asList(array));
+        }
+
         return resultList.toArray(new BaseComponent[0]);
     }
 
     public ChatColor getLastColor(BaseComponent[] components) {
         for (int i = components.length - 1; i >= 0; i--) {
             BaseComponent component = components[i];
-            if (component.getColor() != null)
+            if (component.getColor() != null) {
                 return component.getColor();
+            }
         }
+
         return ChatColor.WHITE;
     }
 
@@ -198,15 +203,19 @@ public class Messager {
             return message;
         }
 
-        BaseComponent[] textComponent = TextComponent.fromLegacyText(messageText);
-        if (textComponent == null || textComponent.length == 0)
+        BaseComponent[] textComponent = ComponentSerializer.parse(messageText);
+        if (textComponent == null || textComponent.length == 0) {
             return message;
+        }
 
         ChatColor lastColor = getLastColor(message);
-        if (lastColor == null)
+        if (lastColor == null) {
             lastColor = ChatColor.WHITE;
-        for (BaseComponent component : textComponent)
+        }
+
+        for (BaseComponent component : textComponent) {
             component.setColor(lastColor);
+        }
         BaseComponent[] combined = new BaseComponent[message.length + textComponent.length];
         System.arraycopy(message, 0, combined, 0, message.length);
         System.arraycopy(textComponent, 0, combined, message.length, textComponent.length);

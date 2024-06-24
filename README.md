@@ -6,8 +6,9 @@ PlantNerfer allows for very configurable plant behavior, versions 1.14+.
 
 ## Command | Permission | Description
 
-> /pn help | plantnerfer.help | Links to this README. <br>
-> /pn reload | plantnerfer.reload | Reloads the plugin.
+> /pn | plantnerfer.command | Use PlantNerfer commands. <br>
+> /pn help | plantnerfer.command.help | Links to PlantNerfer documentation. <br>
+> /pn reload | plantnerfer.command.reload | Reloads the plugin.
 
 ## Plant Configuration
 

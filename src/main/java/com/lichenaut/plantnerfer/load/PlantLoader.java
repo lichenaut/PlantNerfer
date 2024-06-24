@@ -2,21 +2,25 @@ package com.lichenaut.plantnerfer.load;
 
 import com.lichenaut.plantnerfer.Main;
 import com.lichenaut.plantnerfer.util.MaterialReference;
-import com.lichenaut.plantnerfer.util.Messager;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
 
 @RequiredArgsConstructor
+@Getter
 public class PlantLoader {
 
+    private final MaterialReference cropRef = new MaterialReference();
+    private final MaterialReference farmlandRef = new MaterialReference();
+    private final MaterialReference hoeRef = new MaterialReference();
+    private final Logger logger;
     private final Main main;
-    private final MaterialReference matRef = new MaterialReference();// general reference
-    private final MaterialReference farmlandRef = new MaterialReference();// farmland crop reference
-    private final MaterialReference cropRef = new MaterialReference();// items that can be planted on farmland (dropped
-                                                                      // when farmland turns to dirt)
+    private final MaterialReference matRef = new MaterialReference();
 
     private void loadPlant(String plantName) {
         boolean canPlace = true;
@@ -35,16 +39,17 @@ public class PlantLoader {
         int noSkyGrowthRate = 100;
         int noSkyDeathRate = 0;
         int minY = -64;
-        int maxY = 255;
+        int maxY = 256;
         HashSet<String> disallowedBiomes = new HashSet<>();
         HashSet<String> restrictToWorlds = new HashSet<>();
-        TreeMap<Biome, PlantBiomeStats> biomeStats = new TreeMap<>();
-
-        ConfigurationSection plantSection = plugin.getConfig().getConfigurationSection(plantName);
+        HashMap<Biome, PlantBiomeStats> biomeStats = new HashMap<>();
+        ConfigurationSection plantSection = main.getConfig().getConfigurationSection(plantName);
         if (plantSection == null) {
             return;
         }
-        for (String key : plantSection.getKeys(false)) {// set biome-less data
+
+        HashMap<String, HashSet<Biome>> biomeGroups = main.getBiomeGroups();
+        for (String key : plantSection.getKeys(false)) {
             switch (key) {
                 case "can-place":
                     canPlace = plantSection.getBoolean(key);
@@ -102,12 +107,12 @@ public class PlantLoader {
                     break;
             }
 
-            if (plantSection.getConfigurationSection("biome-groups") != null) {
-                for (String group : Objects.requireNonNull(plantSection.getConfigurationSection("biome-groups"))
-                        .getKeys(false)) {// for each biome group, create an object for each biome in this group
-                    if (!plugin.getBiomeGroups().containsKey(group)) {
-                        plugin.getLogger().warning("Biome group '" + group + "' does not exist!");
-                        return;
+            ConfigurationSection biomeGroupSection = plantSection.getConfigurationSection("biome-groups");
+            if (biomeGroupSection != null) {
+                for (String group : biomeGroupSection.getKeys(false)) {
+                    if (!biomeGroups.containsKey(group)) {
+                        logger.error("Biome group '{}' does not exist! Skipping.", group);
+                        continue;
                     }
 
                     boolean canPlaceGroup = canPlace;
@@ -128,10 +133,7 @@ public class PlantLoader {
                     int minYGroup = minY;
                     int maxYGroup = maxY;
                     HashSet<String> restrictToWorldsGroup = restrictToWorlds;
-
-                    ConfigurationSection groupSection = Objects
-                            .requireNonNull(plantSection.getConfigurationSection("biome-groups"))
-                            .getConfigurationSection(group);
+                    ConfigurationSection groupSection = biomeGroupSection.getConfigurationSection(group);
                     if (groupSection != null) {
                         for (String groupKey : groupSection.getKeys(false)) {
                             switch (groupKey) {
@@ -193,7 +195,7 @@ public class PlantLoader {
                         }
                     }
 
-                    for (Biome biome : plugin.getBiomeGroups().get(group)) {
+                    for (Biome biome : main.getBiomeGroups().get(group)) {
                         biomeStats.put(biome,
                                 new PlantBiomeStats(canPlaceGroup, growthRateGroup, deathRateGroup, growthRateDarkGroup,
                                         deathRateDarkGroup, boneMealSuccessRateGroup, boneMealSuccessRateDarkGroup,
@@ -226,73 +228,24 @@ public class PlantLoader {
             }
         }
 
-        plugin.addPlant(new Plant(plugin, matRef.getMaterial(plantName), canPlace, growthRate, deathRate,
+        main.addPlant(new Plant(canPlace, growthRate, deathRate,
                 growthRateDark, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, needsHoeForDrops,
                 needsHoeForFarmlandRetain, minLight, maxLight, needsSky,
-                transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, restrictToWorlds, disallowedBiomes,
-                biomeStats));
+                transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, biomeStats, disallowedBiomes, main, matRef.getMaterial(plantName), restrictToWorlds));
     }
 
-    public void loadPlants(int version) {// Code for version 1.13 is an artifact, that version is not supported.
+    public void loadPlants(int version) {
         if (version >= 20) {
             matRef.buildMatMap20();
             farmlandRef.buildFarmlandCropSet20();
             cropRef.buildCropDropMap20();
             hoeRef.buildHoeSet16();
-        } else if (version == 19) {
-            matRef.buildMatMap19();
-            farmlandRef.buildFarmlandCropSet13();
-            cropRef.buildCropDropMap13();
-            hoeRef.buildHoeSet16();
-        } else if (version == 18) {
-            matRef.buildMatMap17();
-            farmlandRef.buildFarmlandCropSet13();
-            cropRef.buildCropDropMap13();
-            hoeRef.buildHoeSet16();
-        } else if (version == 17) {
-            matRef.buildMatMap17();
-            farmlandRef.buildFarmlandCropSet13();
-            cropRef.buildCropDropMap13();
-            hoeRef.buildHoeSet16();
-        } else if (version == 16) {
-            matRef.buildMatMap16();
-            farmlandRef.buildFarmlandCropSet13();
-            cropRef.buildCropDropMap13();
-            hoeRef.buildHoeSet16();
-        } else if (version == 15) {
-            matRef.buildMatMap14();
-            farmlandRef.buildFarmlandCropSet13();
-            cropRef.buildCropDropMap13();
-            hoeRef.buildHoeSet13();
-        } else if (version == 14) {
-            matRef.buildMatMap14();
-            farmlandRef.buildFarmlandCropSet13();
-            cropRef.buildCropDropMap13();
-            hoeRef.buildHoeSet13();
-        } else if (version == 13) {
-            matRef.buildMatMap13();
-            farmlandRef.buildFarmlandCropSet13();
-            cropRef.buildCropDropMap13();
-            hoeRef.buildHoeSet13();
+        } else {
+            throw new RuntimeException("Only versions 1.20 and above are supported!");
         }
 
-        for (String key : matRef.getMatMap().keySet())
+        for (String key : matRef.getMatMap().keySet()) {
             loadPlant(key);
-    }
-
-    public MaterialReference getReference() {
-        return matRef;
-    }
-
-    public MaterialReference getFarmlandReference() {
-        return farmlandRef;
-    }
-
-    public MaterialReference getCropReference() {
-        return cropRef;
-    }
-
-    public MaterialReference getHoeReference() {
-        return hoeRef;
+        }
     }
 }

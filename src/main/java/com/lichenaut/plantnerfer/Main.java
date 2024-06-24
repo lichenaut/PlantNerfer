@@ -8,6 +8,7 @@ import com.lichenaut.plantnerfer.load.PlantLoader;
 import com.lichenaut.plantnerfer.util.Copier;
 import com.lichenaut.plantnerfer.util.Messager;
 import com.lichenaut.plantnerfer.util.VersionGetter;
+import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,18 +20,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+@Getter
 public final class Main extends JavaPlugin {
 
     private final Logger log = getLogger();
     private Configuration config = getConfig();
-    private final TreeMap<String, HashSet<Biome>> biomeGroups = new TreeMap<>();// preserve order in anything biome
+    private final HashMap<String, HashSet<Biome>> biomeGroups = new HashMap<>();// preserve order in anything biome
                                                                                 // group-related so that results are
                                                                                 // consistent
     private static final HashMap<Material, Plant> plants = new HashMap<>();
@@ -157,23 +156,11 @@ public final class Main extends JavaPlugin {
             log.severe("Unsupported version detected: " + sVersion + "! Disabling plugin.");
     }
 
-    public Logger getLog() {
-        return log;
-    }
-
-    public TreeMap<String, HashSet<Biome>> getBiomeGroups() {
-        return biomeGroups;
-    }
-
     public void addPlant(Plant plant) {
         plants.put(plant.getMaterial(), plant);
     }
 
     public Plant getPlant(Material material) {
         return plants.get(material);
-    }
-
-    public Messager getMessageParser() {
-        return messager;
     }
 }

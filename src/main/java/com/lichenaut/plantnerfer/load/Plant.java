@@ -49,7 +49,7 @@ public class Plant {
         }
 
         PlantBiomeStats stats = biomeStats.get(biome);
-        HashSet<String> worlds = stats.getWorlds();
+        HashSet<String> worlds = stats.worlds();
         if (worlds.isEmpty() || worlds.contains(worldName)) {
             return property;
         } else {
