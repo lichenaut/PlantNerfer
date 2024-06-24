@@ -43,7 +43,7 @@ public class PlantLoader {
         HashSet<String> disallowedBiomes = new HashSet<>();
         HashSet<String> restrictToWorlds = new HashSet<>();
         HashMap<Biome, PlantBiomeStats> biomeStats = new HashMap<>();
-        ConfigurationSection plantSection = main.getConfig().getConfigurationSection(plantName);
+        ConfigurationSection plantSection = main.getConfiguration().getConfigurationSection(plantName);
         if (plantSection == null) {
             return;
         }

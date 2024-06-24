@@ -58,7 +58,7 @@ public class BlockPlace implements Listener {
         }
 
         int blockHeight = block.getY();
-        if (world.getHighestBlockAt(block.getLocation()).getY() != blockHeight && plant.getNeedsSky(biome, worldName, block)) {
+        if (world.getHighestBlockAt(block.getLocation()).getY() + 1 != blockHeight && plant.getNeedsSky(biome, worldName, block)) {
             listenerUtil.verboseDenial(messager.getPlantNeedsSky(), player);
             event.setCancelled(true);
             return;

@@ -220,3 +220,5 @@ Plants with completely empty config information will use vanilla mechanics.
 Biome group settings will inherit default values from the plant settings, unless they are defined in the biome group settings.
 
 If a biome is in multiple biome groups applied to a plant, only the last group's biome will be used for the plant.
+
+The "*" and "_" characters in "cannot happen" messages mean "any" and "by default", respectively.

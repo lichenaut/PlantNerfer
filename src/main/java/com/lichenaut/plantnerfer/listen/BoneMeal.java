@@ -55,7 +55,7 @@ public class BoneMeal implements Listener {
             return;
         }
 
-        if (world.getHighestBlockAt(block.getLocation()).getY() != block.getY() && plant.getNeedsSky(biome, worldName, block)) {
+        if (world.getHighestBlockAt(block.getLocation()).getY() + 1 != block.getY() && plant.getNeedsSky(biome, worldName, block)) {
             if (player != null) {
                 listenerUtil.verboseDenial(messager.getPlantNeedsSky(), player);
             }

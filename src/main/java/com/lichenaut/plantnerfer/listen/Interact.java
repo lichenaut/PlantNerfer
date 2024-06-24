@@ -60,9 +60,9 @@ public class Interact implements Listener {
 
         Biome biome = block.getBiome();
         if ((player.hasPermission("plantnerfer.bonemealrate")
-                && !main.getConfig().getBoolean("global-bone-meal-rate-reporting"))
+                && !main.getConfiguration().getBoolean("global-bone-meal-rate-reporting"))
                 || (!player.hasPermission("plantnerfer.bonemealrate.disabled")
-                        && main.getConfig().getBoolean("global-bone-meal-rate-reporting"))) {
+                        && main.getConfiguration().getBoolean("global-bone-meal-rate-reporting"))) {
             BaseComponent[] message = (block.getRelative(0, 1, 0).getLightLevel() < 8) ? messager.combineMessage(messager.getBoneMealSuccessRateDark(),
                     plant.getDarkBoneMealRate(biome, worldName) + "%") : messager.combineMessage(messager.getBoneMealSuccessRate(), plant.getBoneMealRate(biome, worldName) + "%");
             messager.sendMsg(player, message, true);

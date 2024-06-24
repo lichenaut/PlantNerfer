@@ -18,14 +18,14 @@ public class ListenerUtil {
         }
 
         public boolean isInvalidWorld(String worldName) {
-                List<String> worlds = main.getConfig().getStringList("restrict-plugin-to-worlds");
+                List<String> worlds = main.getConfiguration().getStringList("restrict-plugin-to-worlds");
                 return !worlds.isEmpty() && !worlds.contains(worldName);
         }
 
         public void verboseDenial(BaseComponent[] message, Player player) {
-                if (!player.isOp() && ((!main.getConfig().getBoolean("verbose-denial")
+                if (!player.isOp() && ((!main.getConfiguration().getBoolean("verbose-denial")
                                 && player.hasPermission("plantnerfer.verbose"))
-                                || (main.getConfig().getBoolean("verbose-denial")
+                                || (main.getConfiguration().getBoolean("verbose-denial")
                                                 && !player.hasPermission("plantnerfer.verbose.disabled")))) {
                         messager.sendMsg(player, message, true);
                 }

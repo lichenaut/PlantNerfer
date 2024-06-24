@@ -7,14 +7,12 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
@@ -46,9 +44,9 @@ public class Messager {
 
     public void loadLocaleMessages() throws IOException {
         Properties properties = new Properties();
-        try (FileInputStream inputStream = new FileInputStream(
-                new File(main.getDataFolder(), "locales" + separator + locale + ".properties"))) {
-            properties.load(inputStream);
+        try (Reader reader = new BufferedReader(new InputStreamReader(
+                new FileInputStream(new File(main.getDataFolder(), "locales" + separator + locale + ".properties")), StandardCharsets.UTF_8))) {
+            properties.load(reader);
         }
         prefix = getColoredMessage("prefix", properties);
         helpCommand = getColoredMessage("helpCommand", properties);
@@ -203,7 +201,7 @@ public class Messager {
             return message;
         }
 
-        BaseComponent[] textComponent = ComponentSerializer.parse(messageText);
+        BaseComponent[] textComponent = TextComponent.fromLegacyText(messageText);
         if (textComponent == null || textComponent.length == 0) {
             return message;
         }

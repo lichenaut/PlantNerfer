@@ -39,8 +39,9 @@ public class Plant {
     private final Material material;
     private final HashSet<String> restrictToWorlds;
 
-    private <T> T getProperty(Biome biome, String worldName, T property, T defaultValue) {
-        if (!biomeStats.containsKey(biome)) {
+    private boolean getProperty(Biome biome, String worldName, String propertyName, boolean property, boolean defaultValue) {
+        PlantBiomeStats stats = biomeStats.get(biome);
+        if (stats == null) {
             if (restrictToWorlds.isEmpty() || restrictToWorlds.contains(worldName)) {
                 return property;
             } else {
@@ -48,93 +49,137 @@ public class Plant {
             }
         }
 
-        PlantBiomeStats stats = biomeStats.get(biome);
-        HashSet<String> worlds = stats.worlds();
+        HashSet<String> worlds = stats.restrictToWorlds();
         if (worlds.isEmpty() || worlds.contains(worldName)) {
-            return property;
+            return switch (propertyName) {
+                case "canPlace" -> stats.canPlace();
+                case "needsHoeForDrops" -> stats.needsHoeForDrops();
+                case "needsHoeForFarmlandRetain" -> stats.needsHoeForFarmlandRetain();
+                case "needsSky" -> stats.needsSky();
+                case "transparentBlocksCountAsSky" -> stats.transparentBlocksCountAsSky();
+                default -> defaultValue;
+            };
+        } else {
+            return defaultValue;
+        }
+    }
+
+    private int getProperty(Biome biome, String worldName, String propertyName, int property, int defaultValue) {
+        PlantBiomeStats stats = biomeStats.get(biome);
+        if (stats == null) {
+            if (restrictToWorlds.isEmpty() || restrictToWorlds.contains(worldName)) {
+                return property;
+            } else {
+                return defaultValue;
+            }
+        }
+
+        HashSet<String> worlds = stats.restrictToWorlds();
+        if (worlds.isEmpty() || worlds.contains(worldName)) {
+            return switch (propertyName) {
+                case "growthRate" -> stats.growthRate();
+                case "deathRate" -> stats.deathRate();
+                case "darkGrowthRate" -> stats.darkGrowthRate();
+                case "darkDeathRate" -> stats.darkDeathRate();
+                case "boneMealRate" -> stats.boneMealRate();
+                case "darkBoneMealRate" -> stats.darkBoneMealRate();
+                case "noSkyGrowthRate" -> stats.noSkyGrowthRate();
+                case "noSkyDeathRate" -> stats.noSkyDeathRate();
+                case "minLight" -> stats.minLight();
+                case "maxLight" -> stats.maxLight();
+                case "minY" -> stats.minY();
+                case "maxY" -> stats.maxY();
+                default -> defaultValue;
+            };
         } else {
             return defaultValue;
         }
     }
 
     public boolean getCanPlace(Biome biome, String worldName) {
-        return getProperty(biome, worldName, canPlace, true);
+        return getProperty(biome, worldName, "canPlace", canPlace, true);
     }
 
     public int getGrowthRate(Biome biome, String worldName) {
-        return getProperty(biome, worldName, growthRate, 100);
+        return getProperty(biome, worldName, "growthRate", growthRate, 100);
     }
 
     public int getDeathRate(Biome biome, String worldName) {
-        return getProperty(biome, worldName, deathRate, 0);
+        return getProperty(biome, worldName, "deathRate", deathRate, 0);
     }
 
     public int getDarkGrowthRate(Biome biome, String worldName) {
-        return getProperty(biome, worldName, darkGrowthRate, 100);
+        return getProperty(biome, worldName, "darkGrowthRate", darkGrowthRate, 100);
     }
 
     public int getDarkDeathRate(Biome biome, String worldName) {
-        return getProperty(biome, worldName, darkDeathRate, 0);
+        return getProperty(biome, worldName, "darkDeathRate", darkDeathRate, 0);
     }
 
     public int getBoneMealRate(Biome biome, String worldName) {
-        return getProperty(biome, worldName, boneMealRate, 100);
+        return getProperty(biome, worldName, "boneMealRate", boneMealRate, 100);
     }
 
     public int getDarkBoneMealRate(Biome biome, String worldName) {
-        return getProperty(biome, worldName, darkBoneMealRate, 100);
+        return getProperty(biome, worldName, "darkBoneMealRate", darkBoneMealRate, 100);
     }
 
     public boolean getNeedsHoeForDrops(Biome biome, String worldName) {
-        return getProperty(biome, worldName, needsHoeForDrops, false);
+        return getProperty(biome, worldName, "needsHoeForDrops", needsHoeForDrops, false);
     }
 
     public boolean getNeedsHoeForFarmlandRetain(Biome biome, String worldName) {
-        return getProperty(biome, worldName, needsHoeForFarmlandRetain, false);
+        return getProperty(biome, worldName, "needsHoeForFarmlandRetain", needsHoeForFarmlandRetain, false);
     }
 
     public int getMinLight(Biome biome, String worldName) {
-        return getProperty(biome, worldName, minLight, 0);
+        return getProperty(biome, worldName, "minLight", minLight, 0);
     }
 
     public int getMaxLight(Biome biome, String worldName) {
-        return getProperty(biome, worldName, maxLight, 15);
+        return getProperty(biome, worldName, "maxLight", maxLight, 15);
     }
 
     public boolean getNeedsSky(Biome biome, String worldName, Block block) {
-        if (getTransparentBlocksCountAsSky(biome, worldName)) {
-            int maxHeight = block.getWorld().getMaxHeight();
-            while (block.getY() <= maxHeight) {
-                if (block.getType().isOccluding()) {
-                    return true;
-                }
-
-                block = block.getRelative(0, 1, 0);
-            }
-
+        boolean needsSkyAccess = getProperty(biome, worldName, "needsSky", needsSky, false);
+        if (!needsSkyAccess) {
             return false;
         }
 
-        return getProperty(biome, worldName, needsSky, false);
+        boolean transparentBlocksCountAsSky = getTransparentBlocksCountAsSky(biome, worldName);
+        if (!transparentBlocksCountAsSky) {
+            return true;
+        }
+
+        int maxHeight = block.getWorld().getMaxHeight();
+        while (block.getY() <= maxHeight) {
+            if (block.getType().isOccluding()) {
+                return true;
+            }
+
+            block = block.getRelative(0, 1, 0);
+        }
+
+        return false;
     }
 
-    public boolean getTransparentBlocksCountAsSky(Biome biome, String worldName) {
-        return getProperty(biome, worldName, transparentBlocksCountAsSky, true);
+    private boolean getTransparentBlocksCountAsSky(Biome biome, String worldName) {
+        return getProperty(biome, worldName, "transparentBlocksCountAsSky", transparentBlocksCountAsSky, true);
     }
 
     public int getNoSkyGrowthRate(Biome biome, String worldName) {
-        return getProperty(biome, worldName, noSkyGrowthRate, 100);
+        return getProperty(biome, worldName, "noSkyGrowthRate", noSkyGrowthRate, 100);
     }
 
     public int getNoSkyDeathRate(Biome biome, String worldName) {
-        return getProperty(biome, worldName, noSkyDeathRate, 0);
+        return getProperty(biome, worldName, "noSkyDeathRate", noSkyDeathRate, 0);
     }
 
     public int getMinY(Biome biome, String worldName) {
-        return getProperty(biome, worldName, minY, Objects.requireNonNull(main.getServer().getWorld(worldName)).getMinHeight());
+        return getProperty(biome, worldName, "minY", minY, Objects.requireNonNull(main.getServer().getWorld(worldName)).getMinHeight());
     }
 
     public int getMaxY(Biome biome, String worldName) {
-        return getProperty(biome, worldName, maxY, Objects.requireNonNull(main.getServer().getWorld(worldName)).getMaxHeight());
+        return getProperty(biome, worldName, "maxY", maxY, Objects.requireNonNull(main.getServer().getWorld(worldName)).getMaxHeight());
     }
 }

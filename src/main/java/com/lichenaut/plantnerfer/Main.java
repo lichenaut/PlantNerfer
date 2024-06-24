@@ -41,7 +41,7 @@ public final class Main extends JavaPlugin {
                                                                  // destroyed at low light levels (the vanilla mechanic)
                                                                  // because it's so common.
     private final String separator = FileSystems.getDefault().getSeparator();
-    private Configuration config;
+    private Configuration configuration = getConfig();
     private CompletableFuture<Void> mainFuture = CompletableFuture.completedFuture(null);
     private Messager messager;
     private PluginCommand pnCommand;
@@ -61,9 +61,12 @@ public final class Main extends JavaPlugin {
             return;
         }
 
-        getConfig().options().copyDefaults();
+        getConfiguration().options().copyDefaults();
         saveDefaultConfig();
-        pnCommand = getCommand("pn");
+        pnCommand = getCommand("plantnerfer");
+        assert pnCommand != null;
+        pnCommand.setExecutor(new PNCmd(this, messager));
+        pnCommand.setTabCompleter(new PNTab());
         reloadable();
     }
 
@@ -76,9 +79,10 @@ public final class Main extends JavaPlugin {
     }
 
     public void reloadable() {
-        config = getConfig();
-        if (config.getBoolean("disable-plugin")) {
+        configuration = getConfig();
+        if (configuration.getBoolean("disable-plugin")) {
             logger.info("Plugin disabled in config.yml.");
+            Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -96,14 +100,14 @@ public final class Main extends JavaPlugin {
                     copyLocale(localesFolderPath, localesSeparator, "es.properties");
                     copyLocale(localesFolderPath, localesSeparator, "fr.properties");
                     copyLocale(localesFolderPath, localesSeparator, "ru.properties");
-                    messager = new Messager(logger,  this, config.getString("locale"), separator);
+                    messager = new Messager(logger,  this, configuration.getString("locale"), separator);
                     try {
                         messager.loadLocaleMessages();
                     } catch (IOException e) {
                         throw new RuntimeException("IOException: Failed to load locale messages!", e);
                     }
 
-                    ConfigurationSection biomeGroupList = config.getConfigurationSection("biome-group-list");
+                    ConfigurationSection biomeGroupList = configuration.getConfigurationSection("biome-group-list");
                     if (biomeGroupList != null) {
                         for (String group : biomeGroupList.getKeys(false)) {
                             HashSet<Biome> biomes = new HashSet<>();
@@ -117,17 +121,15 @@ public final class Main extends JavaPlugin {
                     plantLoader.loadPlants();
 
                     ListenerUtil listenerUtil = new ListenerUtil(this, messager);
-                    pMan.registerEvents(new BlockGrow(config.getBoolean("death-turns-into-bush"), listenerUtil, this), this);
+                    pMan.registerEvents(new BlockGrow(configuration.getBoolean("death-turns-into-bush"), listenerUtil, this), this);
                     pMan.registerEvents(new BlockPlace(listenerUtil, this, messager), this);
                     pMan.registerEvents(new BoneMeal(listenerUtil, this, messager), this);
                     pMan.registerEvents(new Interact(listenerUtil, this, messager), this);
-                    pMan.registerEvents(new BlockBreak(config.getInt("farmed-farmland-turns-into-dirt"), listenerUtil, this, messager, plantLoader), this);
-                    int ticksToDehydrate = config.getInt("ticks-dehydrated-crop-dirt");
+                    pMan.registerEvents(new BlockBreak(configuration.getInt("farmed-farmland-turns-into-dirt"), listenerUtil, this, messager, plantLoader), this);
+                    int ticksToDehydrate = configuration.getInt("ticks-dehydrated-crop-dirt");
                     if (ticksToDehydrate >= 0) {
                         pMan.registerEvents(new Farmland(ticksToDehydrate, this, plantLoader), this);
                     }
-                    pnCommand.setExecutor(new PNCmd(this, messager));
-                    pnCommand.setTabCompleter(new PNTab());
                 });
     }
 

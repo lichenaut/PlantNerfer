@@ -38,7 +38,7 @@ public class BlockBreak implements Listener {
 
         Player player = event.getPlayer();
         Biome biome = above.getBiome();
-        boolean holdingHoe = plantLoader.getHoeReference().getHoeSet()
+        boolean holdingHoe = plantLoader.getHoeRef().getHoeSet()
                 .contains(player.getInventory().getItemInMainHand().getType());
         if (!holdingHoe && plant.getNeedsHoeForDrops(biome, worldName)) {
             event.setCancelled(true);

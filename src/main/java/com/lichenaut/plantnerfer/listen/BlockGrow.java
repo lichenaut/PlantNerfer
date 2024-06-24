@@ -60,7 +60,7 @@ public class BlockGrow implements Listener {
             return;
         }
 
-        boolean isHighestBlock = world.getHighestBlockAt(block.getLocation()).getY() == block.getY();
+        boolean isHighestBlock = world.getHighestBlockAt(block.getLocation()).getY() + 1 == block.getY();
         if (!isHighestBlock && listenerUtil.chance(plant.getNoSkyDeathRate(biome, worldName))) {
             killPlant(event, block);
             return;

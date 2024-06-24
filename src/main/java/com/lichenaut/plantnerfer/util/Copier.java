@@ -1,15 +1,17 @@
 package com.lichenaut.plantnerfer.util;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class Copier {
 
     public static void smallCopy(InputStream in, String outFilePath) throws IOException {
-        try (BufferedInputStream bufferedIn = new BufferedInputStream(in); FileOutputStream out = new FileOutputStream(outFilePath); BufferedOutputStream bufferedOut = new BufferedOutputStream(out)) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = bufferedIn.read(buffer)) != -1) {
-                bufferedOut.write(buffer, 0, bytesRead);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+             Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFilePath), StandardCharsets.UTF_8))) {
+            char[] buffer = new char[1024];
+            int charsRead;
+            while ((charsRead = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, charsRead);
             }
         }
     }
