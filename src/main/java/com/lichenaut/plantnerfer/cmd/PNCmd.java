@@ -3,8 +3,6 @@ package com.lichenaut.plantnerfer.cmd;
 import com.lichenaut.plantnerfer.Main;
 import com.lichenaut.plantnerfer.util.Messager;
 import lombok.RequiredArgsConstructor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +25,7 @@ public class PNCmd implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 0) {
+        if (args.length != 1) {
             commandFuture = commandFuture
                     .thenAcceptAsync(processed -> messager.sendMsg(sender, messager.getInvalidCommand(), true));
             return true;
@@ -50,10 +48,11 @@ public class PNCmd implements CommandExecutor {
             commandFuture = commandFuture
                     .thenAcceptAsync(processed -> messager.sendMsg(sender, messager.getReloadCommand(), true));
             return true;
-        } else
-            messageSender(sender, invalidMessage);
+        }
 
-        return false;
+        commandFuture = commandFuture
+                .thenAcceptAsync(processed -> messager.sendMsg(sender, messager.getInvalidCommand(), true));
+        return true;
     }
 
     public boolean checkDisallowed(CommandSender sender, String permission) {

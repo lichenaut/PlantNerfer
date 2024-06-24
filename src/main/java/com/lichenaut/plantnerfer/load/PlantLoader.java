@@ -2,13 +2,14 @@ package com.lichenaut.plantnerfer.load;
 
 import com.lichenaut.plantnerfer.Main;
 import com.lichenaut.plantnerfer.util.MaterialReference;
+import com.lichenaut.plantnerfer.util.Messager;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 
+@RequiredArgsConstructor
 public class PlantLoader {
 
     private final Main main;
@@ -16,11 +17,6 @@ public class PlantLoader {
     private final MaterialReference farmlandRef = new MaterialReference();// farmland crop reference
     private final MaterialReference cropRef = new MaterialReference();// items that can be planted on farmland (dropped
                                                                       // when farmland turns to dirt)
-    private final MaterialReference hoeRef = new MaterialReference();
-
-    public PlantLoader(Main main) {
-        this.plugin = plugin;
-    }
 
     private void loadPlant(String plantName) {
         boolean canPlace = true;
@@ -34,13 +30,13 @@ public class PlantLoader {
         boolean needsHoeForFarmlandRetain = false;
         int minLight = 0;
         int maxLight = 15;
-        boolean ignoreLightWhenNight = true;
         boolean needsSky = false;
         boolean transparentBlocksCountAsSky = true;
         int noSkyGrowthRate = 100;
         int noSkyDeathRate = 0;
         int minY = -64;
         int maxY = 255;
+        HashSet<String> disallowedBiomes = new HashSet<>();
         HashSet<String> restrictToWorlds = new HashSet<>();
         TreeMap<Biome, PlantBiomeStats> biomeStats = new TreeMap<>();
 
@@ -83,9 +79,6 @@ public class PlantLoader {
                 case "max-light":
                     maxLight = plantSection.getInt(key);
                     break;
-                case "place-and-bone-meal-ignores-min-light-at-night":
-                    ignoreLightWhenNight = plantSection.getBoolean(key);
-                    break;
                 case "needs-sky":
                     needsSky = plantSection.getBoolean(key);
                     break;
@@ -117,7 +110,7 @@ public class PlantLoader {
                         return;
                     }
 
-                    boolean canPlaceGroup = canPlace;// get biome group defaults from general plant settings
+                    boolean canPlaceGroup = canPlace;
                     int growthRateGroup = growthRate;
                     int growthRateDarkGroup = growthRateDark;
                     int deathRateGroup = deathRate;
@@ -128,7 +121,6 @@ public class PlantLoader {
                     boolean needsHoeForFarmlandRetainGroup = needsHoeForFarmlandRetain;
                     int minLightGroup = minLight;
                     int maxLightGroup = maxLight;
-                    boolean ignoreLightWhenNightGroup = ignoreLightWhenNight;
                     boolean needsSkyGroup = needsSky;
                     boolean transparentBlocksCountAsSkyGroup = transparentBlocksCountAsSky;
                     int noSkyGrowthRateGroup = 100;
@@ -141,8 +133,7 @@ public class PlantLoader {
                             .requireNonNull(plantSection.getConfigurationSection("biome-groups"))
                             .getConfigurationSection(group);
                     if (groupSection != null) {
-                        for (String groupKey : groupSection.getKeys(false)) {// change biome group data away from
-                                                                             // defaults to config info
+                        for (String groupKey : groupSection.getKeys(false)) {
                             switch (groupKey) {
                                 case "can-place":
                                     canPlaceGroup = groupSection.getBoolean(groupKey);
@@ -177,9 +168,6 @@ public class PlantLoader {
                                 case "max-light":
                                     maxLightGroup = groupSection.getInt(groupKey);
                                     break;
-                                case "place-and-bone-meal-ignores-min-light-at-night":
-                                    ignoreLightWhenNightGroup = groupSection.getBoolean(groupKey);
-                                    break;
                                 case "needs-sky":
                                     needsSkyGroup = groupSection.getBoolean(groupKey);
                                     break;
@@ -205,23 +193,43 @@ public class PlantLoader {
                         }
                     }
 
-                    for (Biome biome : plugin.getBiomeGroups().get(group))
+                    for (Biome biome : plugin.getBiomeGroups().get(group)) {
                         biomeStats.put(biome,
                                 new PlantBiomeStats(canPlaceGroup, growthRateGroup, deathRateGroup, growthRateDarkGroup,
                                         deathRateDarkGroup, boneMealSuccessRateGroup, boneMealSuccessRateDarkGroup,
                                         needsHoeForDropsGroup, needsHoeForFarmlandRetainGroup, minLightGroup,
-                                        maxLightGroup, ignoreLightWhenNightGroup, needsSkyGroup,
+                                        maxLightGroup, needsSkyGroup,
                                         transparentBlocksCountAsSkyGroup, noSkyGrowthRateGroup, noSkyDeathRateGroup,
-                                        minYGroup, maxYGroup, restrictToWorldsGroup));// add biome-plant data to
-                                                                                      // biomeStats
+                                        minYGroup, maxYGroup, restrictToWorldsGroup));
+
+                        if (!canPlaceGroup) {
+                            if (restrictToWorldsGroup.isEmpty()) {
+                                disallowedBiomes.add("*:" + biome.name());
+                            } else {
+                                for (String worldName : restrictToWorldsGroup) {
+                                    disallowedBiomes.add(worldName + ":" + biome.name());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!canPlace) {
+            if (restrictToWorlds.isEmpty()) {
+                disallowedBiomes.add("*:_");
+            } else {
+                for (String worldName : restrictToWorlds) {
+                    disallowedBiomes.add(worldName + ":_");
                 }
             }
         }
 
         plugin.addPlant(new Plant(plugin, matRef.getMaterial(plantName), canPlace, growthRate, deathRate,
                 growthRateDark, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, needsHoeForDrops,
-                needsHoeForFarmlandRetain, minLight, maxLight, ignoreLightWhenNight, needsSky,
-                transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, restrictToWorlds,
+                needsHoeForFarmlandRetain, minLight, maxLight, needsSky,
+                transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, restrictToWorlds, disallowedBiomes,
                 biomeStats));
     }
 

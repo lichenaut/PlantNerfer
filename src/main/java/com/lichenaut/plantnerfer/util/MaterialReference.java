@@ -175,8 +175,4 @@ public class MaterialReference {
     public Material getMaterial(String name) {
         return matMap.get(name);
     }
-
-    public boolean isNotPlantBlock(Material material) {
-        return !matMap.containsValue(material);
-    }
 }

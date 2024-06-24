@@ -37,7 +37,6 @@ Two biome groups are created, "TestGroup" and "second-group". "TestGroup" contai
 > &nbsp;&nbsp;needs-hoe-for-drops: true <br>
 > &nbsp;&nbsp;min-light: 9 <br>
 > &nbsp;&nbsp;max-light: 15 <br>
-> &nbsp;&nbsp;place-and-bone-meal-ignores-min-light-at-night: true <br>
 > &nbsp;&nbsp;needs-sky: false <br>
 > &nbsp;&nbsp;transparent-blocks-count-as-sky: false <br>
 > &nbsp;&nbsp;no-sky-growth-rate: 10 <br>
@@ -89,7 +88,7 @@ Similar to growth-rate, but applies to plants in light levels under 8.
 
 > death-rate: #
 
-A value of 100 would make the plant disappear whenever it tries to progress to the next maturation stage. A value of 5 would make the plant disappear 1 in 20 growths.
+A value of 100 would make the plant disappear whenever it tries to progress to the next maturation stage. A value of 5 would make the plant disappear 1 in 20 growth attempts.
 
 ### Death Rate Dark
 
@@ -132,12 +131,6 @@ The minimum light level allowed for plant placement, plant growth, and plant bon
 > max-light: #
 
 The maximum light level allowed for plant placement, plant growth, and plant bone meal-ing.
-
-### Place Plant/Bone Meal Plant Ignores Light Requirements at Night
-
-> place-and-bone-meal-ignores-min-light-at-night: true/false
-
-If true, the plant can be placed and bone meal-ed at any light level at night.
 
 ### Needs Sky
 
@@ -191,12 +184,11 @@ Any settings for a plant can also be defined in this section for per-group confi
 
 ## Notes
 
-Note: 'dark' light levels are between and including 0 and 7.
+Note 0: PlantNerfer exists on top of vanilla mechanics; it does not replace them.
+
+Note 1: 'dark' light levels are between and including 0 and 7.
 
 Note 2: different plants have different numbers of growth stages, which means the same rate can affect some plants more than others.
-
-Formula for the chance a plant survives to maturation: (1 - (death rate / 100)) ^ (number of growth stages).
-For example, a 'death-rate' of 8 with 8 growth stages makes maturation about a coin flip... unless you have also slowed its growth rate with this plugin.
 
 Note 3: for a successful bone meal fertilization growth, the plant must go through bone meal rate, growth rate, and vanilla bone meal chance checks.
 
@@ -213,7 +205,6 @@ Note 4: These are the defaults, for any values not defined by the user:
 > needs-hoe-for-farmland-retain: false <br>
 > min-light: 0 <br>
 > max-light: 15 <br>
-> place-and-bone-meal-ignores-min-light-at-night: true <br>
 > needs-sky: false <br>
 > transparent-blocks-count-as-sky: true <br>
 > no-sky-growth-rate: 100 <br>
@@ -226,3 +217,5 @@ Note 4: These are the defaults, for any values not defined by the user:
 Plants with completely empty config information will use vanilla mechanics.
 
 Biome group settings will inherit default values from the plant settings, unless they are defined in the biome group settings.
+
+If a biome is in multiple biome groups applied to a plant, only the last group's biome will be used for the plant.

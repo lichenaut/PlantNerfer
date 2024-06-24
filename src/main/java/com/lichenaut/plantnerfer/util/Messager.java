@@ -34,16 +34,12 @@ public class Messager {
     private BaseComponent[] reloadCommand;
     private BaseComponent[] farmlandIntoDirt;
     private BaseComponent[] plantDroppedNothing;
-    private BaseComponent[] cannotPlaceAnyBiome;
-    private BaseComponent[] tryOtherBiomes;
     private BaseComponent[] plantNeedsSky;
-    private BaseComponent[] cannotPlaceFollowingBiomes;
-    private BaseComponent[] tryFollowingBiomes;
-    private BaseComponent[] cannotPlaceDark;
-    private BaseComponent[] cannotPlaceBright;
-    private BaseComponent[] cannotPlaceBelow;
-    private BaseComponent[] cannotPlaceAbove;
-    private BaseComponent[] cannotPlaceSpecific;
+    private BaseComponent[] cannotFollowingBiomes;
+    private BaseComponent[] cannotDark;
+    private BaseComponent[] cannotBright;
+    private BaseComponent[] cannotBelow;
+    private BaseComponent[] cannotAbove;
     private BaseComponent[] boneMealSuccessRate;
     private BaseComponent[] boneMealSuccessRateDark;
 
@@ -59,16 +55,12 @@ public class Messager {
         reloadCommand = getColoredMessage("reloadCommand", properties);
         farmlandIntoDirt = getColoredMessage("farmlandIntoDirt", properties);
         plantDroppedNothing = getColoredMessage("plantDroppedNothing", properties);
-        cannotPlaceAnyBiome = getColoredMessage("cannotPlaceAnyBiome", properties);
-        tryOtherBiomes = getColoredMessage("tryOtherBiomes", properties);
         plantNeedsSky = getColoredMessage("plantNeedsSky", properties);
-        cannotPlaceFollowingBiomes = getColoredMessage("cannotPlaceFollowingBiomes", properties);
-        tryFollowingBiomes = getColoredMessage("tryFollowingBiomes", properties);
-        cannotPlaceDark = getColoredMessage("cannotPlaceDark", properties);
-        cannotPlaceBright = getColoredMessage("cannotPlaceBright", properties);
-        cannotPlaceBelow = getColoredMessage("cannotPlaceBelow", properties);
-        cannotPlaceAbove = getColoredMessage("cannotPlaceAbove", properties);
-        cannotPlaceSpecific = getColoredMessage("cannotPlaceSpecific", properties);
+        cannotFollowingBiomes = getColoredMessage("cannotFollowingBiomes", properties);
+        cannotDark = getColoredMessage("cannotDark", properties);
+        cannotBright = getColoredMessage("cannotBright", properties);
+        cannotBelow = getColoredMessage("cannotBelow", properties);
+        cannotAbove = getColoredMessage("cannotAbove", properties);
         boneMealSuccessRate = getColoredMessage("boneMealSuccessRate", properties);
         boneMealSuccessRateDark = getColoredMessage("boneMealSuccessRateDark", properties);
     }

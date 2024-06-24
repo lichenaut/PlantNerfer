@@ -2,9 +2,10 @@ package com.lichenaut.plantnerfer.listen;
 
 import com.lichenaut.plantnerfer.Main;
 import com.lichenaut.plantnerfer.load.Plant;
-import com.lichenaut.plantnerfer.load.PlantLoader;
 import com.lichenaut.plantnerfer.util.ListenerUtil;
 import com.lichenaut.plantnerfer.util.Messager;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -12,87 +13,68 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import java.util.Arrays;
+@RequiredArgsConstructor
+public class BlockPlace implements Listener {
 
-public class BlockPlace extends ListenerUtil implements Listener {
-
+    private final ListenerUtil listenerUtil;
+    private final Main main;
     private final Messager messager;
 
-    public BlockPlace(Main main, PlantLoader loader) {
-        super(plugin, loader);
-        this.messager = plugin.getMessageParser();
-    }
-
     @EventHandler
-    private void onPlantPlace(BlockPlaceEvent e) {
-        Block block = e.getBlock();
-        if (plugin.getPlant(block.getType()) == null || loader.getReference().isNotPlantBlock(block.getType())) {
-            return;
-        }
-        String worldName = block.getWorld().getName();
-        if (invalidWorld(worldName)) {
-            return;
-        }
-        Plant plant = plugin.getPlant(block.getType());
+    private void onPlantPlace(BlockPlaceEvent event) {
+        Block block = event.getBlock();
+        Plant plant = main.getPlant(block.getType());
         if (plant == null) {
             return;
         }
 
+        World world = block.getWorld();
+        String worldName = world.getName();
+        if (listenerUtil.isInvalidWorld(worldName)) {
+            return;
+        }
+
         Biome biome = block.getBiome();
-        Player player = e.getPlayer();
-        if (!plant.getCanPlace(biome)) {
-            String[] biomes = plant.getBiomes();
-            if (biomes == null) {
-                verboseDenial(messager.getCannotPlaceAnyBiome(), player);
-            } else {
-                if (biomes[1] != null)
-                    verboseDenial(Arrays.toString(messager.getCannotPlaceFollowingBiomes()) + biomes[1], player);
-                if (biomes[0] != null)
-                    verboseDenial(Arrays.toString(messager.getTryFollowingBiomes()) + biomes[0], player);
-                else
-                    verboseDenial(messager.getTryOtherBiomes(), player);
-            }
-            e.setCancelled(true);
+        Player player = event.getPlayer();
+        if (!plant.getCanPlace(biome, worldName)) {
+            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotFollowingBiomes(), String.valueOf(plant.getDisallowedBiomes())), player); //TODO: set -> string beforehand?
+            event.setCancelled(true);
             return;
         }
 
-        if (plant.getNeedsSky(biome, block)
-                && block.getWorld().getHighestBlockAt(block.getLocation()).getY() > block.getY()) {
-            verboseDenial(messager.getPlantNeedsSky(), player);
-            e.setCancelled(true);
+        int lightLevel = block.getRelative(0, 1, 0).getLightLevel();
+        int minLight = plant.getMinLight(biome, worldName);
+        if (lightLevel < minLight) {
+            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotDark(), minLight + "."), player);
+            event.setCancelled(true);
             return;
         }
 
-        if (notIgnoreLightWhenNight(block, plant)) {
-            verboseDenial(messager.combineMessage(messager.getCannotPlaceDark(), plant.getMinLight(biome) + "."),
-                    player);
-            e.setCancelled(true);
-            return;
-        }
-        int maxLight = plant.getMaxLight(biome);
-        if (block.getRelative(0, 1, 0).getLightLevel() > maxLight) {
-            verboseDenial(messager.combineMessage(messager.getCannotPlaceBright(), maxLight + "."), player);
-            e.setCancelled(true);
+        int maxLight = plant.getMaxLight(biome, worldName);
+        if (lightLevel > maxLight) {
+            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotBright(), maxLight + "."), player);
+            event.setCancelled(true);
             return;
         }
 
-        int y = block.getY();
-        int minY = plant.getMinY(biome);
-        if (y < minY) {
-            verboseDenial(messager.combineMessage(messager.getCannotPlaceBelow(), minY + "."), player);
-            e.setCancelled(true);
-            return;
-        }
-        int maxY = plant.getMaxY(biome);
-        if (y > maxY) {
-            verboseDenial(messager.combineMessage(messager.getCannotPlaceAbove(), maxY + "."), player);
-            e.setCancelled(true);
+        int blockHeight = block.getY();
+        if (world.getHighestBlockAt(block.getLocation()).getY() != blockHeight && plant.getNeedsSky(biome, worldName, block)) {
+            listenerUtil.verboseDenial(messager.getPlantNeedsSky(), player);
+            event.setCancelled(true);
             return;
         }
 
-        if (!plant.isValidWorldAndBiome(biome, worldName)) {
-            verboseDenial(messager.getCannotPlaceSpecific(), player);
-            e.setCancelled(true);
+        int minY = plant.getMinY(biome, worldName);
+        if (blockHeight < minY) {
+            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotBelow(), minY + "."), player);
+            event.setCancelled(true);
+            return;
+        }
+
+        int maxY = plant.getMaxY(biome, worldName);
+        if (blockHeight > maxY) {
+            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotAbove(), maxY + "."), player);
+            event.setCancelled(true);
         }
     }
 }

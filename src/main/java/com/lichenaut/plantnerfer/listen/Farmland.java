@@ -22,7 +22,7 @@ public class Farmland extends ListenerUtil implements Listener {
     }
 
     @EventHandler
-    private void onDehydrate(MoistureChangeEvent e) {
+    private void onDehydrate(MoistureChangeEvent event) {
         Block block = e.getBlock();
         Block above = block.getRelative(0, 1, 0);
         if (block.getType() != Material.FARMLAND
@@ -47,7 +47,7 @@ public class Farmland extends ListenerUtil implements Listener {
     }
 
     @EventHandler
-    private void onCropPlace(BlockPlaceEvent e) {
+    private void onCropPlace(BlockPlaceEvent event) {
         Block above = e.getBlock();
         Block block = above.getRelative(0, -1, 0);
         if (block.getType() != Material.FARMLAND

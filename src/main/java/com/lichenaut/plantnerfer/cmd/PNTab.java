@@ -15,12 +15,18 @@ public class PNTab implements TabCompleter {
     public @Nullable List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command,
             @Nonnull String label, @Nonnull String[] args) {
         List<String> options = new ArrayList<>();
-        if (sender instanceof Player && sender.hasPermission("plantnerfer.help") && args.length == 1) {
+        if (!(sender instanceof Player) || !(sender.hasPermission("plantnerfer.command"))) {
+            return options;
+        }
+
+        if (args.length == 1 && sender.hasPermission("plantnerfer.command.help")) {
             options.add("help");
         }
-        if (sender instanceof Player && sender.hasPermission("plantnerfer.reload") && args.length == 1) {
+
+        if (args.length == 1 && sender.hasPermission("plantnerfer.command.reload")) {
             options.add("reload");
         }
+
         return options;
     }
 }

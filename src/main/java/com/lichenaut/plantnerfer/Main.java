@@ -33,7 +33,7 @@ public final class Main extends JavaPlugin {
     private final TreeMap<String, HashSet<Biome>> biomeGroups = new TreeMap<>();// preserve order in anything biome
                                                                                 // group-related so that results are
                                                                                 // consistent
-    private final HashMap<Material, Plant> plants = new HashMap<>();
+    private static final HashMap<Material, Plant> plants = new HashMap<>();
     private final PluginManager pMan = Bukkit.getPluginManager();// didn't include BlockPhysicsEvent for when crops get
                                                                  // destroyed at low light levels (the vanilla mechanic)
                                                                  // because it's a scary event to work with! it would

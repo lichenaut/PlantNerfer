@@ -1,18 +1,19 @@
 package com.lichenaut.plantnerfer.load;
 
 import com.lichenaut.plantnerfer.Main;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Objects;
 
+@RequiredArgsConstructor
 public class Plant {
 
-    private final Main main;
-    private final Material material;
     private final boolean canPlace;
     private final int growthRate;
     private final int deathRate;
@@ -24,224 +25,116 @@ public class Plant {
     private final boolean needsHoeForFarmlandRetain;
     private final int minLight;
     private final int maxLight;
-    private final boolean ignoreLightWhenNight;
     private final boolean needsSky;
     private final boolean transparentBlocksCountAsSky;
     private final int noSkyGrowthRate;
     private final int noSkyDeathRate;
     private final int minY;
     private final int maxY;
+    private final HashMap<Biome, PlantBiomeStats> biomeStats;
+    @Getter
+    private final HashSet<String> disallowedBiomes;
+    private final Main main;
+    @Getter
+    private final Material material;
     private final HashSet<String> restrictToWorlds;
-    private final TreeMap<Biome, PlantBiomeStats> biomeStats;
 
-    public Plant(Main main, Material material, boolean canPlace, int growthRate, int deathRate, int darkGrowthRate,
-            int darkDeathRate, int boneMealRate, int darkBoneMealRate, boolean needsHoeForDrops,
-            boolean needsHoeForFarmlandRetain, int minLight, int maxLight, boolean ignoreLightWhenNight,
-            boolean needsSky, boolean transparentBlocksCountAsSky, int noSkyGrowthRate, int noSkyDeathRate, int minY,
-            int maxY, HashSet<String> restrictToWorlds, TreeMap<Biome, PlantBiomeStats> biomeStats) {
-        this.plugin = plugin;
-        this.material = material;
-        this.canPlace = canPlace;
-        this.growthRate = growthRate;
-        this.deathRate = deathRate;
-        this.darkGrowthRate = darkGrowthRate;
-        this.darkDeathRate = darkDeathRate;
-        this.boneMealRate = boneMealRate;
-        this.darkBoneMealRate = darkBoneMealRate;
-        this.needsHoeForDrops = needsHoeForDrops;
-        this.needsHoeForFarmlandRetain = needsHoeForFarmlandRetain;
-        this.minLight = minLight;
-        this.maxLight = maxLight;
-        this.ignoreLightWhenNight = ignoreLightWhenNight;
-        this.needsSky = needsSky;
-        this.transparentBlocksCountAsSky = transparentBlocksCountAsSky;
-        this.noSkyGrowthRate = noSkyGrowthRate;
-        this.noSkyDeathRate = noSkyDeathRate;
-        this.minY = minY;
-        this.maxY = maxY;
-        this.restrictToWorlds = restrictToWorlds;
-        this.biomeStats = biomeStats;
-    }
-
-    public Material getMaterial() {
-        return material;
-    }
-
-    public boolean getCanPlace(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getCanPlace();
-        return canPlace;
-    }
-
-    public int getGrowthRate(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getGrowthRate();
-        return growthRate;
-    }
-
-    public int getDeathRate(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getDeathRate();
-        return deathRate;
-    }
-
-    public int getDarkGrowthRate(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getDarkGrowthRate();
-        return darkGrowthRate;
-    }
-
-    public int getDarkDeathRate(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getDarkDeathRate();
-        return darkDeathRate;
-    }
-
-    public int getBoneMealRate(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getBoneMealRate();
-        return boneMealRate;
-    }
-
-    public int getDarkBoneMealRate(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getDarkBoneMealRate();
-        return darkBoneMealRate;
-    }
-
-    public boolean getNeedsHoeForDrops(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getNeedsHoeForDrops();
-        return needsHoeForDrops;
-    }
-
-    public boolean getNeedsHoeForFarmlandRetain(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getNeedsHoeForFarmlandRetain();
-        return needsHoeForFarmlandRetain;
-    }
-
-    public int getMinLight(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getMinLight();
-        return minLight;
-    }
-
-    public int getMaxLight(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getMaxLight();
-        return maxLight;
-    }
-
-    public boolean getIgnoreLightWhenNight(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getIgnoreLightWhenNight();
-        return ignoreLightWhenNight;
-    }
-
-    public boolean getNeedsSky(Biome biome, Block block) {
-        if (!getTransparentBlocksCountAsSky(biome)) {
-            while (block.getY() < block.getWorld().getMaxHeight()) {// Checking for non-transparent blocks above, then
-                                                                    // combining this return value to whether or not the
-                                                                    // block's height is the highest in its X and Z in
-                                                                    // other parts of the code can be optimized
-                // Once this finds a non-transparent block, figuring out the latter shouldn't
-                // need to happen. Perhaps combine into a single method?
-                if (!block.getType().isOccluding())
-                    block = block.getRelative(0, 1, 0);
-                else
-                    return true;
+    private <T> T getProperty(Biome biome, String worldName, T property, T defaultValue) {
+        if (!biomeStats.containsKey(biome)) {
+            if (restrictToWorlds.isEmpty() || restrictToWorlds.contains(worldName)) {
+                return property;
+            } else {
+                return defaultValue;
             }
-            return false;
+        }
+
+        PlantBiomeStats stats = biomeStats.get(biome);
+        HashSet<String> worlds = stats.getWorlds();
+        if (worlds.isEmpty() || worlds.contains(worldName)) {
+            return property;
         } else {
-            for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-                if (entry.getKey().equals(biome))
-                    return entry.getValue().getNeedsSky();
-            return needsSky;
+            return defaultValue;
         }
     }
 
-    public boolean getTransparentBlocksCountAsSky(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getTransparentBlocksCountAsSky();
-        return transparentBlocksCountAsSky;
+    public boolean getCanPlace(Biome biome, String worldName) {
+        return getProperty(biome, worldName, canPlace, true);
     }
 
-    public int getNoSkyGrowthRate(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getNoSkyGrowthRate();
-        return noSkyGrowthRate;
+    public int getGrowthRate(Biome biome, String worldName) {
+        return getProperty(biome, worldName, growthRate, 100);
     }
 
-    public int getNoSkyDeathRate(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getNoSkyDeathRate();
-        return noSkyDeathRate;
+    public int getDeathRate(Biome biome, String worldName) {
+        return getProperty(biome, worldName, deathRate, 0);
     }
 
-    public int getMinY(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getMinY();
-        return minY;
+    public int getDarkGrowthRate(Biome biome, String worldName) {
+        return getProperty(biome, worldName, darkGrowthRate, 100);
     }
 
-    public int getMaxY(Biome b) {
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet())
-            if (entry.getKey().equals(b))
-                return entry.getValue().getMaxY();
-        return maxY;
+    public int getDarkDeathRate(Biome biome, String worldName) {
+        return getProperty(biome, worldName, darkDeathRate, 0);
     }
 
-    public String[] getBiomes() {// for verbose denial
-        StringBuilder biomesAllowed = new StringBuilder();
-        StringBuilder biomesDisallowed = new StringBuilder();
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet()) {
-            if (entry.getValue().getCanPlace())
-                biomesAllowed.append(entry.getKey().toString()).append(", ");
-            else
-                biomesDisallowed.append(entry.getKey().toString()).append(", ");
-        }
-        if (biomesAllowed.length() == 0 && biomesDisallowed.length() == 0)
-            return null;
-        String[] biomes = new String[2];
-        if (biomesAllowed.length() != 0)
-            biomes[0] = biomesAllowed.substring(0, biomesAllowed.length() - 2) + ".";
-        if (biomesDisallowed.length() != 0)
-            biomes[1] = biomesDisallowed.substring(0, biomesDisallowed.length() - 2) + ".";
-        return biomes;
+    public int getBoneMealRate(Biome biome, String worldName) {
+        return getProperty(biome, worldName, boneMealRate, 100);
     }
 
-    public boolean isValidWorldAndBiome(Biome b, String worldName) {// does it have any biome groups that have both this
-                                                                    // biome and this world?
-        for (Map.Entry<Biome, PlantBiomeStats> entry : biomeStats.entrySet()) {
-            if (entry.getKey().equals(b)) {
-                for (String definedWorldName : entry.getValue().getWorlds()) {
-                    if (definedWorldName.equals(worldName))
-                        return true;
+    public int getDarkBoneMealRate(Biome biome, String worldName) {
+        return getProperty(biome, worldName, darkBoneMealRate, 100);
+    }
+
+    public boolean getNeedsHoeForDrops(Biome biome, String worldName) {
+        return getProperty(biome, worldName, needsHoeForDrops, false);
+    }
+
+    public boolean getNeedsHoeForFarmlandRetain(Biome biome, String worldName) {
+        return getProperty(biome, worldName, needsHoeForFarmlandRetain, false);
+    }
+
+    public int getMinLight(Biome biome, String worldName) {
+        return getProperty(biome, worldName, minLight, 0);
+    }
+
+    public int getMaxLight(Biome biome, String worldName) {
+        return getProperty(biome, worldName, maxLight, 15);
+    }
+
+    public boolean getNeedsSky(Biome biome, String worldName, Block block) {
+        if (getTransparentBlocksCountAsSky(biome, worldName)) {
+            int maxHeight = block.getWorld().getMaxHeight();
+            while (block.getY() <= maxHeight) {
+                if (block.getType().isOccluding()) {
+                    return true;
                 }
+
+                block = block.getRelative(0, 1, 0);
             }
+
+            return false;
         }
-        if (!restrictToWorlds.isEmpty())
-            return restrictToWorlds.contains(worldName);
-        else if (plugin.getConfig().getStringList("restrict-plugin-to-worlds").isEmpty()) {
-            return true;
-        } else
-            return plugin.getConfig().getStringList("restrict-plugin-to-worlds").contains(worldName);
+
+        return getProperty(biome, worldName, needsSky, false);
+    }
+
+    public boolean getTransparentBlocksCountAsSky(Biome biome, String worldName) {
+        return getProperty(biome, worldName, transparentBlocksCountAsSky, true);
+    }
+
+    public int getNoSkyGrowthRate(Biome biome, String worldName) {
+        return getProperty(biome, worldName, noSkyGrowthRate, 100);
+    }
+
+    public int getNoSkyDeathRate(Biome biome, String worldName) {
+        return getProperty(biome, worldName, noSkyDeathRate, 0);
+    }
+
+    public int getMinY(Biome biome, String worldName) {
+        return getProperty(biome, worldName, minY, Objects.requireNonNull(main.getServer().getWorld(worldName)).getMinHeight());
+    }
+
+    public int getMaxY(Biome biome, String worldName) {
+        return getProperty(biome, worldName, maxY, Objects.requireNonNull(main.getServer().getWorld(worldName)).getMaxHeight());
     }
 }

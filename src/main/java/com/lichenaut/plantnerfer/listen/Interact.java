@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +29,7 @@ public class Interact extends ListenerUtil implements Listener {
     }
 
     @EventHandler
-    private void onPlantInteract(PlayerInteractEvent e) {
+    private void onPlantInteract(PlayerInteractEvent event) {
         if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || Objects.equals(e.getHand(), EquipmentSlot.OFF_HAND)
                 || e.getPlayer().getInventory().getItemInMainHand().isSimilar(new ItemStack(Material.BONE_MEAL))
                 || e.getPlayer().getInventory().getItemInOffHand().isSimilar(new ItemStack(Material.BONE_MEAL))) {
@@ -40,7 +41,7 @@ public class Interact extends ListenerUtil implements Listener {
             return;
         }
         String worldName = block.getWorld().getName();
-        if (invalidWorld(worldName)) {
+        if (isInvalidWorld(worldName)) {
             return;
         }
         Plant plant = plugin.getPlant(block.getType());
