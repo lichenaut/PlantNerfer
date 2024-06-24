@@ -234,16 +234,11 @@ public class PlantLoader {
                 transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, biomeStats, disallowedBiomes, main, matRef.getMaterial(plantName), restrictToWorlds));
     }
 
-    public void loadPlants(int version) {
-        if (version >= 20) {
-            matRef.buildMatMap20();
-            farmlandRef.buildFarmlandCropSet20();
-            cropRef.buildCropDropMap20();
-            hoeRef.buildHoeSet16();
-        } else {
-            throw new RuntimeException("Only versions 1.20 and above are supported!");
-        }
-
+    public void loadPlants() {
+        matRef.buildMatMap20();
+        farmlandRef.buildFarmlandCropSet20();
+        cropRef.buildCropDropMap20();
+        hoeRef.buildHoeSet16();
         for (String key : matRef.getMatMap().keySet()) {
             loadPlant(key);
         }

@@ -174,7 +174,7 @@ pink-petals:
 #In ticks (20 ticks per second), time a dehydrated farmland with a crop on it will take to turn into dirt. Affects all plants that can be placed on farmland.
 #-1 to disable.
 ticks-dehydrated-crop-dirt: -1
-  #This setting does not dehydrate anything, and instead reacts to dehydration events.
+  #This setting does not dehydrate anything, but instead reacts to dehydration events.
 
 #Whether plants turn into Dead Bushes when they die. If false, they will turn into Air.
 #Enabling this means that dying farmland crops turn their respective Farmland blocks into Dirt.

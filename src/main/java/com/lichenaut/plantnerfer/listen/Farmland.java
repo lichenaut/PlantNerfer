@@ -12,6 +12,8 @@ import org.bukkit.event.block.MoistureChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashSet;
+
 @RequiredArgsConstructor
 public class Farmland implements Listener {
 
@@ -32,8 +34,9 @@ public class Farmland implements Listener {
     }
 
     private void scheduleToDirt(Block block, Block above) {
+        HashSet<Material> farmlandSet = loader.getFarmlandRef().getFarmlandSet();
         if (block.getType() != Material.FARMLAND
-                || !loader.getFarmlandReference().getFarmlandSet().contains(above.getType())) {
+                || !farmlandSet.contains(above.getType())) {
             return;
         }
 
@@ -43,13 +46,13 @@ public class Farmland implements Listener {
                 Material aboveType = above.getType();
                 if (block.getType() != Material.FARMLAND
                         || ((org.bukkit.block.data.type.Farmland) block.getBlockData()).getMoisture() != 0
-                        || !loader.getFarmlandReference().getFarmlandSet().contains(aboveType)) {
+                        || !farmlandSet.contains(aboveType)) {
                     cancel();
                     return;
                 }
 
                 block.getWorld().dropItemNaturally(above.getLocation(),
-                        new ItemStack(loader.getCropReference().getCropMap().get(aboveType)));
+                        new ItemStack(loader.getCropRef().getCropMap().get(aboveType)));
                 above.setType(Material.AIR);
                 block.setType(Material.DIRT);
             }

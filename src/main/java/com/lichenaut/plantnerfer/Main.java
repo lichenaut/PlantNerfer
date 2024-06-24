@@ -6,57 +6,69 @@ import com.lichenaut.plantnerfer.listen.*;
 import com.lichenaut.plantnerfer.load.Plant;
 import com.lichenaut.plantnerfer.load.PlantLoader;
 import com.lichenaut.plantnerfer.util.Copier;
+import com.lichenaut.plantnerfer.util.ListenerUtil;
 import com.lichenaut.plantnerfer.util.Messager;
 import com.lichenaut.plantnerfer.util.VersionGetter;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.util.logging.Logger;
+import java.nio.file.FileSystems;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 @Getter
 public final class Main extends JavaPlugin {
 
-    private final Logger log = getLogger();
-    private Configuration config = getConfig();
-    private final HashMap<String, HashSet<Biome>> biomeGroups = new HashMap<>();// preserve order in anything biome
-                                                                                // group-related so that results are
-                                                                                // consistent
+    private static final Logger logger = LogManager.getLogger("PlantNerfer");
     private static final HashMap<Material, Plant> plants = new HashMap<>();
-    private final PluginManager pMan = Bukkit.getPluginManager();// didn't include BlockPhysicsEvent for when crops get
+    private final HashMap<String, HashSet<Biome>> biomeGroups = new HashMap<>();
+    private final PluginManager pMan = Bukkit.getPluginManager();// Didn't include BlockPhysicsEvent for when crops get
                                                                  // destroyed at low light levels (the vanilla mechanic)
-                                                                 // because it's a scary event to work with! it would
-                                                                 // not be worth the performance hit.
+                                                                 // because it's so common.
+    private final String separator = FileSystems.getDefault().getSeparator();
+    private Configuration config;
+    private CompletableFuture<Void> mainFuture = CompletableFuture.completedFuture(null);
     private Messager messager;
+    private PluginCommand pnCommand;
 
     @Override
     public void onEnable() {
+        new Metrics(this, 18989);
+        new VersionGetter(this).getVersion(version -> {
+            if (!this.getDescription().getVersion().equals(version)) {
+                logger.info("Update available.");
+            }
+        });
+
+        if (Integer.parseInt(Bukkit.getServer().getBukkitVersion().split("-")[0].split(Pattern.quote("."))[1]) < 20) {
+            logger.error("Minecraft version under 1.20 detected! Disabling plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        messager = new Messager(this);
-
-        int pluginId = 18989;
-        Metrics metrics = new Metrics(plugin, pluginId);
-
+        pnCommand = getCommand("pn");
         reloadable();
-
-        Objects.requireNonNull(getCommand("pn")).setExecutor(new PNCmd(this));
-        Objects.requireNonNull(getCommand("pn")).setTabCompleter(new PNTab());
     }
 
     public void reloadPlugin() {
         reloadConfig();
-        config = getConfig();
         biomeGroups.clear();
         plants.clear();
         HandlerList.unregisterAll(this);
@@ -64,96 +76,70 @@ public final class Main extends JavaPlugin {
     }
 
     public void reloadable() {
+        config = getConfig();
         if (config.getBoolean("disable-plugin")) {
-            log.info("Plugin disabled in config.yml.");
+            logger.info("Plugin disabled in config.yml.");
             return;
         }
 
-        new VersionGetter(this, plugin).getVersion(version -> {
-            if (!this.getDescription().getVersion().equals(version)) {
-                getLog().info("Update available.");
-            }
-        });
+        mainFuture = mainFuture
+                .thenAcceptAsync(declared -> {
+                    String localesFolderPath = getDataFolder().getPath() + separator + "locales";
+                    File localesFolder = new File(localesFolderPath);
+                    if (!localesFolder.mkdirs() && !localesFolder.exists()) {
+                        throw new RuntimeException("Failed to create 'locales' folder!");
+                    }
 
-        String localesFolderPath = getDataFolder().getPath() + PNSep.getSep() + "locales";
-        File localesFolder = new File(localesFolderPath);
-        if (!localesFolder.exists()) {
-            localesFolder.mkdirs();
-        }
-        String dePath = localesFolderPath + PNSep.getSep() + "de.properties";
-        if (!new File(dePath).exists()) {
-            try {
-                Copier.smallCopy(this.getResource("locales" + PNSep.getSep() + "de.properties"), dePath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        String enPath = localesFolderPath + PNSep.getSep() + "en.properties";
-        if (!new File(enPath).exists()) {
-            try {
-                Copier.smallCopy(this.getResource("locales" + PNSep.getSep() + "en.properties"), enPath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        String esPath = localesFolderPath + PNSep.getSep() + "es.properties";
-        if (!new File(esPath).exists()) {
-            try {
-                Copier.smallCopy(this.getResource("locales" + PNSep.getSep() + "es.properties"), esPath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        String frPath = localesFolderPath + PNSep.getSep() + "fr.properties";
-        if (!new File(frPath).exists()) {
-            try {
-                Copier.smallCopy(this.getResource("locales" + PNSep.getSep() + "fr.properties"), frPath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        String ruPath = localesFolderPath + PNSep.getSep() + "ru.properties";
-        if (!new File(ruPath).exists()) {
-            try {
-                Copier.smallCopy(this.getResource("locales" + PNSep.getSep() + "ru.properties"), ruPath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        try {
-            messager.loadLocaleMessages();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+                    String localesSeparator = "locales" + separator;
+                    copyLocale(localesFolderPath, localesSeparator, "de.properties");
+                    copyLocale(localesFolderPath, localesSeparator, "en.properties");
+                    copyLocale(localesFolderPath, localesSeparator, "es.properties");
+                    copyLocale(localesFolderPath, localesSeparator, "fr.properties");
+                    copyLocale(localesFolderPath, localesSeparator, "ru.properties");
+                    messager = new Messager(logger,  this, config.getString("locale"), separator);
+                    try {
+                        messager.loadLocaleMessages();
+                    } catch (IOException e) {
+                        throw new RuntimeException("IOException: Failed to load locale messages!", e);
+                    }
 
-        String sVersion = Bukkit.getServer().getBukkitVersion();
-        int version = Integer.parseInt(sVersion.split("-")[0].split(Pattern.quote("."))[1]);
+                    ConfigurationSection biomeGroupList = config.getConfigurationSection("biome-group-list");
+                    if (biomeGroupList != null) {
+                        for (String group : biomeGroupList.getKeys(false)) {
+                            HashSet<Biome> biomes = new HashSet<>();
+                            for (String biome : biomeGroupList.getStringList(group)) {
+                                biomes.add(Biome.valueOf(biome));
+                            }
+                            biomeGroups.put(group, biomes);
+                        }
+                    }
+                    PlantLoader plantLoader = new PlantLoader(logger, this);
+                    plantLoader.loadPlants();
 
-        if (version >= 13) {
-            if (config.getConfigurationSection("biome-group-list") != null) {
-                for (String group : Objects.requireNonNull(config.getConfigurationSection("biome-group-list"))
-                        .getKeys(false)) {// for each biome group, add a HashSet of biome strings to biomeGroups
-                    HashSet<Biome> biomes = new HashSet<>();
-                    for (String biome : Objects.requireNonNull(config.getConfigurationSection("biome-group-list"))
-                            .getStringList(group))
-                        biomes.add(Biome.valueOf(biome));
-                    biomeGroups.put(group, biomes);
-                }
+                    ListenerUtil listenerUtil = new ListenerUtil(this, messager);
+                    pMan.registerEvents(new BlockGrow(config.getBoolean("death-turns-into-bush"), listenerUtil, this), this);
+                    pMan.registerEvents(new BlockPlace(listenerUtil, this, messager), this);
+                    pMan.registerEvents(new BoneMeal(listenerUtil, this, messager), this);
+                    pMan.registerEvents(new Interact(listenerUtil, this, messager), this);
+                    pMan.registerEvents(new BlockBreak(config.getInt("farmed-farmland-turns-into-dirt"), listenerUtil, this, messager, plantLoader), this);
+                    int ticksToDehydrate = config.getInt("ticks-dehydrated-crop-dirt");
+                    if (ticksToDehydrate >= 0) {
+                        pMan.registerEvents(new Farmland(ticksToDehydrate, this, plantLoader), this);
+                    }
+                    pnCommand.setExecutor(new PNCmd(this, messager));
+                    pnCommand.setTabCompleter(new PNTab());
+                });
+    }
+
+    private void copyLocale(String localesFolderPath, String localesSeparator, String locale) {
+        String localePath = localesFolderPath + separator + locale;
+        if (!new File(localePath).exists()) {
+            try {
+                Copier.smallCopy(this.getResource(localesSeparator + locale), localePath);
+            } catch (IOException e) {
+                throw new RuntimeException("IOException: Failed to copy " + locale + "!", e);
             }
-
-            PlantLoader plantLoader = new PlantLoader(plugin);
-            plantLoader.loadPlants(version);
-            pMan.registerEvents(new BlockGrow(plugin, plantLoader, config.getBoolean("death-turns-into-bush")), plugin);
-            pMan.registerEvents(new BlockPlace(plugin, plantLoader), plugin);
-            pMan.registerEvents(new BoneMeal(plugin, plantLoader), plugin);
-            pMan.registerEvents(new Interact(plugin, plantLoader), plugin);
-            pMan.registerEvents(new BlockBreak(plugin, plantLoader, config.getInt("farmed-farmland-turns-into-dirt")),
-                    plugin);
-            int ticksToDehydrate = config.getInt("ticks-dehydrated-crop-dirt");
-            if (ticksToDehydrate >= 0)
-                pMan.registerEvents(new Farmland(plugin, plantLoader, ticksToDehydrate), plugin);
-        } else
-            log.severe("Unsupported version detected: " + sVersion + "! Disabling plugin.");
+        }
     }
 
     public void addPlant(Plant plant) {
