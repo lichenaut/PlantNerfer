@@ -55,7 +55,8 @@ public class BoneMeal implements Listener {
             return;
         }
 
-        if (world.getHighestBlockAt(block.getLocation()).getY() + 1 != block.getY() && plant.getNeedsSky(biome, worldName, block)) {
+        if (world.getHighestBlockAt(block.getLocation()).getY() + 1 != block.getY()
+                && plant.getNeedsSky(biome, worldName, block)) {
             if (player != null) {
                 listenerUtil.verboseDenial(messager.getPlantNeedsSky(), player);
             }
@@ -63,7 +64,8 @@ public class BoneMeal implements Listener {
             return;
         }
 
-        int boneMealRate = (lightLevel < 8) ? plant.getDarkBoneMealRate(biome, worldName) : plant.getBoneMealRate(biome, worldName);
+        int boneMealRate = (lightLevel < 8) ? plant.getDarkBoneMealRate(biome, worldName)
+                : plant.getBoneMealRate(biome, worldName);
         if (!listenerUtil.chance(boneMealRate)) {
             event.setCancelled(true);
         }

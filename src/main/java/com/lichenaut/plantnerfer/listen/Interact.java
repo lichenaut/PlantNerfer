@@ -36,7 +36,8 @@ public class Interact implements Listener {
 
         PlayerInventory inventory = player.getInventory();
         ItemStack boneMeal = new ItemStack(Material.BONE_MEAL);
-        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || Objects.equals(event.getHand(), EquipmentSlot.OFF_HAND)
+        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                || Objects.equals(event.getHand(), EquipmentSlot.OFF_HAND)
                 || inventory.getItemInMainHand().isSimilar(boneMeal)
                 || inventory.getItemInOffHand().isSimilar(boneMeal)) {
             return;
@@ -63,8 +64,11 @@ public class Interact implements Listener {
                 && !main.getConfiguration().getBoolean("global-bone-meal-rate-reporting"))
                 || (!player.hasPermission("plantnerfer.bonemealrate.disabled")
                         && main.getConfiguration().getBoolean("global-bone-meal-rate-reporting"))) {
-            BaseComponent[] message = (block.getRelative(0, 1, 0).getLightLevel() < 8) ? messager.combineMessage(messager.getBoneMealSuccessRateDark(),
-                    plant.getDarkBoneMealRate(biome, worldName) + "%") : messager.combineMessage(messager.getBoneMealSuccessRate(), plant.getBoneMealRate(biome, worldName) + "%");
+            BaseComponent[] message = (block.getRelative(0, 1, 0).getLightLevel() < 8)
+                    ? messager.combineMessage(messager.getBoneMealSuccessRateDark(),
+                            plant.getDarkBoneMealRate(biome, worldName) + "%")
+                    : messager.combineMessage(messager.getBoneMealSuccessRate(),
+                            plant.getBoneMealRate(biome, worldName) + "%");
             messager.sendMsg(player, message, true);
         }
     }

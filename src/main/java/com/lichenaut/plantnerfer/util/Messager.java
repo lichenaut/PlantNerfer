@@ -45,7 +45,8 @@ public class Messager {
     public void loadLocaleMessages() throws IOException {
         Properties properties = new Properties();
         try (Reader reader = new BufferedReader(new InputStreamReader(
-                new FileInputStream(new File(main.getDataFolder(), "locales" + separator + locale + ".properties")), StandardCharsets.UTF_8))) {
+                new FileInputStream(new File(main.getDataFolder(), "locales" + separator + locale + ".properties")),
+                StandardCharsets.UTF_8))) {
             properties.load(reader);
         }
         prefix = getColoredMessage("prefix", properties);
@@ -68,7 +69,7 @@ public class Messager {
         String message = properties.getProperty(key);
         if (message == null) {
             logger.error("Missing message key: {} in locale: {}", key, locale);
-            return new BaseComponent[]{new TextComponent("")};
+            return new BaseComponent[] { new TextComponent("") };
         }
 
         Pattern pattern = Pattern.compile("<([^>]+)>(.*?)\\s*(?=<[^>]+>|\\z)");

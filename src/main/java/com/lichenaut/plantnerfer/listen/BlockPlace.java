@@ -37,7 +37,8 @@ public class BlockPlace implements Listener {
         Biome biome = block.getBiome();
         Player player = event.getPlayer();
         if (!plant.getCanPlace(biome, worldName)) {
-            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotFollowingBiomes(), String.valueOf(plant.getDisallowedBiomes())), player); //TODO: set -> string beforehand?
+            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotFollowingBiomes(),
+                    String.valueOf(plant.getDisallowedBiomes())), player); // TODO: set -> string beforehand?
             event.setCancelled(true);
             return;
         }
@@ -58,7 +59,8 @@ public class BlockPlace implements Listener {
         }
 
         int blockHeight = block.getY();
-        if (world.getHighestBlockAt(block.getLocation()).getY() + 1 != blockHeight && plant.getNeedsSky(biome, worldName, block)) {
+        if (world.getHighestBlockAt(block.getLocation()).getY() + 1 != blockHeight
+                && plant.getNeedsSky(biome, worldName, block)) {
             listenerUtil.verboseDenial(messager.getPlantNeedsSky(), player);
             event.setCancelled(true);
             return;

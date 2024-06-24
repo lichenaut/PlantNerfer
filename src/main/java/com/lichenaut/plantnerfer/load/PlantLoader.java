@@ -231,7 +231,8 @@ public class PlantLoader {
         main.addPlant(new Plant(canPlace, growthRate, deathRate,
                 growthRateDark, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, needsHoeForDrops,
                 needsHoeForFarmlandRetain, minLight, maxLight, needsSky,
-                transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, biomeStats, disallowedBiomes, main, matRef.getMaterial(plantName), restrictToWorlds));
+                transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, biomeStats, disallowedBiomes,
+                main, matRef.getMaterial(plantName), restrictToWorlds));
     }
 
     public void loadPlants() {

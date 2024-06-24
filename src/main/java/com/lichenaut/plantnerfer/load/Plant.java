@@ -39,7 +39,8 @@ public class Plant {
     private final Material material;
     private final HashSet<String> restrictToWorlds;
 
-    private boolean getProperty(Biome biome, String worldName, String propertyName, boolean property, boolean defaultValue) {
+    private boolean getProperty(Biome biome, String worldName, String propertyName, boolean property,
+            boolean defaultValue) {
         PlantBiomeStats stats = biomeStats.get(biome);
         if (stats == null) {
             if (restrictToWorlds.isEmpty() || restrictToWorlds.contains(worldName)) {
@@ -176,10 +177,12 @@ public class Plant {
     }
 
     public int getMinY(Biome biome, String worldName) {
-        return getProperty(biome, worldName, "minY", minY, Objects.requireNonNull(main.getServer().getWorld(worldName)).getMinHeight());
+        return getProperty(biome, worldName, "minY", minY,
+                Objects.requireNonNull(main.getServer().getWorld(worldName)).getMinHeight());
     }
 
     public int getMaxY(Biome biome, String worldName) {
-        return getProperty(biome, worldName, "maxY", maxY, Objects.requireNonNull(main.getServer().getWorld(worldName)).getMaxHeight());
+        return getProperty(biome, worldName, "maxY", maxY,
+                Objects.requireNonNull(main.getServer().getWorld(worldName)).getMaxHeight());
     }
 }

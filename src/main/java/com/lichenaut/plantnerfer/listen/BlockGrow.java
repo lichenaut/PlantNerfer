@@ -54,7 +54,8 @@ public class BlockGrow implements Listener {
 
         Biome biome = block.getBiome();
         int lightLevel = block.getRelative(0, 1, 0).getLightLevel();
-        int deathRate = (lightLevel < 8) ? plant.getDarkDeathRate(biome, worldName) : plant.getDeathRate(biome, worldName);
+        int deathRate = (lightLevel < 8) ? plant.getDarkDeathRate(biome, worldName)
+                : plant.getDeathRate(biome, worldName);
         if (listenerUtil.chance(deathRate)) {
             killPlant(event, block);
             return;
@@ -86,7 +87,8 @@ public class BlockGrow implements Listener {
             return;
         }
 
-        int growthRate = (lightLevel < 8) ? plant.getDarkGrowthRate(biome, worldName) : plant.getGrowthRate(biome, worldName);
+        int growthRate = (lightLevel < 8) ? plant.getDarkGrowthRate(biome, worldName)
+                : plant.getGrowthRate(biome, worldName);
         if (!listenerUtil.chance(growthRate)) {
             event.setCancelled(true);
         }

@@ -100,7 +100,7 @@ public final class Main extends JavaPlugin {
                     copyLocale(localesFolderPath, localesSeparator, "es.properties");
                     copyLocale(localesFolderPath, localesSeparator, "fr.properties");
                     copyLocale(localesFolderPath, localesSeparator, "ru.properties");
-                    messager = new Messager(logger,  this, configuration.getString("locale"), separator);
+                    messager = new Messager(logger, this, configuration.getString("locale"), separator);
                     try {
                         messager.loadLocaleMessages();
                     } catch (IOException e) {
@@ -121,11 +121,13 @@ public final class Main extends JavaPlugin {
                     plantLoader.loadPlants();
 
                     ListenerUtil listenerUtil = new ListenerUtil(this, messager);
-                    pMan.registerEvents(new BlockGrow(configuration.getBoolean("death-turns-into-bush"), listenerUtil, this), this);
+                    pMan.registerEvents(
+                            new BlockGrow(configuration.getBoolean("death-turns-into-bush"), listenerUtil, this), this);
                     pMan.registerEvents(new BlockPlace(listenerUtil, this, messager), this);
                     pMan.registerEvents(new BoneMeal(listenerUtil, this, messager), this);
                     pMan.registerEvents(new Interact(listenerUtil, this, messager), this);
-                    pMan.registerEvents(new BlockBreak(configuration.getInt("farmed-farmland-turns-into-dirt"), listenerUtil, this, messager, plantLoader), this);
+                    pMan.registerEvents(new BlockBreak(configuration.getInt("farmed-farmland-turns-into-dirt"),
+                            listenerUtil, this, messager, plantLoader), this);
                     int ticksToDehydrate = configuration.getInt("ticks-dehydrated-crop-dirt");
                     if (ticksToDehydrate >= 0) {
                         pMan.registerEvents(new Farmland(ticksToDehydrate, this, plantLoader), this);
