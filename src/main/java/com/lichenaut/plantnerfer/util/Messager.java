@@ -35,6 +35,7 @@ public class Messager {
     private BaseComponent[] plantDroppedNothing;
     private BaseComponent[] plantNeedsSky;
     private BaseComponent[] cannotFollowingBiomes;
+    private BaseComponent[] onlyFollowingBiomes;
     private BaseComponent[] cannotDark;
     private BaseComponent[] cannotBright;
     private BaseComponent[] cannotBelow;
@@ -57,6 +58,7 @@ public class Messager {
         plantDroppedNothing = getColoredMessage("plantDroppedNothing", properties);
         plantNeedsSky = getColoredMessage("plantNeedsSky", properties);
         cannotFollowingBiomes = getColoredMessage("cannotFollowingBiomes", properties);
+        onlyFollowingBiomes = getColoredMessage("onlyFollowingBiomes", properties);
         cannotDark = getColoredMessage("cannotDark", properties);
         cannotBright = getColoredMessage("cannotBright", properties);
         cannotBelow = getColoredMessage("cannotBelow", properties);

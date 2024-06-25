@@ -20,6 +20,8 @@ public class BlockPlace implements Listener {
     private final Main main;
     private final Messager messager;
 
+    //TODO: dispense event
+
     @EventHandler
     private void onPlantPlace(BlockPlaceEvent event) {
         Block block = event.getBlock();
@@ -37,8 +39,13 @@ public class BlockPlace implements Listener {
         Biome biome = block.getBiome();
         Player player = event.getPlayer();
         if (!plant.getCanPlace(biome, worldName)) {
-            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotFollowingBiomes(),
-                    String.valueOf(plant.getDisallowedBiomes())), player); // TODO: set -> string beforehand?
+            if (plant.canPlaceByDefault()) {
+                listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotFollowingBiomes(),
+                        plant.getDisallowedBiomes()), player);
+            } else {
+                listenerUtil.verboseDenial(messager.combineMessage(messager.getOnlyFollowingBiomes(),
+                        plant.getAllowedBiomes()), player);
+            }
             event.setCancelled(true);
             return;
         }

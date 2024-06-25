@@ -64,9 +64,6 @@ public final class Main extends JavaPlugin {
         getConfiguration().options().copyDefaults();
         saveDefaultConfig();
         pnCommand = getCommand("plantnerfer");
-        assert pnCommand != null;
-        pnCommand.setExecutor(new PNCmd(this, messager));
-        pnCommand.setTabCompleter(new PNTab());
         reloadable();
     }
 
@@ -88,6 +85,15 @@ public final class Main extends JavaPlugin {
 
         mainFuture = mainFuture
                 .thenAcceptAsync(declared -> {
+                    String presetsPath = getDataFolder().getPath() + separator + "presets.yml";
+                    if (!new File(presetsPath).exists()) {
+                        try {
+                            Copier.smallCopy(this.getResource("preset.yml"), presetsPath);
+                        } catch (IOException e) {
+                            throw new RuntimeException("IOException: Failed to copy preset.yml!", e);
+                        }
+                    }
+
                     String localesFolderPath = getDataFolder().getPath() + separator + "locales";
                     File localesFolder = new File(localesFolderPath);
                     if (!localesFolder.mkdirs() && !localesFolder.exists()) {
@@ -130,8 +136,10 @@ public final class Main extends JavaPlugin {
                             listenerUtil, this, messager, plantLoader), this);
                     int ticksToDehydrate = configuration.getInt("ticks-dehydrated-crop-dirt");
                     if (ticksToDehydrate >= 0) {
-                        pMan.registerEvents(new Farmland(ticksToDehydrate, this, plantLoader), this);
+                        pMan.registerEvents(new Dehydrate(ticksToDehydrate, this, plantLoader), this);
                     }
+                    pnCommand.setExecutor(new PNCmd(this, messager));
+                    pnCommand.setTabCompleter(new PNTab());
                 });
     }
 

@@ -40,6 +40,7 @@ public class PlantLoader {
         int noSkyDeathRate = 0;
         int minY = -64;
         int maxY = 256;
+        HashSet<String> allowedBiomes = new HashSet<>();
         HashSet<String> disallowedBiomes = new HashSet<>();
         HashSet<String> restrictToWorlds = new HashSet<>();
         HashMap<Biome, PlantBiomeStats> biomeStats = new HashMap<>();
@@ -204,12 +205,20 @@ public class PlantLoader {
                                         transparentBlocksCountAsSkyGroup, noSkyGrowthRateGroup, noSkyDeathRateGroup,
                                         minYGroup, maxYGroup, restrictToWorldsGroup));
 
-                        if (!canPlaceGroup) {
+                        if (canPlace) {
                             if (restrictToWorldsGroup.isEmpty()) {
                                 disallowedBiomes.add("*:" + biome.name());
                             } else {
                                 for (String worldName : restrictToWorldsGroup) {
                                     disallowedBiomes.add(worldName + ":" + biome.name());
+                                }
+                            }
+                        } else {
+                            if (restrictToWorldsGroup.isEmpty()) {
+                                allowedBiomes.add("*:" + biome.name());
+                            } else {
+                                for (String worldName : restrictToWorldsGroup) {
+                                    allowedBiomes.add(worldName + ":" + biome.name());
                                 }
                             }
                         }
@@ -218,20 +227,10 @@ public class PlantLoader {
             }
         }
 
-        if (!canPlace) {
-            if (restrictToWorlds.isEmpty()) {
-                disallowedBiomes.add("*:_");
-            } else {
-                for (String worldName : restrictToWorlds) {
-                    disallowedBiomes.add(worldName + ":_");
-                }
-            }
-        }
-
         main.addPlant(new Plant(canPlace, growthRate, deathRate,
                 growthRateDark, deathRateDark, boneMealSuccessRate, boneMealSuccessRateDark, needsHoeForDrops,
                 needsHoeForFarmlandRetain, minLight, maxLight, needsSky,
-                transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, biomeStats, disallowedBiomes,
+                transparentBlocksCountAsSky, noSkyGrowthRate, noSkyDeathRate, minY, maxY, biomeStats, String.valueOf(allowedBiomes), String.valueOf(disallowedBiomes),
                 main, matRef.getMaterial(plantName), restrictToWorlds));
     }
 

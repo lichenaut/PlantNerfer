@@ -33,7 +33,9 @@ public class Plant {
     private final int maxY;
     private final HashMap<Biome, PlantBiomeStats> biomeStats;
     @Getter
-    private final HashSet<String> disallowedBiomes;
+    private final String allowedBiomes;
+    @Getter
+    private final String disallowedBiomes;
     private final Main main;
     @Getter
     private final Material material;
@@ -184,5 +186,9 @@ public class Plant {
     public int getMaxY(Biome biome, String worldName) {
         return getProperty(biome, worldName, "maxY", maxY,
                 Objects.requireNonNull(main.getServer().getWorld(worldName)).getMaxHeight());
+    }
+
+    public boolean canPlaceByDefault() {
+        return disallowedBiomes.isEmpty();
     }
 }

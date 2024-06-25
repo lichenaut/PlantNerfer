@@ -211,7 +211,7 @@ Note 4: These are the defaults, for any values not defined by the user:
 > no-sky-growth-rate: 100 <br>
 > no-sky-death-rate: 0 <br>
 > min-y: -64 <br>
-> max-y: 255 <br>
+> max-y: 256 <br>
 > restrict-to-worlds: (empty, so any) <br>
 > biome-groups: (empty) <br>
 
@@ -221,4 +221,4 @@ Biome group settings will inherit default values from the plant settings, unless
 
 If a biome is in multiple biome groups applied to a plant, only the last group's biome will be used for the plant.
 
-The "*" and "_" characters in "cannot happen" messages mean "any" and "by default", respectively.
+The "*" and "_" characters in plugin messages mean "any" and "by default", respectively.

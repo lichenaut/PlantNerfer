@@ -1,0 +1,1453 @@
+#Turn PlantNerfer off.
+disable-plugin: false
+
+##############
+#Biome Groups#
+##############
+
+#Guide: https://github.com/lichenaut/PlantNerfer/blob/master/README.md
+
+biome-group-list:
+  offland-warm:
+    - "WARM_OCEAN"
+  offland-lukewarm:
+    - "OCEAN"
+    - "DEEP_OCEAN"
+    - "LUKEWARM_OCEAN"
+    - "DEEP_LUKEWARM_OCEAN"
+    - "MUSHROOM_FIELDS"
+  offland-cold:
+    - "COLD_OCEAN"
+    - "DEEP_COLD_OCEAN"
+    - "FROZEN_OCEAN"
+    - "DEEP_FROZEN_OCEAN"
+  highland-temperate:
+    - "MEADOW"
+    - "CHERRY_GROVE"
+    - "GROVE"
+    - "WINDSWEPT_HILLS"
+    - "WINDSWEPT_GRAVELLY_HILLS"
+    - "WINDSWEPT_FOREST"
+  highland-cold:
+    - "JAGGED_PEAKS"
+    - "FROZEN_PEAKS"
+    - "STONY_PEAKS"
+    - "SNOWY_SLOPES"
+  woodland-hot:
+    - "JUNGLE"
+    - "SPARSE_JUNGLE"
+    - "BAMBOO_JUNGLE"
+  woodland-temperate:
+    - "FOREST"
+    - "FLOWER_FOREST"
+    - "TAIGA"
+    - "OLD_GROWTH_PINE_TAIGA"
+    - "OLD_GROWTH_SPRUCE_TAIGA"
+    - "BIRCH_FOREST"
+    - "OLD_GROWTH_BIRCH_FOREST"
+    - "DARK_FOREST"
+  woodland-cold:
+    - "SNOWY_TAIGA"
+  wetland-hot:
+    - "SWAMP"
+    - "MANGROVE_SWAMP"
+    - "BEACH"
+  wetland-temperate:
+    - "RIVER"
+  wetland-cold:
+    - "FROZEN_RIVER"
+    - "SNOWY_BEACH"
+    - "STONY_SHORE"
+  flatland-temperate:
+    - "PLAINS"
+    - "SUNFLOWER_PLAINS"
+  flatland-cold:
+    - "SNOWY_PLAINS"
+    - "ICE_SPIKES"
+  arid-land:
+    - "DESERT"
+    - "SAVANNA"
+    - "SAVANNA_PLATEAU"
+    - "WINDSWEPT_SAVANNA"
+    - "BADLANDS"
+    - "WOODED_BADLANDS"
+    - "ERODED_BADLANDS"
+  cave:
+    - "DEEP_DARK"
+    - "LUSH_CAVES"
+    - "DRIPSTONE_CAVES"
+  void:
+    - "THE_VOID"
+  nether:
+    - "CRIMSON_FOREST"
+    - "WARPED_FOREST"
+    - "SOUL_SAND_VALLEY"
+    - "BASALT_DELTAS"
+    - "NETHER_WASTES"
+  end:
+    - "THE_END"
+    - "SMALL_END_ISLANDS"
+    - "END_MIDLANDS"
+    - "END_HIGHLANDS"
+    - "END_BARRENS"
+
+#############
+#Nerf Plants#
+#############
+
+#Guide: https://github.com/lichenaut/PlantNerfer/blob/master/README.md
+
+oak-sapling:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+dark-oak-sapling:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+spruce-sapling:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+birch-sapling:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+jungle-sapling:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+acacia-sapling:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+bamboo-sapling:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+bamboo:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+cherry-sapling:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+mangrove-propagule:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+sugar-cane:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+sea-pickle:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+kelp:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+seagrass:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+short-grass:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+tall-grass:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+grass-block:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+fern:
+  can-place: false
+  biome-groups:
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+large-fern:
+  can-place: false
+  biome-groups:
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+vine:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+cave-vines:
+  can-place: false
+  cave:
+      can-place: true
+twisting-vines:
+  can-place: false
+  nether:
+      can-place: true
+weeping-vines:
+  can-place: false
+  nether:
+      can-place: true
+lily-pad:
+  can-place: false
+  biome-groups:
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+moss-carpet:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    cave:
+      can-place: true
+moss-block:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    wetland-hot:
+        can-place: true
+    cave:
+      can-place: true
+sweet-berry-bush:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+melon-stem:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+pumpkin-stem:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+carrots:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+potatoes:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+beetroots:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+wheat:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+cactus:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    arid-land:
+      can-place: true
+cocoa:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+brown-mushroom:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    cave:
+      can-place: true
+    void:
+      can-place: true
+    nether:
+      can-place: true
+red-mushroom:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    cave:
+      can-place: true
+    void:
+      can-place: true
+    nether:
+      can-place: true
+torchflower-crop:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+pitcher-crop:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+nether-wart:
+  can-place: false
+  biome-groups:
+    nether:
+      can-place: true
+crimson-fungus:
+  can-place: false
+  biome-groups:
+    nether:
+      can-place: true
+warped-fungus:
+  can-place: false
+  biome-groups:
+    nether:
+      can-place: true
+big-dripleaf:
+  can-place: false
+  biome-groups:
+    cave:
+      can-place: true
+small-dripleaf:
+  can-place: false
+  biome-groups:
+    cave:
+      can-place: true
+chorus-plant:
+  can-place: false
+  biome-groups:
+    end:
+      can-place: true
+azalea:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+flowering-azalea:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+    arid-land:
+      can-place: true
+sunflower:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+lilac:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+rose-bush:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+peony:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+dandelion:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+poppy:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+blue-orchid:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+allium:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+azure-bluet:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+red-tulip:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+orange-tulip:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+white-tulip:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+pink-tulip:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+oxeye-daisy:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+cornflower:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    arid-land:
+      can-place: true
+lily-of-the-valley:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-hot:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-hot:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+pink-petals:
+  can-place: false
+  biome-groups:
+    offland-warm:
+      can-place: true
+    offland-lukewarm:
+      can-place: true
+    offland-cold:
+      can-place: true
+    highland-temperate:
+      can-place: true
+    highland-cold:
+      can-place: true
+    woodland-temperate:
+      can-place: true
+    woodland-cold:
+      can-place: true
+    wetland-temperate:
+      can-place: true
+    wetland-cold:
+      can-place: true
+    flatland-temperate:
+      can-place: true
+    flatland-cold:
+      can-place: true
+
+##############
+#Nerf Farming#
+##############
+
+#In ticks (20 ticks per second), time a non-fully-hydrated farmland will take to turn into Dirt once either a crop has been planted on it or its hydration has changed. Affects all plants that can be placed on Farmland.
+#-1 to disable.
+ticks-weak-crop-dirt: 40
+#This setting does not dehydrate anything, but instead reacts to dehydration events.
+
+#Whether plants turn into Dead Bushes when they die. If false, they will turn into Air.
+#Enabling this means that dying farmland crops turn their respective Farmland blocks into Dirt.
+death-turns-into-bush: false
+
+#0-100 the chance that Farmland will turn into Dirt when its crop is harvested, even if hydrated and done so with a hoe.
+#Affects even plants with empty configurations.
+farmed-farmland-turns-into-dirt: 5
+
+###########
+#Messaging#
+###########
+
+#Toggle whether everyone can right-click a custom plant and see its bone meal success rate. Disabled for operators.
+#Individual permission: plantnerfer.bonemealrate
+global-bone-meal-rate-reporting: true
+  #Permission to disable individual bone meal rate reporting when the global setting is true: plantnerfer.bonemealrate.disabled
+
+#Toggle whether the player will be messaged as to why plugin mechanics are happening. Disabled for operators.
+#Individual permission: plantnerfer.verbose
+verbose-denial: true
+#Permission to disable individual verbose denial messages when the global setting is true: plantnerfer.verbose.disabled
+
+###############
+#Miscellaneous#
+###############
+
+#Locale for PlantNerfer messages.
+#Rewrite 'en.properties' if your language has not been added yet.
+locale: "en"
+#Help me support more languages by submitting translations: https://discord.gg/txJDdYcRV6
+
+#If empty, PlantNerfer will affect all worlds.
+#To disable the plugin completely, scroll to the top of this file and set 'disable-plugin' to true.
+restrict-plugin-to-worlds:
+#  - "world"
+#  - "world_nether"
+#  - "world_the_end"

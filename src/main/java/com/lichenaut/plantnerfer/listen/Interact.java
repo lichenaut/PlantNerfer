@@ -15,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Objects;
@@ -35,11 +34,10 @@ public class Interact implements Listener {
         }
 
         PlayerInventory inventory = player.getInventory();
-        ItemStack boneMeal = new ItemStack(Material.BONE_MEAL);
         if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
                 || Objects.equals(event.getHand(), EquipmentSlot.OFF_HAND)
-                || inventory.getItemInMainHand().isSimilar(boneMeal)
-                || inventory.getItemInOffHand().isSimilar(boneMeal)) {
+                || inventory.getItemInMainHand().getType() != Material.AIR
+                || inventory.getItemInOffHand().getType() != Material.AIR) {
             return;
         }
 

@@ -30,7 +30,7 @@ public class MaterialReference {
         matMap.put("sea-pickle", Material.SEA_PICKLE);
         matMap.put("kelp", Material.KELP);
         matMap.put("seagrass", Material.SEAGRASS);
-        matMap.put("grass", Material.SHORT_GRASS);
+        matMap.put("short-grass", Material.SHORT_GRASS);
         matMap.put("tall-grass", Material.TALL_GRASS);
         matMap.put("grass-block", Material.GRASS_BLOCK);
         matMap.put("fern", Material.FERN);
