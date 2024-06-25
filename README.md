@@ -1,6 +1,6 @@
 # PlantNerfer
 
-PlantNerfer allows for very configurable plant behavior, versions 1.14+.
+PlantNerfer allows for very configurable plant behavior.
 
 [![Github All Releases](https://img.shields.io/github/downloads/lichenaut/PlantNerfer/total.svg)]()
 
