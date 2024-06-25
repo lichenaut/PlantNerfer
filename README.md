@@ -221,4 +221,4 @@ Biome group settings will inherit default values from the plant settings, unless
 
 If a biome is in multiple biome groups applied to a plant, only the last group's biome will be used for the plant.
 
-The "*" and "_" characters in plugin messages mean "any" and "by default", respectively.
+The "*" character in plugin messages means "all", or "any".

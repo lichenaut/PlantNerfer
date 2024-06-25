@@ -9,9 +9,11 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 
 @RequiredArgsConstructor
 public class BlockPlace implements Listener {
@@ -20,11 +22,17 @@ public class BlockPlace implements Listener {
     private final Main main;
     private final Messager messager;
 
-    //TODO: dispense event
-
     @EventHandler
     private void onPlantPlace(BlockPlaceEvent event) {
-        Block block = event.getBlock();
+        processPlantPlace(event, event.getBlock());
+    }
+
+    @EventHandler
+    private void onPlantDispense(EntityChangeBlockEvent event) {
+        processPlantPlace(event, event.getBlock());
+    }
+
+    private <Event extends Cancellable> void processPlantPlace(Event event, Block block) {
         Plant plant = main.getPlant(block.getType());
         if (plant == null) {
             return;
@@ -37,14 +45,19 @@ public class BlockPlace implements Listener {
         }
 
         Biome biome = block.getBiome();
-        Player player = event.getPlayer();
+        Player player = null;
+        if (event instanceof BlockPlaceEvent) {
+            player = ((BlockPlaceEvent) event).getPlayer();
+        }
         if (!plant.getCanPlace(biome, worldName)) {
-            if (plant.canPlaceByDefault()) {
-                listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotFollowingBiomes(),
-                        plant.getDisallowedBiomes()), player);
-            } else {
-                listenerUtil.verboseDenial(messager.combineMessage(messager.getOnlyFollowingBiomes(),
-                        plant.getAllowedBiomes()), player);
+            if (player != null) {
+                if (plant.canPlaceByDefault()) {
+                    listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotFollowingBiomes(),
+                            plant.getDisallowedBiomes()), player);
+                } else {
+                    listenerUtil.verboseDenial(messager.combineMessage(messager.getOnlyFollowingBiomes(),
+                            plant.getAllowedBiomes()), player);
+                }
             }
             event.setCancelled(true);
             return;
@@ -53,14 +66,18 @@ public class BlockPlace implements Listener {
         int lightLevel = block.getRelative(0, 1, 0).getLightLevel();
         int minLight = plant.getMinLight(biome, worldName);
         if (lightLevel < minLight) {
-            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotDark(), minLight + "."), player);
+            if (player != null) {
+                listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotDark(), minLight + "."), player);
+            }
             event.setCancelled(true);
             return;
         }
 
         int maxLight = plant.getMaxLight(biome, worldName);
         if (lightLevel > maxLight) {
-            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotBright(), maxLight + "."), player);
+            if (player != null) {
+                listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotBright(), maxLight + "."), player);
+            }
             event.setCancelled(true);
             return;
         }
@@ -68,21 +85,27 @@ public class BlockPlace implements Listener {
         int blockHeight = block.getY();
         if (world.getHighestBlockAt(block.getLocation()).getY() + 1 != blockHeight
                 && plant.getNeedsSky(biome, worldName, block)) {
-            listenerUtil.verboseDenial(messager.getPlantNeedsSky(), player);
+            if (player != null) {
+                listenerUtil.verboseDenial(messager.getPlantNeedsSky(), player);
+            }
             event.setCancelled(true);
             return;
         }
 
         int minY = plant.getMinY(biome, worldName);
         if (blockHeight < minY) {
-            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotBelow(), minY + "."), player);
+            if (player != null) {
+                listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotBelow(), minY + "."), player);
+            }
             event.setCancelled(true);
             return;
         }
 
         int maxY = plant.getMaxY(biome, worldName);
         if (blockHeight > maxY) {
-            listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotAbove(), maxY + "."), player);
+            if (player != null) {
+                listenerUtil.verboseDenial(messager.combineMessage(messager.getCannotAbove(), maxY + "."), player);
+            }
             event.setCancelled(true);
         }
     }
