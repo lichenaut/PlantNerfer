@@ -40,6 +40,10 @@ public class Dehydrate implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (!(block instanceof Farmland)) {
+                    return;
+                }
+
                 Farmland farmlandData = (Farmland) block.getBlockData();
                 if (block.getType() != Material.FARMLAND
                         || farmlandData.getMoisture() == farmlandData.getMaximumMoisture()) {
